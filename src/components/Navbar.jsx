@@ -94,7 +94,7 @@ const Navbar = () => {
   return (
     <AppBar
       position="static"
-      sx={{ bgcolor: "white", color: "darkGray", marginBottom: "30px" }}
+      sx={{ bgcolor: "white", color: "darkGray", marginBottom: "10px" }}
     >
       <Box maxWidth="1100px" width="100%" margin="0 auto">
         <Toolbar

@@ -8,7 +8,9 @@ import {
   Menu,
   MenuItem,
   ImageList,
+  Backdrop,
 } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import Modal from "@mui/joy/Modal";
 import ModalDialog from "@mui/joy/ModalDialog";
 import Typography from "@mui/joy/Typography";
@@ -25,7 +27,6 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-
 import React from "react";
 import { IconButton, ListItemDecorator, Textarea } from "@mui/joy";
 import {
@@ -39,6 +40,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { auth, db, storage } from "../firebase";
 import { v4 as uuidv4 } from "uuid";
+import CurrentUserAvatar from "./CurrentUserAvatar";
 
 const CreatePostButton = styled(Button)(({ theme }) => ({
   color: "white",
@@ -56,6 +58,7 @@ const CreatePostButton = styled(Button)(({ theme }) => ({
 }));
 
 const CreatePost = () => {
+  const [loading, setLoading] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [italic, setItalic] = React.useState(false);
   const [bald, setBald] = React.useState(false);
@@ -76,8 +79,11 @@ const CreatePost = () => {
   }
 
   const handleAddPost = async () => {
+    setLoading(true);
+    setOpen(false);
     const storage = getStorage();
     const fileRef = ref(storage, "postImages/" + uuidv4() + getFileType());
+
     if (image && textValue) {
       await uploadBytes(fileRef, image)
         .then(async () => {
@@ -103,10 +109,12 @@ const CreatePost = () => {
           setImage("");
           setTextValue("");
           navigate("/");
+          setLoading(false);
         })
         .catch((e) => {
           console.log(e.message);
-        });
+        })
+        .finally(() => setLoading(false));
     } else {
       alert("Please fill all the fields.");
     }
@@ -115,7 +123,7 @@ const CreatePost = () => {
   return (
     <WrapperBox>
       <Stack flexDirection="row" gap={1}>
-        <Avatar />
+        <CurrentUserAvatar />
         <CreatePostButton variant={"outlined"} onClick={() => setOpen(true)}>
           Start a post
         </CreatePostButton>
@@ -199,6 +207,7 @@ const CreatePost = () => {
                           }}
                         />
                       </IconButton>
+
                       <Button
                         sx={{ ml: "auto" }}
                         onClick={() => {
@@ -220,6 +229,12 @@ const CreatePost = () => {
           </ModalDialog>
         </Modal>
       </Stack>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </WrapperBox>
   );
 };

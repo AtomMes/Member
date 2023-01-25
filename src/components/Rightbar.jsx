@@ -4,9 +4,9 @@ import { WrapperBox } from "../App";
 
 const Rightbar = () => {
   return (
-    <WrapperBox>
-      <div>atom aotm</div>
-    </WrapperBox>
+    <div className="sticky">
+      <WrapperBox>atom aotm</WrapperBox>
+    </div>
   );
 };
 

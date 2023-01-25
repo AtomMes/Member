@@ -9,3 +9,9 @@ body {
   padding: 0;
   background-color: #f3f2ef;
 }
+
+div.sticky {
+  position: sticky;
+  top: 0;
+  padding-top: 20px;
+}

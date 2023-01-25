@@ -6,15 +6,21 @@ import {
   Grid,
   Stack,
   styled,
+  TextField,
   Typography,
 } from "@mui/material";
+import { formatDistanceToNow } from "date-fns";
 import React from "react";
 import { Link } from "react-router-dom";
+import { WrapperBox } from "../App";
+import Comments from "./Comments";
+import CurrentUserAvatar from "./CurrentUserAvatar";
 
 const UserData = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   gap: "5px",
+  marginBottom: "10px",
 }));
 const PostImg = styled(Box)(({ theme }) => ({
   maxWidth: "600px",
@@ -29,30 +35,37 @@ const PostDesc = styled(Box)(({ theme }) => ({
 const AboutPost = styled(Grid)(({ theme }) => ({
   width: "100%",
 }));
+const AddComment = styled(Box)(({ theme }) => ({
+  display: "flex",
+  gap: "5px",
+  marginTop: "8px",
+}));
+const AddCommentInput = styled(TextField)(({ theme }) => ({
+  [`& fieldset`]: {
+    borderRadius: 100,
+  },
+  width: "100%",
+  padding: "0",
+  margin: "0",
+}));
 
-const Post = ({ username, image, text }) => {
+const Post = ({ author, image, text, date, id }) => {
   const [close, setClose] = React.useState(true);
-
   const [descText, setDescText] = React.useState();
+  const [showAddComment, setShowAddComment] = React.useState(true);
+  const createdDate = formatDistanceToNow(date) + " " + "ago";
 
   React.useEffect(() => {
     setDescText(close ? text.substring(0, 20) : text);
   }, [close]);
 
   return (
-    <Stack>
+    <WrapperBox>
       <UserData>
-        <Avatar>
-          {username
-            .split(" ")
-            .slice(0, 2)
-            .map((word) => word[0])
-            .join("")
-            .toUpperCase()}
-        </Avatar>
-        <Typography>{username}</Typography>
+        <CurrentUserAvatar />
+        <Typography>{author.name}</Typography>
         <Typography fontSize="14px" color="gray">
-          last week
+          {createdDate.replace("about", "")}
         </Typography>
       </UserData>
       <PostImg>
@@ -147,12 +160,23 @@ const Post = ({ username, image, text }) => {
             sx={{ color: "gray" }}
             width="100%"
             textAlign="center"
+            onClick={() => setShowAddComment(!showAddComment)}
           >
             Comment
           </Button>
         </Grid>
       </AboutPost>
-    </Stack>
+      {showAddComment && (
+        <Stack gap="20px">
+          <AddComment>
+            <CurrentUserAvatar />
+            <AddCommentInput size="small" placeholder="Add a comment..." />
+          </AddComment>
+          <Box width="100%" border=".1px solid rgba(220,220,220, .7)" />
+          <Comments />
+        </Stack>
+      )}
+    </WrapperBox>
   );
 };
 

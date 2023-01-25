@@ -3,6 +3,7 @@ import { Avatar, Button, styled, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { useSelector } from "react-redux";
+import CurrentUserAvatar from "./CurrentUserAvatar";
 
 const StyledButton = styled(Button)(({ theme }) => ({
   display: "flex",
@@ -29,36 +30,31 @@ const Sidebar = () => {
   const { username, imageURL } = useSelector((state) => state.user);
 
   return (
-    <WrapperBox>
-      <ProfileBox>
-        <Avatar sx={{ width: "70px", height: "70px", marginBottom: "20px" }}>
-          {username
-            .split(" ")
-            .slice(0, 2)
-            .map((word) => word[0])
-            .join("")
-            .toUpperCase()}
-        </Avatar>
-        <Typography>{username}</Typography>
-        {!imageURL && <Typography>Add a photo</Typography>}
-      </ProfileBox>
-      <Box padding="15px">
-        <StyledButton>
-          {" "}
-          <People
-            sx={{
-              fontSize: "30px",
-              marginRight: "10px",
-            }}
-          />{" "}
-          Contacts
-        </StyledButton>
-        <StyledButton>
-          {" "}
-          <Article sx={{ fontSize: "30px", marginRight: "10px" }} /> Posts
-        </StyledButton>
-      </Box>
-    </WrapperBox>
+    <div className="sticky">
+      <WrapperBox>
+        <ProfileBox>
+          <CurrentUserAvatar size="70px" mb="15px" />
+          <Typography>{username}</Typography>
+          {!imageURL && <Typography>Add a photo</Typography>}
+        </ProfileBox>
+        <Box padding="15px">
+          <StyledButton>
+            {" "}
+            <People
+              sx={{
+                fontSize: "30px",
+                marginRight: "10px",
+              }}
+            />{" "}
+            Contacts
+          </StyledButton>
+          <StyledButton>
+            {" "}
+            <Article sx={{ fontSize: "30px", marginRight: "10px" }} /> Posts
+          </StyledButton>
+        </Box>
+      </WrapperBox>
+    </div>
   );
 };
 

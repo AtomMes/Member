@@ -1,4 +1,12 @@
-import { collection, onSnapshot, doc, getDocs } from "firebase/firestore";
+import { Box } from "@mui/material";
+import {
+  collection,
+  onSnapshot,
+  doc,
+  getDocs,
+  query,
+  orderBy,
+} from "firebase/firestore";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { WrapperBox } from "../App";
@@ -14,6 +22,7 @@ const Posts = () => {
   React.useEffect(() => {
     const unsub = onSnapshot(
       collection(db, "posts"),
+      orderBy("date", "asc"),
       (snapShot) => {
         let list = [];
         snapShot.docs.forEach((doc) => {
@@ -34,11 +43,11 @@ const Posts = () => {
   const { posts } = useSelector((state) => state.posts);
 
   return (
-    <WrapperBox display="flex" flexDirection="column" gap="100px">
+    <Box display="flex" flexDirection="column" gap="10px">
       {posts.map((post) => (
-        <Post username={post.author.name} image={post.image} text={post.text} />
+        <Post {...post} />
       ))}
-    </WrapperBox>
+    </Box>
   );
 };
 
