@@ -38,7 +38,7 @@ import {
 } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { auth, db, storage } from "../firebase";
+import { auth, db } from "../firebase";
 import { v4 as uuidv4 } from "uuid";
 import CurrentUserAvatar from "./CurrentUserAvatar";
 
@@ -50,8 +50,8 @@ const CreatePostButton = styled(Button)(({ theme }) => ({
   borderRadius: "20px",
   border: "1px solid gray",
   whiteSpace: "nowrap",
-  textTransform: "none",
   justifyContent: "flex-start",
+  textTransform: "none",
   "&:hover": {
     backgroundColor: "#e6e6e6",
   },
@@ -79,12 +79,12 @@ const CreatePost = () => {
   }
 
   const handleAddPost = async () => {
-    setLoading(true);
-    setOpen(false);
     const storage = getStorage();
     const fileRef = ref(storage, "postImages/" + uuidv4() + getFileType());
 
     if (image && textValue) {
+      setLoading(true);
+      setOpen(false);
       await uploadBytes(fileRef, image)
         .then(async () => {
           await getDownloadURL(fileRef)
@@ -100,6 +100,7 @@ const CreatePost = () => {
                 text,
                 image: imageURL,
                 date: Date.now(),
+                likes: [],
               });
             })
             .catch((e) => {

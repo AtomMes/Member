@@ -1,20 +1,33 @@
-import { Comment, LinkedCamera, ThumbUp } from "@mui/icons-material";
+import { Comment, LinkedCamera, Send, ThumbUp } from "@mui/icons-material";
 import {
   Avatar,
   Box,
   Button,
   Grid,
+  InputAdornment,
   Stack,
   styled,
   TextField,
   Typography,
 } from "@mui/material";
 import { formatDistanceToNow } from "date-fns";
+import {
+  addDoc,
+  collection,
+  query,
+  onSnapshot,
+  orderBy,
+  where,
+} from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 import React from "react";
 import { Link } from "react-router-dom";
 import { WrapperBox } from "../App";
+import { auth, db } from "../firebase";
 import Comments from "./Comments";
+import { v4 as uuidv4 } from "uuid";
 import CurrentUserAvatar from "./CurrentUserAvatar";
+import { useComments } from "../hooks/comments";
 
 const UserData = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -48,16 +61,53 @@ const AddCommentInput = styled(TextField)(({ theme }) => ({
   padding: "0",
   margin: "0",
 }));
+const ShowMoreButton = styled(Button)(({ theme }) => ({
+  color: "black",
+  width: "fit-content",
+  textTransform: "none",
+  "&:hover": {
+    backgroundColor: "#e6e6e6",
+  },
+  padding: "2px 6px",
+}));
 
 const Post = ({ author, image, text, date, id }) => {
   const [close, setClose] = React.useState(true);
   const [descText, setDescText] = React.useState();
   const [showAddComment, setShowAddComment] = React.useState(true);
   const createdDate = formatDistanceToNow(date) + " " + "ago";
+  const [commentText, setCommentText] = React.useState("");
+  const [limit, setLimit] = React.useState(2);
+
+  const { comments, isLoading } = useComments(id, limit);
 
   React.useEffect(() => {
     setDescText(close ? text.substring(0, 20) : text);
   }, [close]);
+
+  const onAddComment = async () => {
+    if (commentText) {
+      setCommentText("");
+      try {
+        const commentsCollectionRef = collection(db, "comments");
+        await addDoc(commentsCollectionRef, {
+          postId: id,
+          commentId: uuidv4(),
+          author: {
+            name: auth.currentUser?.displayName,
+            id: auth.currentUser?.uid,
+          },
+          comment: commentText,
+          date: Date.now(),
+        });
+      } catch (err) {
+        alert(err.message);
+        console.log(err);
+      }
+    } else {
+      alert("Write some comment");
+    }
+  };
 
   return (
     <WrapperBox>
@@ -170,10 +220,27 @@ const Post = ({ author, image, text, date, id }) => {
         <Stack gap="20px">
           <AddComment>
             <CurrentUserAvatar />
-            <AddCommentInput size="small" placeholder="Add a comment..." />
+            <AddCommentInput
+              size="small"
+              placeholder="Add a comment..."
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Button sx={{ minWidth: "1px" }} onClick={onAddComment}>
+                      <Send />
+                    </Button>
+                  </InputAdornment>
+                ),
+              }}
+            />
           </AddComment>
           <Box width="100%" border=".1px solid rgba(220,220,220, .7)" />
-          <Comments />
+          <Comments comments={comments} />
+          <ShowMoreButton fullWidth={false} onClick={() => setLimit(limit + 2)}>
+            Show more
+          </ShowMoreButton>
         </Stack>
       )}
     </WrapperBox>

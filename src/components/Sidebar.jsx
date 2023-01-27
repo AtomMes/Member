@@ -34,6 +34,7 @@ const Sidebar = () => {
       <WrapperBox>
         <ProfileBox>
           <CurrentUserAvatar size="70px" mb="15px" />
+
           <Typography>{username}</Typography>
           {!imageURL && <Typography>Add a photo</Typography>}
         </ProfileBox>
