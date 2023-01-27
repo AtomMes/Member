@@ -1,4 +1,10 @@
-import { Comment, LinkedCamera, Send, ThumbUp } from "@mui/icons-material";
+import {
+  Comment,
+  LinkedCamera,
+  Send,
+  ThumbUp,
+  ThumbUpOffAlt,
+} from "@mui/icons-material";
 import {
   Avatar,
   Box,
@@ -18,6 +24,11 @@ import {
   onSnapshot,
   orderBy,
   where,
+  getDocs,
+  doc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import React from "react";
@@ -71,15 +82,31 @@ const ShowMoreButton = styled(Button)(({ theme }) => ({
   padding: "2px 6px",
 }));
 
-const Post = ({ author, image, text, date, id }) => {
+const Post = ({ author, image, text, date, id, likes }) => {
   const [close, setClose] = React.useState(true);
   const [descText, setDescText] = React.useState();
   const [showAddComment, setShowAddComment] = React.useState(true);
   const createdDate = formatDistanceToNow(date) + " " + "ago";
   const [commentText, setCommentText] = React.useState("");
   const [limit, setLimit] = React.useState(2);
-
   const { comments, isLoading } = useComments(id, limit);
+  const [isPostLiked, setIsPostLiked] = React.useState(likes.includes(id));
+
+  React.useEffect(() => {
+    setIsPostLiked(likes.includes(id));
+  }, [likes]);
+
+  const onLike = async () => {
+    let docId = null;
+    const q = query(collection(db, "posts"), where("id", "==", id));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(async (doc) => (docId = doc.id));
+    const postRef = doc(db, "posts", docId);
+
+    updateDoc(postRef, {
+      likes: isPostLiked ? arrayRemove(id) : arrayUnion(id),
+    }).catch((err) => alert(err.message));
+  };
 
   React.useEffect(() => {
     setDescText(close ? text.substring(0, 20) : text);
@@ -190,10 +217,11 @@ const Post = ({ author, image, text, date, id }) => {
           display="flex"
         >
           <Button
-            startIcon={<ThumbUp />}
+            startIcon={isPostLiked ? <ThumbUp /> : <ThumbUpOffAlt />}
             sx={{ color: "gray" }}
             width="100%"
             textAlign="center"
+            onClick={() => onLike()}
           >
             Like
           </Button>
