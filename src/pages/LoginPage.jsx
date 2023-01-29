@@ -10,18 +10,21 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   function onLogin(email, password) {
-    const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password).then(({ user }) => {
-      dispatch(
-        setUser({
-          username: user.displayName,
-          email: user.email,
-          id: user.uid,
-          token: user.refreshToken,
-        })
-      );
-      navigate("/");
-    });
+    if (email && password) {
+      const auth = getAuth();
+      signInWithEmailAndPassword(auth, email, password).then(({ user }) => {
+        dispatch(
+          setUser({
+            username: user.displayName,
+            imageURL: user.photoURL && user.photoURL,
+            email: user.email,
+            id: user.uid,
+            token: user.refreshToken,
+          })
+        );
+        navigate("/");
+      });
+    }
   }
 
   return (

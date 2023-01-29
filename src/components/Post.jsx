@@ -29,6 +29,7 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
+  getDoc,
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import React from "react";
@@ -39,6 +40,7 @@ import Comments from "./Comments";
 import { v4 as uuidv4 } from "uuid";
 import CurrentUserAvatar from "./CurrentUserAvatar";
 import { useComments } from "../hooks/comments";
+import { useSelector } from "react-redux";
 
 const UserData = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -85,12 +87,25 @@ const ShowMoreButton = styled(Button)(({ theme }) => ({
 const Post = ({ author, image, text, date, id, likes }) => {
   const [close, setClose] = React.useState(true);
   const [descText, setDescText] = React.useState();
-  const [showAddComment, setShowAddComment] = React.useState(true);
-  const createdDate = formatDistanceToNow(date) + " " + "ago";
+  const [showAddComment, setShowAddComment] = React.useState(false);
   const [commentText, setCommentText] = React.useState("");
   const [limit, setLimit] = React.useState(2);
-  const { comments, isLoading } = useComments(id, limit);
   const [isPostLiked, setIsPostLiked] = React.useState(likes.includes(id));
+  const { comments, isLoading } = useComments(id);
+  const createdDate = formatDistanceToNow(date) + " " + "ago";
+  const [postAuthorPhoto, setPostAuthorPhoto] = React.useState(null);
+  const [postAuthorName, setPostAuthorName] = React.useState(null);
+
+  const { username, imageURL } = useSelector((state) => state.user);
+
+  React.useEffect(() => {
+    (async () => {
+      const docRef = doc(db, "users", author.id);
+      const docSnap = await getDoc(docRef);
+      setPostAuthorPhoto(docSnap.data().photoURL);
+      setPostAuthorName(docSnap.data().username);
+    })();
+  }, []);
 
   React.useEffect(() => {
     setIsPostLiked(likes.includes(id));
@@ -115,6 +130,7 @@ const Post = ({ author, image, text, date, id, likes }) => {
   const onAddComment = async () => {
     if (commentText) {
       setCommentText("");
+      setLimit(limit + 1);
       try {
         const commentsCollectionRef = collection(db, "comments");
         await addDoc(commentsCollectionRef, {
@@ -139,8 +155,11 @@ const Post = ({ author, image, text, date, id, likes }) => {
   return (
     <WrapperBox>
       <UserData>
-        <CurrentUserAvatar />
-        <Typography>{author.name}</Typography>
+        <CurrentUserAvatar
+          username={postAuthorName}
+          photoURL={postAuthorPhoto}
+        />
+        <Typography>{postAuthorName}</Typography>
         <Typography fontSize="14px" color="gray">
           {createdDate.replace("about", "")}
         </Typography>
@@ -176,7 +195,6 @@ const Post = ({ author, image, text, date, id, likes }) => {
         >
           <Typography
             display="flex"
-            textAlign="center"
             onClick={() => setClose(!close)}
             sx={{ maxWidth: "100%", overflowWrap: "anywhere" }}
           >
@@ -240,14 +258,14 @@ const Post = ({ author, image, text, date, id, likes }) => {
             textAlign="center"
             onClick={() => setShowAddComment(!showAddComment)}
           >
-            Comment
+            Comments
           </Button>
         </Grid>
       </AboutPost>
       {showAddComment && (
         <Stack gap="20px">
           <AddComment>
-            <CurrentUserAvatar />
+            <CurrentUserAvatar username={username} photoURL={imageURL} />
             <AddCommentInput
               size="small"
               placeholder="Add a comment..."
@@ -265,10 +283,21 @@ const Post = ({ author, image, text, date, id, likes }) => {
             />
           </AddComment>
           <Box width="100%" border=".1px solid rgba(220,220,220, .7)" />
-          <Comments comments={comments} />
-          <ShowMoreButton fullWidth={false} onClick={() => setLimit(limit + 2)}>
-            Show more
-          </ShowMoreButton>
+          <Comments comments={comments} limit={limit} />
+          <Stack flexDirection="row" justifyContent="space-between">
+            <ShowMoreButton
+              fullWidth={false}
+              onClick={() => setLimit(limit + 2)}
+            >
+              Show more
+            </ShowMoreButton>
+            <ShowMoreButton
+              fullWidth={false}
+              onClick={() => setLimit(limit - 2)}
+            >
+              Show less
+            </ShowMoreButton>
+          </Stack>
         </Stack>
       )}
     </WrapperBox>

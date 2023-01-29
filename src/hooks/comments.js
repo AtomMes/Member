@@ -8,12 +8,11 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 
-export function useComments(id, limit) {
+export function useComments(id) {
   const q = query(
     collection(db, "comments"),
     where("postId", "==", id),
-    orderBy("date", "desc"),
-    limitToLast(limit)
+    orderBy("date", "desc")
   );
   const [comments, isLoading, error] = useCollectionData(q);
   if (error) throw error;

@@ -58,6 +58,8 @@ const CreatePostButton = styled(Button)(({ theme }) => ({
 }));
 
 const CreatePost = () => {
+  const { username, imageURL } = useSelector((state) => state.user);
+
   const [loading, setLoading] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [italic, setItalic] = React.useState(false);
@@ -91,10 +93,10 @@ const CreatePost = () => {
             .then(async (imageURL) => {
               const postCollectionRef = collection(db, "posts");
               const text = textValue;
+
               await addDoc(postCollectionRef, {
                 id: uuidv4(),
                 author: {
-                  name: auth.currentUser?.displayName,
                   id: auth.currentUser?.uid,
                 },
                 text,
@@ -121,10 +123,15 @@ const CreatePost = () => {
     }
   };
 
+  console.log("a", imageURL);
+
   return (
     <WrapperBox>
       <Stack flexDirection="row" gap={1}>
-        <CurrentUserAvatar />
+        <CurrentUserAvatar
+          username={username}
+          photoURL={imageURL && imageURL}
+        />
         <CreatePostButton variant={"outlined"} onClick={() => setOpen(true)}>
           Start a post
         </CreatePostButton>

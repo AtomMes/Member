@@ -9,10 +9,8 @@ import {
 } from "firebase/firestore";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { WrapperBox } from "../App";
-import { db } from "../firebase";
+
 import { usePosts } from "../hooks/posts";
-import { setPosts } from "../redux/postsSlice/slice";
 import Post from "./Post";
 
 const Posts = () => {
@@ -21,7 +19,7 @@ const Posts = () => {
   const dispatch = useDispatch();
 
   const { posts, isLoading } = usePosts();
-  console.log(posts);
+
 
   if (isLoading) return <>Loading...</>;
 

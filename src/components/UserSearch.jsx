@@ -28,7 +28,6 @@ const UserSearch = () => {
     const usersRef = collection(db, "users");
     const data = await getDocs(usersRef);
     const newData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-    // console.log(newData);
     setUsers(
       newData.filter(
         (user) =>

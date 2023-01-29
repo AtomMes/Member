@@ -18,29 +18,30 @@ const RegisterPage = () => {
   const navigate = useNavigate();
 
   const onRegister = async (email, password, username) => {
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth, email, password).then(
-      async ({ user }) => {
-        const ref = doc(db, "users", user.uid);
-        await setDoc(ref, {
-          createdAt: Date.now().toString(),
-          username,
-          email,
-        });
-        if (auth.currentUser) {
-          await updateProfile(auth.currentUser, { displayName: username });
+    if (email && password && username) {
+      const auth = getAuth();
+      createUserWithEmailAndPassword(auth, email, password).then(
+        async ({ user }) => {
+          const ref = doc(db, "users", user.uid);
+          await setDoc(ref, {
+            username,
+            email,
+          });
+          if (auth.currentUser) {
+            await updateProfile(auth.currentUser, { displayName: username });
+          }
+          dispatch(
+            setUser({
+              username: user.displayName,
+              email: user.email,
+              id: user.uid,
+              token: user.refreshToken,
+            })
+          );
+          navigate("/");
         }
-        dispatch(
-          setUser({
-            username: user.displayName,
-            email: user.email,
-            id: user.uid,
-            token: user.refreshToken,
-          })
-        );
-        navigate("/");
-      }
-    );
+      );
+    }
   };
 
   return (
