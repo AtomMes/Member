@@ -20,13 +20,12 @@ const Posts = () => {
 
   const { posts, isLoading } = usePosts();
 
-
   if (isLoading) return <>Loading...</>;
 
   return (
     <Box display="flex" flexDirection="column" gap="10px">
-      {posts.map((post) => (
-        <Post {...post} />
+      {posts.map((post, i) => (
+        <Post {...post} key={i} />
       ))}
     </Box>
   );

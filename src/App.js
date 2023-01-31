@@ -1,12 +1,12 @@
 import { Box, styled } from "@mui/material";
 import React from "react";
-import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import { useAuth } from "./hooks/useAuth";
+import ChatPage from "./pages/ChatPage";
 import Home from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import { checkLoggedInUser } from "./utils/checkLoggedInUser";
 
 export const WrapperBox = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
@@ -17,17 +17,19 @@ export const WrapperBox = styled(Box)(({ theme }) => ({
 }));
 
 function App() {
-  const { user } = useSelector((state) => state);
-  const { isAuth } = useAuth();
+  React.useEffect(() => {
+    checkLoggedInUser();
+  }, []);
 
   return (
     <Box>
       <Navbar />
       <Box width="100%" maxWidth="1100px" margin="0 auto">
         <Routes>
-          <Route path="/" element={isAuth ? <Home /> : <LoginPage />} />
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/messaging" element={<ChatPage />} />
         </Routes>
       </Box>
     </Box>

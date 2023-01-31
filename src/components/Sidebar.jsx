@@ -103,20 +103,18 @@ const Sidebar = () => {
     }
   };
 
+  console.log(imageURL);
+
   return (
     <div className="sticky">
       <WrapperBox>
         <ProfileBox>
-          {imageURL ? (
-            <img src={imageURL} />
-          ) : (
-            <CurrentUserAvatar
-              size="70px"
-              mb="15px"
-              username={username}
-              photoURL={imageURL && imageURL}
-            />
-          )}
+          <CurrentUserAvatar
+            size="70px"
+            mb="15px"
+            username={username}
+            photoURL={imageURL && imageURL}
+          />
           <Typography>{username}</Typography>
 
           <Typography onClick={() => setOpen(!open)}>

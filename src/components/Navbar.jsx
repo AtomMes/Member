@@ -13,12 +13,11 @@ import {
   Badge,
   TextField,
   InputAdornment,
+  ListItemIcon,
+  Divider,
 } from "@mui/material";
 import { Tab } from "@mui/material";
-import {
-  TabContext, //mejnen gtnvum naviacion tabery u erevacox cherevacox tabery
-  TabList, //navigaciayi tabery mejnen
-} from "@mui/lab";
+import { TabContext, TabList } from "@mui/lab";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
 import CatchingPokemonIcon from "@mui/icons-material/CatchingPokemon";
@@ -29,11 +28,16 @@ import {
   AccountCircle,
   AccountCircleRounded,
   Group,
+  Logout,
   Message,
   Search,
+  Settings,
   VerifiedUser,
 } from "@mui/icons-material";
 import UserSearch from "./UserSearch";
+import { useDispatch } from "react-redux";
+import { removeUser } from "../redux/userSlice/slice";
+import { Link, useNavigate } from "react-router-dom";
 
 const StyledTab = styled(Tab)(({ theme }) => ({
   maxWidth: "none",
@@ -74,8 +78,10 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
-
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const handleClick = (e) => {
     setAnchorEl(e.currentTarget);
@@ -125,16 +131,21 @@ const Navbar = () => {
                 centered
               >
                 <StyledTab
+                  onClick={() => navigate("/")}
                   icon={<HomeIcon sx={{ fontSize: "30px" }} />}
                   label="Home"
                 />
+
                 <StyledTab
+                  onClick={() => navigate("/")}
                   icon={<Group sx={{ fontSize: "30px" }} />}
                   label="Contacts"
                 />
+
                 <StyledTab
+                  onClick={() => navigate("/messaging")}
                   icon={<Message sx={{ fontSize: "30px" }} />}
-                  label="Notifications"
+                  label="Chats"
                 />
               </TabList>
             </TabContext>
@@ -153,28 +164,59 @@ const Navbar = () => {
             </StyledBadge>
           </Stack>
           <Menu
-            id="resources-menu" //id vor karavaren sranov
-            anchorEl={anchorEl} //popupi poziciayi het kap uni,
-            open={open} //open aysinqn erevuma te che
-            MenuListProps={{
-              "aria-labelledby": "resources-button", //asuma te vor elementy karan ira ogtagorci senc asac, dabro enq tali resource-buttonin meznov karavarel
+            anchorEl={anchorEl}
+            id="account-menu"
+            open={open}
+            onClose={handleClose}
+            onClick={handleClose}
+            PaperProps={{
+              elevation: 0,
+              sx: {
+                overflow: "visible",
+                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                mt: 1.5,
+                "& .MuiAvatar-root": {
+                  width: 32,
+                  height: 32,
+                  ml: -0.5,
+                  mr: 1,
+                },
+                "&:before": {
+                  content: '""',
+                  display: "block",
+                  position: "absolute",
+                  top: 0,
+                  right: 14,
+                  width: 10,
+                  height: 10,
+                  bgcolor: "background.paper",
+                  transform: "translateY(-50%) rotate(45deg)",
+                  zIndex: 0,
+                },
+              },
             }}
-            onClose={handleClose} //erb vor pakvi inch funkcia kanchi, componentWillUnmounti nman eli yani
-            anchorOrigin={{
-              //poziciana dzum
-              vertical: "bottom",
-              horizontal: "right",
-            }}
-            transformOrigin={{
-              //poziciana dzum
-              vertical: "top",
-              horizontal: "right",
-            }}
+            transformOrigin={{ horizontal: "right", vertical: "top" }}
+            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>Settings</MenuItem>
-            <MenuItem onClick={handleClose}>Posts</MenuItem>
-            <MenuItem onClick={handleClose}>Theme</MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Avatar /> Profile
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Avatar /> My account
+            </MenuItem>
+            <Divider />
+            <MenuItem onClick={handleClose}>
+              <ListItemIcon>
+                <Settings fontSize="small" />
+              </ListItemIcon>
+              Settings
+            </MenuItem>
+            <MenuItem onClick={() => dispatch(removeUser())}>
+              <ListItemIcon>
+                <Logout fontSize="small" />
+              </ListItemIcon>
+              Logout
+            </MenuItem>
           </Menu>
         </Toolbar>
       </Box>
