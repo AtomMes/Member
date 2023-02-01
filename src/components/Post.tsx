@@ -293,7 +293,9 @@ const Post: React.FC<PostProps> = ({
               size="small"
               placeholder="Add a comment..."
               value={commentText}
-              onChange={(e) => setCommentText(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setCommentText(e.target.value)
+              }
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">

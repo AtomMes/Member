@@ -17,9 +17,9 @@ interface CommentProps {
 }
 
 const Comment: React.FC<CommentProps> = ({ com }) => {
-  const [postAuthorPhoto, setPostAuthorPhoto] = React.useState<
-    string | null
-  >("");
+  const [postAuthorPhoto, setPostAuthorPhoto] = React.useState<string | null>(
+    ""
+  );
   const [postAuthorName, setPostAuthorName] = React.useState<string | null>(
     null
   );
