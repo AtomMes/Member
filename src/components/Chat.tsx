@@ -1,6 +1,7 @@
+import { Stack } from "@mui/material";
 import React from "react";
 
-const Chat = () => {
+const Chat: React.FC = () => {
   return <Stack bgcolor="red">atom</Stack>;
 };
 

@@ -8,7 +8,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 
-export function useComments(id) {
+export function useComments(id:string) {
   const q = query(
     collection(db, "comments"),
     where("postId", "==", id),

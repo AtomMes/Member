@@ -13,11 +13,15 @@ import { useNavigate } from "react-router-dom";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
-const RegisterPage = () => {
+const RegisterPage: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const onRegister = async (email, password, username) => {
+  const onRegister = async (
+    email: string,
+    password: string,
+    username: string | null
+  ) => {
     if (email && password && username) {
       const auth = getAuth();
       createUserWithEmailAndPassword(auth, email, password).then(
@@ -35,6 +39,7 @@ const RegisterPage = () => {
               username: user.displayName,
               email: user.email,
               id: user.uid,
+              imageURL: null,
               token: user.refreshToken,
             })
           );

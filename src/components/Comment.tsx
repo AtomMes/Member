@@ -5,16 +5,33 @@ import React from "react";
 import { db } from "../firebase";
 import CurrentUserAvatar from "./CurrentUserAvatar";
 
-const Comment = ({ com }) => {
-  const [postAuthorPhoto, setPostAuthorPhoto] = React.useState(null);
-  const [postAuthorName, setPostAuthorName] = React.useState(null);
+interface CommentProps {
+  com: {
+    author: {
+      id: string;
+      name: string;
+    };
+    comment: string;
+    date: Date;
+  };
+}
+
+const Comment: React.FC<CommentProps> = ({ com }) => {
+  const [postAuthorPhoto, setPostAuthorPhoto] = React.useState<
+    string | null
+  >("");
+  const [postAuthorName, setPostAuthorName] = React.useState<string | null>(
+    null
+  );
 
   React.useEffect(() => {
     (async () => {
       const docRef = doc(db, "users", com.author.id);
       const docSnap = await getDoc(docRef);
-      setPostAuthorPhoto(docSnap.data().photoURL);
-      setPostAuthorName(docSnap.data().username);
+      if (docSnap.data()) {
+        setPostAuthorPhoto(docSnap.data()!.photoURL);
+        setPostAuthorName(docSnap.data()!.username);
+      }
     })();
   }, []);
 

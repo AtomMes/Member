@@ -39,14 +39,14 @@ import {
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
-import { v4 as uuidv4 } from "uuid";
+import { uuidv4 } from "@firebase/util";
 import CurrentUserAvatar from "./CurrentUserAvatar";
+import { useAppSelector } from "../hooks/redux-hooks";
 
 const CreatePostButton = styled(Button)(({ theme }) => ({
-  color: "white",
+  color: "black",
   fontWeight: "400",
   width: "100%",
-  color: "black",
   borderRadius: "20px",
   border: "1px solid gray",
   whiteSpace: "nowrap",
@@ -57,23 +57,23 @@ const CreatePostButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const CreatePost = () => {
-  const { username, imageURL } = useSelector((state) => state.user);
+const CreatePost: React.FC = () => {
+  const { username, imageURL } = useAppSelector((state) => state.user);
 
-  const [loading, setLoading] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
-  const [italic, setItalic] = React.useState(false);
-  const [bald, setBald] = React.useState(false);
-  const [textValue, setTextValue] = React.useState("");
-  const [chosenImage, setChosenImage] = React.useState("");
-  const [image, setImage] = React.useState("");
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [open, setOpen] = React.useState<boolean>(false);
+  const [italic, setItalic] = React.useState<boolean>(false);
+  const [bald, setBald] = React.useState<boolean>(false);
+  const [textValue, setTextValue] = React.useState<string>("");
+  const [chosenImage, setChosenImage] = React.useState<string>("");
+  const [image, setImage] = React.useState<null | File>();
 
   const navigate = useNavigate();
 
   function getFileType() {
-    if (image.type === "image/jpeg") {
+    if (image!.type === "image/jpeg") {
       return "jpg";
-    } else if (image.type === "image/png") {
+    } else if (image!.type === "image/png") {
       return "png";
     } else {
       return "other";
@@ -109,7 +109,7 @@ const CreatePost = () => {
               console.log(e.message);
             });
           setOpen(false);
-          setImage("");
+          setImage(null);
           setTextValue("");
           navigate("/");
           setLoading(false);
@@ -122,8 +122,6 @@ const CreatePost = () => {
       alert("Please fill all the fields.");
     }
   };
-
-  console.log("a", imageURL);
 
   return (
     <WrapperBox>
@@ -201,17 +199,21 @@ const CreatePost = () => {
                         <FormatItalic />
                       </IconButton>
                       <IconButton>
-                        <label for="addPhotoInput">
+                        <label htmlFor="addPhotoInput">
                           <Image />
                         </label>
                         <input
                           type="file"
                           id="addPhotoInput"
                           style={{ display: "none" }}
-                          onChange={(e) => {
-                            const file = e.target.files[0];
-                            setChosenImage(URL.createObjectURL(file));
-                            setImage(file);
+                          onChange={(
+                            e: React.ChangeEvent<HTMLInputElement>
+                          ) => {
+                            if (e.target.files) {
+                              const file = e.target.files[0];
+                              setChosenImage(URL.createObjectURL(file));
+                              setImage(file);
+                            }
                           }}
                         />
                       </IconButton>
@@ -229,7 +231,7 @@ const CreatePost = () => {
                 }
                 sx={{
                   minWidth: 300,
-                  fontWeight: bald && 700,
+                  fontWeight: bald ? 700 : 400,
                   fontStyle: italic ? "italic" : "initial",
                 }}
               />

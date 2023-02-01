@@ -16,7 +16,7 @@ export const WrapperBox = styled(Box)(({ theme }) => ({
   padding: "15px",
 }));
 
-function App() {
+const App: React.FC = () => {
   React.useEffect(() => {
     checkLoggedInUser();
   }, []);
@@ -34,6 +34,6 @@ function App() {
       </Box>
     </Box>
   );
-}
+};
 
 export default App;

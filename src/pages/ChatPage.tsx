@@ -1,12 +1,10 @@
 import React from "react";
-import Sidebar from "../components/Sidebar";
-import Feed from "../components/Feed";
-import RightBar from "../components/RightBar";
 import { Box, Grid, Stack } from "@mui/material";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import Chat from "../components/Chat";
 
-const Home = () => {
+const ChatPage: React.FC = () => {
   const { isAuth } = useAuth();
 
   const navigate = useNavigate();
@@ -16,18 +14,15 @@ const Home = () => {
   return (
     <Stack display="flex" flexDirection="row">
       <Grid container spacing={3}>
-        <Grid item xs={3}>
-          <Sidebar />
-        </Grid>
-        <Grid item xs={6}>
-          <Feed />
+        <Grid item xs={9}>
+          <Chat />
         </Grid>
         <Grid item xs={3}>
-          <RightBar />
+          mnacacnel stex
         </Grid>
       </Grid>
     </Stack>
   );
 };
 
-export default Home;
+export default ChatPage;

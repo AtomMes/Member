@@ -34,7 +34,6 @@ import {
   Settings,
   VerifiedUser,
 } from "@mui/icons-material";
-import UserSearch from "./UserSearch";
 import { useDispatch } from "react-redux";
 import { removeUser } from "../redux/userSlice/slice";
 import { Link, useNavigate } from "react-router-dom";
@@ -76,24 +75,23 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-const Navbar = () => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+const Navbar: React.FC = () => {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
-  const handleClick = (e) => {
-    setAnchorEl(e.currentTarget);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
   };
-
-  const handleClose = (e) => {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
   const [value, setValue] = React.useState("1");
 
-  const handleChange = (e, newValue) => {
+  const handleChange = (e: any, newValue: string) => {
     setValue(newValue);
   };
 
@@ -119,7 +117,6 @@ const Navbar = () => {
             >
               <CatchingPokemonIcon />
             </IconButton>
-            <UserSearch />
           </Stack>
           <Stack direction="row" spacing={2} alignItems="center">
             <TabContext value={value}>
@@ -155,7 +152,7 @@ const Navbar = () => {
               aria-controls={open ? "resources-menu" : undefined} //aria controlsov karavarum enq resources-menu i exeliutyuny
               aria-haspopup="true" //popup uni te che? asum enq ha
               aria-expanded={open ? "true" : undefined} //asumenq razvernuta te che, openi heta kaxvac de parza
-              endIcon={<KeyboardArrowDownIcon />} //prosty icon
+              //! endIcon={<KeyboardArrowDownIcon />} //errora talis chgitem xi
               overlap="circular"
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
               variant="dot"
@@ -164,7 +161,7 @@ const Navbar = () => {
             </StyledBadge>
           </Stack>
           <Menu
-            anchorEl={anchorEl}
+            anchorEl={anchorEl!}
             id="account-menu"
             open={open}
             onClose={handleClose}

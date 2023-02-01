@@ -3,7 +3,7 @@ import React from "react";
 import CreatePost from "./CreatePost";
 import Posts from "./Posts";
 
-const Feed = () => {
+const Feed: React.FC = () => {
   return (
     <Stack gap="5px" marginTop="20px">
       <CreatePost />

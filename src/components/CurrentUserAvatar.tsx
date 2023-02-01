@@ -1,11 +1,22 @@
-import { Avatar } from "@mui/material";
+import { Avatar, styled } from "@mui/material";
 import React from "react";
-import { useSelector } from "react-redux";
 
-const CurrentUserAvatar = ({ username, size, mb, photoURL, user }) => {
+interface Props {
+  username: string | null;
+  size?: string | undefined;
+  mb?: string | undefined;
+  photoURL: string | null;
+}
+
+const CurrentUserAvatar: React.FC<Props> = ({
+  username,
+  size,
+  mb,
+  photoURL,
+}) => {
   return (
     <Avatar
-      src={photoURL && photoURL}
+      src={photoURL!}
       sx={{ width: size, height: size, marginBottom: mb }}
     >
       {!photoURL &&

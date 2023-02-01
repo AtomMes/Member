@@ -17,6 +17,7 @@ import { getAuth, updateProfile } from "firebase/auth";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { v4 as uuidv4 } from "uuid";
+import { useAppSelector } from "../hooks/redux-hooks";
 
 const StyledButton = styled(Button)(({ theme }) => ({
   display: "flex",
@@ -39,37 +40,22 @@ const ProfileBox = styled(Box)(({ theme }) => ({
   padding: "15px",
 }));
 
-const Sidebar = () => {
-  const [open, setOpen] = React.useState(false);
+const Sidebar: React.FC = () => {
+  const [open, setOpen] = React.useState<boolean>(false);
 
-  const { username, imageURL } = useSelector((state) => state.user);
+  const { username, imageURL } = useAppSelector((state) => state.user);
 
   const auth = getAuth();
+
   const user = auth.currentUser;
 
-  const [photo, setPhoto] = React.useState(null);
+  const [photo, setPhoto] = React.useState<string | undefined>(undefined);
 
   function onClose() {
-    setPhoto(null);
+    setPhoto(undefined);
   }
-  function onCrop(pv) {
+  function onCrop(pv: any) {
     setPhoto(pv);
-  }
-  function onBeforeFileLoad(elem) {
-    if (elem.target.files[0].size < 0) {
-      alert("File is too big!");
-      elem.target.value = "";
-    }
-  }
-
-  function getFileType() {
-    if (photo.type === "image/jpeg") {
-      return "jpg";
-    } else if (photo.type === "image/png") {
-      return "png";
-    } else {
-      return "png";
-    }
   }
 
   const refresh = () => {
@@ -79,7 +65,7 @@ const Sidebar = () => {
   const addUserPhoto = async () => {
     if (photo) {
       setOpen(false);
-      setPhoto(null);
+      setPhoto(undefined);
       const storage = getStorage();
       if (user) {
         const fileRef = ref(storage, "userAvatars/" + user.uid + ".png");
@@ -141,7 +127,7 @@ const Sidebar = () => {
           open={open}
           onClose={() => {
             setOpen(false);
-            setPhoto(null);
+            setPhoto(undefined);
           }}
           sx={{ width: "500px", margin: "0 auto" }}
         >
@@ -166,8 +152,7 @@ const Sidebar = () => {
                 height={300}
                 onCrop={onCrop}
                 onClose={onClose}
-                onBeforeFileLoad={onBeforeFileLoad}
-                src={null}
+                src={photo}
               />
             </Box>
             <Box display="flex" justifyContent="center">
@@ -190,7 +175,7 @@ const Sidebar = () => {
                 variant="outlined"
                 color="error"
                 onClick={() => {
-                  setPhoto(null);
+                  setPhoto(undefined);
                   setOpen(false);
                 }}
               >

@@ -41,6 +41,7 @@ import { v4 as uuidv4 } from "uuid";
 import CurrentUserAvatar from "./CurrentUserAvatar";
 import { useComments } from "../hooks/comments";
 import { useSelector } from "react-redux";
+import { useAppSelector } from "../hooks/redux-hooks";
 
 const UserData = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -84,26 +85,46 @@ const ShowMoreButton = styled(Button)(({ theme }) => ({
   padding: "2px 6px",
 }));
 
-const Post = ({ author, image, text, date, id, likes }) => {
-  const [close, setClose] = React.useState(true);
-  const [descText, setDescText] = React.useState();
-  const [showAddComment, setShowAddComment] = React.useState(false);
-  const [commentText, setCommentText] = React.useState("");
-  const [limit, setLimit] = React.useState(2);
-  const [isPostLiked, setIsPostLiked] = React.useState(likes.includes(id));
-  const { comments, isLoading } = useComments(id);
-  const createdDate = formatDistanceToNow(date) + " " + "ago";
-  const [postAuthorPhoto, setPostAuthorPhoto] = React.useState(null);
-  const [postAuthorName, setPostAuthorName] = React.useState(null);
+interface PostProps {
+  author: {
+    id: string;
+  };
+  date: Date;
+  id: string;
+  image: string;
+  likes: string[];
+  text: string;
+}
 
-  const { username, imageURL } = useSelector((state) => state.user);
+const Post: React.FC<PostProps> = ({
+  author,
+  image,
+  text,
+  date,
+  id,
+  likes,
+}) => {
+  const [close, setClose] = React.useState<boolean>(true);
+  const [descText, setDescText] = React.useState<string>("");
+  const [showAddComment, setShowAddComment] = React.useState<boolean>(false);
+  const [commentText, setCommentText] = React.useState<string>("");
+  const [limit, setLimit] = React.useState<number>(2);
+  const [isPostLiked, setIsPostLiked] = React.useState<boolean>(
+    likes.includes(id)
+  );
+  const [postAuthorName, setPostAuthorName] = React.useState(null);
+  const [postAuthorPhoto, setPostAuthorPhoto] = React.useState(null);
+  const { comments, isLoading } = useComments(id);
+
+  const createdDate = formatDistanceToNow(date) + " " + "ago";
+  const { username, imageURL } = useAppSelector((state) => state.user);
 
   React.useEffect(() => {
     (async () => {
       const docRef = doc(db, "users", author.id);
       const docSnap = await getDoc(docRef);
-      setPostAuthorPhoto(docSnap.data().photoURL);
-      setPostAuthorName(docSnap.data().username);
+      setPostAuthorPhoto(docSnap.data()!.photoURL);
+      setPostAuthorName(docSnap.data()!.username);
     })();
   }, []);
 
@@ -112,7 +133,7 @@ const Post = ({ author, image, text, date, id, likes }) => {
   }, [likes]);
 
   const onLike = async () => {
-    let docId = null;
+    let docId = "";
     const q = query(collection(db, "posts"), where("id", "==", id));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach(async (doc) => (docId = doc.id));
@@ -143,7 +164,7 @@ const Post = ({ author, image, text, date, id, likes }) => {
           comment: commentText,
           date: Date.now(),
         });
-      } catch (err) {
+      } catch (err: any) {
         alert(err.message);
         console.log(err);
       }
@@ -234,6 +255,7 @@ const Post = ({ author, image, text, date, id, likes }) => {
           justifyContent="center"
           display="flex"
         >
+          {/*@ts-ignore */}
           <Button
             startIcon={isPostLiked ? <ThumbUp /> : <ThumbUpOffAlt />}
             sx={{ color: "gray" }}
@@ -251,6 +273,7 @@ const Post = ({ author, image, text, date, id, likes }) => {
           justifyContent="center"
           display="flex"
         >
+          {/*@ts-ignore */}
           <Button
             startIcon={<Comment />}
             sx={{ color: "gray" }}
@@ -283,7 +306,8 @@ const Post = ({ author, image, text, date, id, likes }) => {
             />
           </AddComment>
           <Box width="100%" border=".1px solid rgba(220,220,220, .7)" />
-          <Comments comments={comments} limit={limit} />
+          {/*@ts-ignore */}
+          <Comments comments={comments!} limit={limit} />
           <Stack flexDirection="row" justifyContent="space-between">
             <ShowMoreButton
               fullWidth={false}

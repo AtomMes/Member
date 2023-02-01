@@ -1,13 +1,24 @@
+import React from "react";
+import { Link } from "react-router-dom";
 import {
   Box,
   Button,
   Stack,
-  styled,
   TextField,
   Typography,
+  styled,
 } from "@mui/material";
-import React from "react";
-import { Link } from "react-router-dom";
+
+interface Props {
+  title: string;
+  to: string;
+  reg?: boolean;
+  handleClick: (
+    email: string,
+    password: string,
+    username: string | null
+  ) => void;
+}
 
 const StyledStack = styled(Stack)(({ theme }) => ({
   display: "flex",
@@ -18,7 +29,7 @@ const StyledStack = styled(Stack)(({ theme }) => ({
   right: 0,
 }));
 
-const LoginAndRegister = ({ title, to, reg, handleClick }) => {
+const LoginAndRegister: React.FC<Props> = ({ title, to, reg, handleClick }) => {
   const [username, setUsername] = React.useState("");
   const [email, setEmail] = React.useState("atom@mail.ru");
   const [pass, setPass] = React.useState("created");
@@ -54,7 +65,7 @@ const LoginAndRegister = ({ title, to, reg, handleClick }) => {
       </Button>
       <Box display="flex">
         <Typography>
-          {reg ? "Already have an account? " : `don't have an account? `}{" "}
+          {reg ? "Already have an account? " : "don't have an account? "}
         </Typography>
         <Link style={{ textDecoration: "none", color: "black" }} to={to}>
           {reg ? "Login" : "Register"}

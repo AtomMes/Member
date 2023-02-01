@@ -2,7 +2,7 @@ import { Box, styled } from "@mui/material";
 import React from "react";
 import { WrapperBox } from "../App";
 
-const RightBar = () => {
+const RightBar:React.FC = () => {
   return (
     <div className="sticky">
       <WrapperBox>Other Users </WrapperBox>
