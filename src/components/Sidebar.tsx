@@ -80,6 +80,7 @@ const Sidebar: React.FC = () => {
         await setDoc(refer, {
           username: auth.currentUser.displayName,
           email: auth.currentUser.email,
+          id: auth.currentUser.uid,
           photoURL: auth.currentUser.photoURL,
         });
       }
@@ -88,8 +89,6 @@ const Sidebar: React.FC = () => {
       alert("Please fill all the fields.");
     }
   };
-
-  console.log(imageURL);
 
   return (
     <div className="sticky">
@@ -152,7 +151,7 @@ const Sidebar: React.FC = () => {
                 height={300}
                 onCrop={onCrop}
                 onClose={onClose}
-                src={photo}
+                src={undefined}
               />
             </Box>
             <Box display="flex" justifyContent="center">

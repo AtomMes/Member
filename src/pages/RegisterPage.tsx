@@ -26,10 +26,12 @@ const RegisterPage: React.FC = () => {
       const auth = getAuth();
       createUserWithEmailAndPassword(auth, email, password).then(
         async ({ user }) => {
-          const ref = doc(db, "users", user.uid);
-          await setDoc(ref, {
+          await setDoc(doc(db, "userChats", user.uid), {});
+
+          await setDoc(doc(db, "users", user.uid), {
             username,
             email,
+            id: user.uid,
           });
           if (auth.currentUser) {
             await updateProfile(auth.currentUser, { displayName: username });

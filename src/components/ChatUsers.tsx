@@ -1,16 +1,40 @@
-import { Divider, Stack } from "@mui/material";
-import React from "react";
+import { doc, onSnapshot } from "firebase/firestore";
+import React, { useState, useEffect } from "react";
+import { auth, db } from "../firebase";
 import ChatUser from "./ChatUser";
 
 const ChatUsers: React.FC = () => {
-  const users: number[] = [1, 3, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+  const [chats, setChats] = useState([]);
+
+  const currentUser = auth.currentUser;
+
+  useEffect(() => {
+    const getChats = () => {
+      const unsub = onSnapshot(
+        doc(db, "userChats", currentUser!.uid),
+        (doc: any) => {
+          setChats(doc.data());
+        }
+      );
+
+      return () => {
+        unsub();
+      };
+    };
+
+    currentUser!.uid && getChats();
+  }, [currentUser!.uid]);
+
+  console.log(chats);
 
   return (
-    <Stack gap="3px" divider={<Divider orientation="horizontal" flexItem />}>
-      {users.map((user: number) => (
-        <ChatUser key={user} />
-      ))}
-    </Stack>
+    <div>
+      {Object.entries(chats)
+        .sort((a: any, b: any) => b[1].date - a[1].date)
+        .map((chat: any) => (
+          <ChatUser chat={chat} />
+        ))}
+    </div>
   );
 };
 

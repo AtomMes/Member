@@ -2,6 +2,8 @@ import { Box, Grid, styled } from "@mui/material";
 import React from "react";
 import ChatRightSide from "./ChatRightSide";
 import ChatLeftSide from "./ChatLeftSide";
+import { auth } from "../firebase";
+import { useNavigate } from "react-router-dom";
 
 const WrapperBox = styled(Box)(({ theme }) => ({
   backgroundColor: "#ffffff",
@@ -10,6 +12,8 @@ const WrapperBox = styled(Box)(({ theme }) => ({
 }));
 
 const Chat: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <WrapperBox bgcolor="red" height="800px">
       <Grid container>

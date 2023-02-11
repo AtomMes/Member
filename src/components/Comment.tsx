@@ -33,7 +33,7 @@ const Comment: React.FC<CommentProps> = ({ com }) => {
         setPostAuthorName(docSnap.data()!.username);
       }
     })();
-  }, []);
+  }, [com.author.id]);
 
   return (
     <Stack flexDirection="row" gap="10px">

@@ -1,7 +1,8 @@
 import { Box, styled } from "@mui/material";
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import { auth } from "./firebase";
 import ChatPage from "./pages/ChatPage";
 import Home from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
@@ -26,10 +27,11 @@ const App: React.FC = () => {
       <Navbar />
       <Box width="100%" maxWidth="1100px" margin="0 auto">
         <Routes>
-          <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/" element={<Home />} />
           <Route path="/messaging" element={<ChatPage />} />
+          <Route path="/messaging/:id" element={<ChatPage />} />
         </Routes>
       </Box>
     </Box>

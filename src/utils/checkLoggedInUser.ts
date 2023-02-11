@@ -6,7 +6,6 @@ export const checkLoggedInUser = () => {
   const auth = getAuth();
   const unsubscribe = onAuthStateChanged(auth, (user) => {
     if (user) {
-      console.log(user);
       const userData = {
         username: user.displayName,
         imageURL: user.photoURL,
