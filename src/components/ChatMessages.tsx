@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Stack } from "@mui/material";
 import { onSnapshot, doc } from "firebase/firestore";
 import React from "react";
@@ -7,13 +6,19 @@ import { auth, db } from "../firebase";
 import { useAppSelector } from "../hooks/redux-hooks";
 import ChatMessage from "./ChatMessage";
 
+export interface Message {
+  senderId: string;
+  text: string;
+  img?: string;
+}
+
 const ChatMessages: React.FC = () => {
   const [messages, setMessages] = React.useState([]);
 
   const data = useAppSelector((state) => state.chat);
 
   React.useEffect(() => {
-    const unSub = onSnapshot(doc(db, "chats", data.chatId), (doc) => {
+    const unSub = onSnapshot(doc(db, "chats", data!.chatId), (doc: any) => {
       doc.exists() && setMessages(doc.data().messages);
     });
 
@@ -24,8 +29,8 @@ const ChatMessages: React.FC = () => {
 
   return (
     <Stack gap="15px">
-      {messages.map((message) => (
-        <ChatMessage message={message} key={message} />
+      {messages.map((message: Message, i: any) => (
+        <ChatMessage message={message} key={i} />
       ))}
     </Stack>
   );

@@ -4,6 +4,9 @@ import CurrentUserAvatar from "./CurrentUserAvatar";
 import { ChatType } from "./ChatLeftSide";
 import { setChat } from "../redux/chatSlice/slice";
 import { useAppDispatch } from "../hooks/redux-hooks";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
+import { formatDistanceToNow } from "date-fns";
 
 interface Props {
   chat: any;
@@ -12,7 +15,28 @@ interface Props {
 const ChatUser: React.FC<Props> = ({ chat }) => {
   const dispatch = useAppDispatch();
 
-  console.log(chat[1].userInfo.displayName);
+
+
+  // const createdDate =
+  //   chat[1].date && formatDistanceToNow(chat[1].date) + " " + "ago";
+
+  const [postAuthorPhoto, setPostAuthorPhoto] = React.useState<string | null>(
+    ""
+  );
+  const [postAuthorName, setPostAuthorName] = React.useState<string | null>(
+    null
+  );
+
+  React.useEffect(() => {
+    (async () => {
+      const docRef = doc(db, "users", chat[1].userInfo.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.data()) {
+        setPostAuthorPhoto(docSnap.data()!.photoURL);
+        setPostAuthorName(docSnap.data()!.username);
+      }
+    })();
+  }, [chat[1].userInfo.uid]);
 
   return (
     <Stack
@@ -23,19 +47,16 @@ const ChatUser: React.FC<Props> = ({ chat }) => {
       sx={{ boxSizing: "border-box" }}
       onClick={() => dispatch(setChat(chat[1].userInfo))}
     >
-      <CurrentUserAvatar
-        username={chat[1].userInfo.displayName}
-        photoURL={chat[1].userInfo.photoURL}
-      />
+      <CurrentUserAvatar username={postAuthorName} photoURL={postAuthorPhoto} />
       <Stack width="100%">
         <Stack
           flexDirection="row"
           justifyContent="space-between"
           alignItems="center"
         >
-          <Typography>{chat[1].userInfo.displayName}</Typography>
+          <Typography>{postAuthorName}</Typography>
           <Typography fontSize="14px" sx={{ whiteSpace: "nowrap" }}>
-            Jan 26
+            erbeq
           </Typography>
         </Stack>
         <Typography color="gray" fontSize="14px">

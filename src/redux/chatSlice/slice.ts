@@ -1,29 +1,38 @@
-//@ts-nocheck
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { auth } from "../../firebase";
 
+export interface User {
+  displayName: string | null;
+  photoURL: string | null;
+  uid: string | null;
+}
+
 export interface InitialStateType {
-  chatId: null | string;
-  user: any;
+  chatId: string;
+  user: User;
 }
 
 const initialState = {
-  chatId: null,
-  user: {},
+  chatId: "",
+  user: {
+    displayName: null,
+    photoURL: null,
+    uid: null,
+  },
 };
 
 const chatSlice = createSlice({
   name: "chat",
   initialState,
   reducers: {
-    setChat(state: InitialStateType, action: PayloadAction<InitialStateType>) {
+    setChat(state, action) {
       state.user = action.payload;
       state.chatId =
         auth.currentUser!.uid > action.payload.uid
           ? auth.currentUser!.uid + action.payload.uid
           : action.payload.uid + auth.currentUser!.uid;
 
-      console.log(state.user  );
+      console.log(state.user);
     },
   },
 });

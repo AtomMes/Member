@@ -37,6 +37,8 @@ import {
 import { useDispatch } from "react-redux";
 import { removeUser } from "../redux/userSlice/slice";
 import { Link, useNavigate } from "react-router-dom";
+import CurrentUserAvatar from "./CurrentUserAvatar";
+import { auth } from "../firebase";
 
 const StyledTab = styled(Tab)(({ theme }) => ({
   maxWidth: "none",
@@ -95,6 +97,10 @@ const Navbar: React.FC = () => {
     setValue(newValue);
   };
 
+  if (!auth.currentUser) {
+    return <></>;
+  }
+
   return (
     <AppBar
       position="static"
@@ -152,12 +158,16 @@ const Navbar: React.FC = () => {
               aria-controls={open ? "resources-menu" : undefined} //aria controlsov karavarum enq resources-menu i exeliutyuny
               aria-haspopup="true" //popup uni te che? asum enq ha
               aria-expanded={open ? "true" : undefined} //asumenq razvernuta te che, openi heta kaxvac de parza
-              //! endIcon={<KeyboardArrowDownIcon />} //errora talis chgitem xi
               overlap="circular"
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
               variant="dot"
             >
-              <AccountCircleRounded sx={{ fontSize: "40px" }} />{" "}
+              <CurrentUserAvatar
+                username={auth.currentUser!.displayName}
+                photoURL={
+                  auth.currentUser?.photoURL ? auth.currentUser.photoURL : null
+                }
+              />{" "}
             </StyledBadge>
           </Stack>
           <Menu

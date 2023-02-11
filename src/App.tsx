@@ -7,6 +7,7 @@ import ChatPage from "./pages/ChatPage";
 import Home from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import UserProfilePage from "./pages/UserProfilePage";
 import { checkLoggedInUser } from "./utils/checkLoggedInUser";
 
 export const WrapperBox = styled(Box)(({ theme }) => ({
@@ -24,7 +25,7 @@ const App: React.FC = () => {
 
   return (
     <Box>
-      <Navbar />
+        <Navbar />  
       <Box width="100%" maxWidth="1100px" margin="0 auto">
         <Routes>
           <Route path="/login" element={<LoginPage />} />
@@ -32,6 +33,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Home />} />
           <Route path="/messaging" element={<ChatPage />} />
           <Route path="/messaging/:id" element={<ChatPage />} />
+          <Route path="/profile" element={<UserProfilePage />} />
         </Routes>
       </Box>
     </Box>

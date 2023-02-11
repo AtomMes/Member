@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { uuidv4 } from "@firebase/util";
 import { Image, Send } from "@mui/icons-material";
 import {
@@ -8,6 +7,7 @@ import {
   TextField,
   Button,
   Typography,
+  tabClasses,
 } from "@mui/material";
 import {
   arrayUnion,
@@ -16,6 +16,7 @@ import {
   Timestamp,
   updateDoc,
 } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import React from "react";
 import { auth, db, storage } from "../firebase";
 import { useAppSelector } from "../hooks/redux-hooks";
@@ -25,65 +26,79 @@ const SendMessageInput = () => {
   const [chosenImage, setChosenImage] = React.useState<string>("");
   const [img, setImg] = React.useState<null | File>(null);
 
+  console.log(img);
+  console.log(chosenImage);
+
   const currentUser = auth.currentUser;
 
-  console.log("currentUser", currentUser);
   const data = useAppSelector((state) => state.chat);
-
-  console.log("data", data);
 
   const handleSend = async () => {
     if (img) {
-      const storageRef = ref(storage, uuid());
+      const storageRef = ref(storage, uuidv4());
 
       const uploadTask = uploadBytesResumable(storageRef, img);
 
+      console.log("hasav", storageRef, uploadTask);
+
+      setText("");
+      setImg(null);
+      setChosenImage("");
+
       uploadTask.on(
-        (error) => {
+        //@ts-ignore
+        (error: any) => {
           console.log(error);
-          alert(error.message);
         },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-            await updateDoc(doc(db, "chats", data.chatId), {
-              messages: arrayUnion({
-                id: uuidv4(),
-                text,
-                senderId: currentUser.uid,
-                date: Timestamp.now(),
-                img: downloadURL,
-              }),
-            });
-          });
+        async () => {
+          await getDownloadURL(uploadTask.snapshot.ref).then(
+            async (downloadURL) => {
+              console.log("ste hasanq");
+              try {
+                await updateDoc(doc(db, "chats", data.chatId), {
+                  messages: arrayUnion({
+                    id: uuidv4(),
+                    text,
+                    senderId: currentUser!.uid,
+                    date: Timestamp.now(),
+                    img: downloadURL,
+                  }),
+                });
+                console.log("normaler");
+              } catch (error: any) {
+                console.log(error);
+                alert(error.message);
+              }
+              console.log("update arav");
+            }
+          );
         }
       );
     } else {
+      setText("");
       await updateDoc(doc(db, "chats", data.chatId), {
         messages: arrayUnion({
           id: uuidv4(),
           text,
-          senderId: currentUser.uid,
+          senderId: currentUser!.uid,
           date: Timestamp.now(),
         }),
       });
     }
 
-    await updateDoc(doc(db, "userChats", currentUser.uid), {
+    await updateDoc(doc(db, "userChats", currentUser!.uid), {
       [data.chatId + ".lastMessage"]: {
         text,
       },
-      [data.chatId + ".date"]: serverTimestamp(),
+      [data.chatId + ".date"]: Date.now(),
     });
 
-    await updateDoc(doc(db, "userChats", data.user.uid), {
+    await updateDoc(doc(db, "userChats", data.user.uid!), {
       [data.chatId + ".lastMessage"]: {
         text,
       },
-      [data.chatId + ".date"]: serverTimestamp(),
+      [data.chatId + ".date"]: Date.now(),
     });
-
-    setText("");
-    setImg(null);
   };
 
   return (

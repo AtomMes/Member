@@ -54,7 +54,6 @@ const ChatLeftSide: React.FC = () => {
     try {
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
-        //@ts-ignore
         setUser(doc.data());
       });
     } catch (err) {
@@ -83,8 +82,6 @@ const ChatLeftSide: React.FC = () => {
         await updateDoc(doc(db, "userChats", currentUser!.uid), {
           [combinedId + ".userInfo"]: {
             uid: user.id,
-            displayName: user.username,
-            photoURL: user.photoURL,
           },
           [combinedId + ".date"]: serverTimestamp(),
         });
@@ -92,8 +89,6 @@ const ChatLeftSide: React.FC = () => {
         await updateDoc(doc(db, "userChats", user.id), {
           [combinedId + ".userInfo"]: {
             uid: currentUser!.uid,
-            displayName: currentUser!.displayName,
-            photoURL: currentUser!.photoURL,
           },
           [combinedId + ".date"]: serverTimestamp(),
         });
