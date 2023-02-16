@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import { auth } from "./firebase";
 import ChatPage from "./pages/ChatPage";
+import ContactsPage from "./pages/ContactsPage";
 import Home from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -25,15 +26,16 @@ const App: React.FC = () => {
 
   return (
     <Box>
-        <Navbar />  
+      <Navbar />
       <Box width="100%" maxWidth="1100px" margin="0 auto">
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/" element={<Home />} />
           <Route path="/messaging" element={<ChatPage />} />
-          <Route path="/messaging/:id" element={<ChatPage />} />
           <Route path="/profile" element={<UserProfilePage />} />
+          <Route path="/profile/:id" element={<UserProfilePage />} />
+          <Route path="/contacts" element={<ContactsPage />} />
         </Routes>
       </Box>
     </Box>

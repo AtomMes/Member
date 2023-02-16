@@ -10,6 +10,7 @@ export interface Message {
   senderId: string;
   text: string;
   img?: string;
+  date: Date;
 }
 
 const ChatMessages: React.FC = () => {

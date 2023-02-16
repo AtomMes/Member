@@ -2,45 +2,32 @@ import { Avatar, Box, Stack, Typography, styled } from "@mui/material";
 import { formatDistanceToNow } from "date-fns";
 import { doc, getDoc } from "firebase/firestore";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
+import { getUserData } from "../hooks/getUserData";
 import CurrentUserAvatar from "./CurrentUserAvatar";
 
 interface CommentProps {
   com: {
-    author: {
-      id: string;
-      name: string;
-    };
+    authorId: string;
     comment: string;
     date: Date;
   };
 }
 
 const Comment: React.FC<CommentProps> = ({ com }) => {
-  const [postAuthorPhoto, setPostAuthorPhoto] = React.useState<string | null>(
-    ""
-  );
-  const [postAuthorName, setPostAuthorName] = React.useState<string | null>(
-    null
-  );
+  const navigate = useNavigate();
 
-  React.useEffect(() => {
-    (async () => {
-      const docRef = doc(db, "users", com.author.id);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.data()) {
-        setPostAuthorPhoto(docSnap.data()!.photoURL);
-        setPostAuthorName(docSnap.data()!.username);
-      }
-    })();
-  }, [com.author.id]);
+  const { userData, loading } = getUserData(com.authorId);
+  if(!userData) return  <>Loading...</>
 
   return (
     <Stack flexDirection="row" gap="10px">
-      <Box>
+      <Box onClick={() => navigate(`/profile/${com.authorId}`)}>
         <CurrentUserAvatar
-          username={postAuthorName}
-          photoURL={postAuthorPhoto}
+          username={userData.username}
+          photoURL={userData.photoURL}
+          id={userData.id}
         />
       </Box>
       <Stack
@@ -51,7 +38,7 @@ const Comment: React.FC<CommentProps> = ({ com }) => {
         width="100%"
       >
         <Stack flexDirection="row" justifyContent="space-between">
-          <Typography>{com.author.name}</Typography>
+          <Typography>{userData!.username}</Typography>
           <Typography fontSize="14px" color="gray">
             {" "}
             {(formatDistanceToNow(com.date) + " " + "ago").replace("about", "")}

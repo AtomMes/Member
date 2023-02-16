@@ -33,7 +33,7 @@ import {
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { WrapperBox } from "../App";
 import { auth, db } from "../firebase";
 import Comments from "./Comments";
@@ -42,6 +42,7 @@ import CurrentUserAvatar from "./CurrentUserAvatar";
 import { useComments } from "../hooks/comments";
 import { useSelector } from "react-redux";
 import { useAppSelector } from "../hooks/redux-hooks";
+import { getUserData } from "../hooks/getUserData";
 
 const UserData = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -67,7 +68,7 @@ const AddComment = styled(Box)(({ theme }) => ({
   gap: "5px",
   marginTop: "8px",
 }));
-const AddCommentInput = styled(TextField)(({ theme }) => ({
+export const AddCommentInput = styled(TextField)(({ theme }) => ({
   [`& fieldset`]: {
     borderRadius: 100,
   },
@@ -86,9 +87,7 @@ const ShowMoreButton = styled(Button)(({ theme }) => ({
 }));
 
 interface PostProps {
-  author: {
-    id: string;
-  };
+  authorId: string;
   date: Date;
   id: string;
   image: string;
@@ -97,7 +96,7 @@ interface PostProps {
 }
 
 const Post: React.FC<PostProps> = ({
-  author,
+  authorId,
   image,
   text,
   date,
@@ -110,26 +109,18 @@ const Post: React.FC<PostProps> = ({
   const [commentText, setCommentText] = React.useState<string>("");
   const [limit, setLimit] = React.useState<number>(2);
   const [isPostLiked, setIsPostLiked] = React.useState<boolean>(
-    likes.includes(id)
+    likes.includes(auth.currentUser!.uid)
   );
-  const [postAuthorName, setPostAuthorName] = React.useState(null);
-  const [postAuthorPhoto, setPostAuthorPhoto] = React.useState(null);
-  const { comments, isLoading } = useComments(id);
 
   const createdDate = formatDistanceToNow(date) + " " + "ago";
   const { username, imageURL } = useAppSelector((state) => state.user);
 
-  React.useEffect(() => {
-    (async () => {
-      const docRef = doc(db, "users", author.id);
-      const docSnap = await getDoc(docRef);
-      setPostAuthorPhoto(docSnap.data()!.photoURL);
-      setPostAuthorName(docSnap.data()!.username);
-    })();
-  }, []);
+  const { userData, loading } = getUserData(authorId);
+
+  const { comments, isLoading } = useComments(id);
 
   React.useEffect(() => {
-    setIsPostLiked(likes.includes(id));
+    setIsPostLiked(likes.includes(auth.currentUser!.uid));
   }, [likes]);
 
   const onLike = async () => {
@@ -140,7 +131,9 @@ const Post: React.FC<PostProps> = ({
     const postRef = doc(db, "posts", docId);
 
     updateDoc(postRef, {
-      likes: isPostLiked ? arrayRemove(id) : arrayUnion(id),
+      likes: isPostLiked
+        ? arrayRemove(auth.currentUser!.uid)
+        : arrayUnion(auth.currentUser!.uid),
     }).catch((err) => alert(err.message));
   };
 
@@ -157,10 +150,7 @@ const Post: React.FC<PostProps> = ({
         await addDoc(commentsCollectionRef, {
           postId: id,
           commentId: uuidv4(),
-          author: {
-            name: auth.currentUser?.displayName,
-            id: auth.currentUser?.uid,
-          },
+          authorId: auth.currentUser?.uid,
           comment: commentText,
           date: Date.now(),
         });
@@ -173,14 +163,23 @@ const Post: React.FC<PostProps> = ({
     }
   };
 
+  const navigate = useNavigate();
+
+  if (!userData) {
+    return <>Loading....</>;
+  }
+
   return (
     <WrapperBox>
       <UserData>
-        <CurrentUserAvatar
-          username={postAuthorName}
-          photoURL={postAuthorPhoto}
-        />
-        <Typography>{postAuthorName}</Typography>
+        <Box onClick={() => navigate(`/profile/${authorId}`)}>
+          <CurrentUserAvatar
+            username={userData.username}
+            photoURL={userData.photoURL}
+            id={userData.id}
+          />
+        </Box>
+        <Typography>{userData!.username}</Typography>
         <Typography fontSize="14px" color="gray">
           {createdDate.replace("about", "")}
         </Typography>
@@ -192,8 +191,9 @@ const Post: React.FC<PostProps> = ({
             position: "absolute",
             objectFit: "cover",
             maxWidth: "100%",
-            transform: "scale(1.5)",
-            filter: "blur(5px) brightness(40%)",
+            left: "120px",
+            transform: "scale(2)",
+            filter: "blur(5px) brightness(80%)",
           }}
         />
         <img
@@ -201,6 +201,8 @@ const Post: React.FC<PostProps> = ({
           style={{
             maxWidth: "100%",
             maxHeight: "600px",
+            minHeight: "300px",
+            // height: "100%",
             margin: "0 auto",
             zIndex: "10",
           }}
@@ -255,13 +257,10 @@ const Post: React.FC<PostProps> = ({
           justifyContent="center"
           display="flex"
         >
-          {/*@ts-ignore */}
           <Button
             startIcon={isPostLiked ? <ThumbUp /> : <ThumbUpOffAlt />}
-            sx={{ color: "gray" }}
-            width="100%"
-            textAlign="center"
             onClick={() => onLike()}
+            sx={{ color: "gray", width: "100%", textAlign: "center" }}
           >
             Like
           </Button>
@@ -273,12 +272,9 @@ const Post: React.FC<PostProps> = ({
           justifyContent="center"
           display="flex"
         >
-          {/*@ts-ignore */}
           <Button
             startIcon={<Comment />}
-            sx={{ color: "gray" }}
-            width="100%"
-            textAlign="center"
+            sx={{ color: "gray", width: "100%", textAlign: "center" }}
             onClick={() => setShowAddComment(!showAddComment)}
           >
             Comments
@@ -288,7 +284,11 @@ const Post: React.FC<PostProps> = ({
       {showAddComment && (
         <Stack gap="20px">
           <AddComment>
-            <CurrentUserAvatar username={username} photoURL={imageURL} />
+            <CurrentUserAvatar
+              username={username}
+              photoURL={imageURL}
+              id={auth.currentUser!.uid}
+            />
             <AddCommentInput
               size="small"
               placeholder="Add a comment..."

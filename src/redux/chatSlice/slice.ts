@@ -31,8 +31,6 @@ const chatSlice = createSlice({
         auth.currentUser!.uid > action.payload.uid
           ? auth.currentUser!.uid + action.payload.uid
           : action.payload.uid + auth.currentUser!.uid;
-
-      console.log(state.user);
     },
   },
 });

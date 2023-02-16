@@ -1,8 +1,9 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import LoginAndRegister from "../components/LoginAndRegister";
+import { auth } from "../firebase";
 import { setUser } from "../redux/userSlice/slice";
 
 const LoginPage: React.FC = () => {

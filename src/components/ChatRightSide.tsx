@@ -1,23 +1,6 @@
-import { uuidv4 } from "@firebase/util";
 import { Image, Send } from "@mui/icons-material";
-import { Textarea } from "@mui/joy";
-import {
-  Avatar,
-  Box,
-  Button,
-  IconButton,
-  InputAdornment,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import {
-  arrayUnion,
-  doc,
-  serverTimestamp,
-  Timestamp,
-  updateDoc,
-} from "firebase/firestore";
+import { uuidv4 } from "@firebase/util";
+import { Box, Stack, Typography } from "@mui/material";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import React from "react";
 import { useParams } from "react-router-dom";

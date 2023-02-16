@@ -14,7 +14,7 @@ import {
   uploadString,
 } from "firebase/storage";
 import { getAuth, updateProfile } from "firebase/auth";
-import { collection, doc, setDoc } from "firebase/firestore";
+import { collection, doc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { v4 as uuidv4 } from "uuid";
 import { useAppSelector } from "../hooks/redux-hooks";
@@ -43,7 +43,7 @@ const ProfileBox = styled(Box)(({ theme }) => ({
 const Sidebar: React.FC = () => {
   const [open, setOpen] = React.useState<boolean>(false);
 
-  const { username, imageURL } = useAppSelector((state) => state.user);
+  const { username, id } = useAppSelector((state) => state.user);
 
   const auth = getAuth();
 
@@ -58,33 +58,28 @@ const Sidebar: React.FC = () => {
     setPhoto(pv);
   }
 
-  const refresh = () => {
-    window.location.reload();
-  };
-
   const addUserPhoto = async () => {
     if (photo) {
       setOpen(false);
-      setPhoto(undefined);
       const storage = getStorage();
       if (user) {
         const fileRef = ref(storage, "userAvatars/" + user.uid + ".png");
-        if (photo) {
+        try {
           await uploadString(fileRef, photo, "data_url");
+          const photoURL = await getDownloadURL(fileRef);
+          await updateProfile(user, {
+            photoURL: photoURL,
+          });
+          const refer = doc(db, "users", auth.currentUser.uid);
+          await updateDoc(refer, {
+            photoURL: auth.currentUser.photoURL,
+          });
+        } catch (error) {
+          console.log(error);
         }
-        const photoURL = await getDownloadURL(fileRef);
-        await updateProfile(user, {
-          photoURL: photoURL,
-        });
-        const refer = doc(db, "users", auth.currentUser.uid);
-        await setDoc(refer, {
-          username: auth.currentUser.displayName,
-          email: auth.currentUser.email,
-          id: auth.currentUser.uid,
-          photoURL: auth.currentUser.photoURL,
-        });
       }
-      refresh();
+      setPhoto(undefined);
+      // refresh();
     } else {
       alert("Please fill all the fields.");
     }
@@ -98,12 +93,13 @@ const Sidebar: React.FC = () => {
             size="70px"
             mb="15px"
             username={username}
-            photoURL={imageURL && imageURL}
+            photoURL={auth.currentUser!.photoURL && auth.currentUser!.photoURL}
+            id={id!}
           />
           <Typography>{username}</Typography>
 
           <Typography onClick={() => setOpen(!open)}>
-            {imageURL ? "Change Photo" : "Add a photo"}
+            {auth.currentUser!.photoURL ? "Change Photo" : "Add a photo"}
           </Typography>
         </ProfileBox>
         <Box padding="15px">

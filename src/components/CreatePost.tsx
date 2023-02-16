@@ -58,7 +58,7 @@ const CreatePostButton = styled(Button)(({ theme }) => ({
 }));
 
 const CreatePost: React.FC = () => {
-  const { username, imageURL } = useAppSelector((state) => state.user);
+  const { username, id } = useAppSelector((state) => state.user);
 
   const [loading, setLoading] = React.useState<boolean>(false);
   const [open, setOpen] = React.useState<boolean>(false);
@@ -96,9 +96,7 @@ const CreatePost: React.FC = () => {
 
               await addDoc(postCollectionRef, {
                 id: uuidv4(),
-                author: {
-                  id: auth.currentUser?.uid,
-                },
+                authorId: auth.currentUser?.uid,
                 text,
                 image: imageURL,
                 date: Date.now(),
@@ -128,7 +126,8 @@ const CreatePost: React.FC = () => {
       <Stack flexDirection="row" gap={1}>
         <CurrentUserAvatar
           username={username}
-          photoURL={imageURL && imageURL}
+          photoURL={auth.currentUser!.photoURL && auth.currentUser!.photoURL}
+          id={id!}
         />
         <CreatePostButton variant={"outlined"} onClick={() => setOpen(true)}>
           Start a post

@@ -9,13 +9,7 @@ import {
   Typography,
   tabClasses,
 } from "@mui/material";
-import {
-  arrayUnion,
-  doc,
-  serverTimestamp,
-  Timestamp,
-  updateDoc,
-} from "firebase/firestore";
+import { arrayUnion, doc, Timestamp, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import React from "react";
 import { auth, db, storage } from "../firebase";
@@ -25,9 +19,6 @@ const SendMessageInput = () => {
   const [text, setText] = React.useState<string>("");
   const [chosenImage, setChosenImage] = React.useState<string>("");
   const [img, setImg] = React.useState<null | File>(null);
-
-  console.log(img);
-  console.log(chosenImage);
 
   const currentUser = auth.currentUser;
 
@@ -81,7 +72,7 @@ const SendMessageInput = () => {
           id: uuidv4(),
           text,
           senderId: currentUser!.uid,
-          date: Timestamp.now(),
+          date: Date.now(),
         }),
       });
     }

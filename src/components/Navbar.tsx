@@ -15,14 +15,14 @@ import {
   InputAdornment,
   ListItemIcon,
   Divider,
+  Tabs,
 } from "@mui/material";
 import { Tab } from "@mui/material";
-import { TabContext, TabList } from "@mui/lab";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-
+import { useAuth } from "../hooks/useAuth";
 import CatchingPokemonIcon from "@mui/icons-material/CatchingPokemon";
 import HomeIcon from "@mui/icons-material/Home";
-import { Stack } from "@mui/system";
+import { Stack } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import {
   AccountCircle,
@@ -40,7 +40,7 @@ import { Link, useNavigate } from "react-router-dom";
 import CurrentUserAvatar from "./CurrentUserAvatar";
 import { auth } from "../firebase";
 
-const StyledTab = styled(Tab)(({ theme }) => ({
+export const StyledTab = styled(Tab)(({ theme }) => ({
   maxWidth: "none",
   minWidth: "none",
   minHeight: "none",
@@ -97,9 +97,7 @@ const Navbar: React.FC = () => {
     setValue(newValue);
   };
 
-  if (!auth.currentUser) {
-    return <></>;
-  }
+  const { isAuth } = useAuth();
 
   return (
     <AppBar
@@ -124,52 +122,52 @@ const Navbar: React.FC = () => {
               <CatchingPokemonIcon />
             </IconButton>
           </Stack>
-          <Stack direction="row" spacing={2} alignItems="center">
-            <TabContext value={value}>
-              <TabList
-                aria-label="Tabs example"
-                onChange={handleChange}
-                textColor="primary"
-                indicatorColor="primary" //taki toxi colorna
-                centered
-              >
+
+          {isAuth && (
+            <Stack direction="row" spacing={2} alignItems="center">
+              <Tabs value={value} onChange={handleChange}>
                 <StyledTab
+                  value="1"
                   onClick={() => navigate("/")}
                   icon={<HomeIcon sx={{ fontSize: "30px" }} />}
                   label="Home"
                 />
-
                 <StyledTab
-                  onClick={() => navigate("/")}
+                  value="2"
+                  onClick={() => navigate("/contacts")}
                   icon={<Group sx={{ fontSize: "30px" }} />}
                   label="Contacts"
                 />
-
                 <StyledTab
+                  value="3"
                   onClick={() => navigate("/messaging")}
                   icon={<Message sx={{ fontSize: "30px" }} />}
                   label="Chats"
                 />
-              </TabList>
-            </TabContext>
-            <StyledBadge
-              id="resources-button" //id enq tali karavarelu hamar
-              onClick={handleClick}
-              aria-controls={open ? "resources-menu" : undefined} //aria controlsov karavarum enq resources-menu i exeliutyuny
-              aria-haspopup="true" //popup uni te che? asum enq ha
-              aria-expanded={open ? "true" : undefined} //asumenq razvernuta te che, openi heta kaxvac de parza
-              overlap="circular"
-              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-              variant="dot"
-            >
-              <CurrentUserAvatar
-                username={auth.currentUser!.displayName}
-                photoURL={
-                  auth.currentUser?.photoURL ? auth.currentUser.photoURL : null
-                }
-              />{" "}
-            </StyledBadge>
-          </Stack>
+              </Tabs>
+              <StyledBadge
+                id="resources-button" //id enq tali karavarelu hamar
+                onClick={handleClick}
+                aria-controls={open ? "resources-menu" : undefined} //aria controlsov karavarum enq resources-menu i exeliutyuny
+                aria-haspopup="true" //popup uni te che? asum enq ha
+                aria-expanded={open ? "true" : undefined} //asumenq razvernuta te che, openi heta kaxvac de parza
+                overlap="circular"
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                variant="dot"
+              >
+                <CurrentUserAvatar
+                  username={auth.currentUser!.displayName}
+                  photoURL={
+                    auth.currentUser?.photoURL
+                      ? auth.currentUser.photoURL
+                      : null
+                  }
+                  id={auth.currentUser!.uid}
+                  disableNav
+                />{" "}
+              </StyledBadge>
+            </Stack>
+          )}
           <Menu
             anchorEl={anchorEl!}
             id="account-menu"
@@ -205,11 +203,12 @@ const Navbar: React.FC = () => {
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            <MenuItem onClick={handleClose}>
+            <MenuItem
+              onClick={() => {
+                handleClose(), navigate(`/profile/${auth.currentUser!.uid}`);
+              }}
+            >
               <Avatar /> Profile
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-              <Avatar /> My account
             </MenuItem>
             <Divider />
             <MenuItem onClick={handleClose}>
@@ -218,7 +217,12 @@ const Navbar: React.FC = () => {
               </ListItemIcon>
               Settings
             </MenuItem>
-            <MenuItem onClick={() => dispatch(removeUser())}>
+            <MenuItem
+              onClick={() => {
+                navigate("/login");
+                dispatch(removeUser());
+              }}
+            >
               <ListItemIcon>
                 <Logout fontSize="small" />
               </ListItemIcon>

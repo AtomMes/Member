@@ -10,12 +10,10 @@ import {
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { usePosts } from "../hooks/posts";
+import { usePosts } from "../hooks/usePosts";
 import Post from "./Post";
 
 const Posts: React.FC = () => {
-  const dispatch = useDispatch();
-
   const { posts, isLoading } = usePosts();
 
   if (isLoading) return <>Loading...</>;
@@ -28,7 +26,7 @@ const Posts: React.FC = () => {
     <Box display="flex" flexDirection="column" gap="10px">
       {posts.map((post) => (
         <Post
-          author={post.author}
+          authorId={post.authorId}
           image={post.image}
           text={post.text}
           date={post.date}

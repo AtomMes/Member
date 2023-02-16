@@ -1,7 +1,10 @@
 import { Stack, Box, Avatar, Typography } from "@mui/material";
+import { formatDistanceToNow } from "date-fns";
 import { doc, getDoc } from "firebase/firestore";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
+import { getUserData } from "../hooks/getUserData";
 import { useAppSelector } from "../hooks/redux-hooks";
 import { Message } from "./ChatMessages";
 import CurrentUserAvatar from "./CurrentUserAvatar";
@@ -10,23 +13,9 @@ interface Props {
   message: Message;
 }
 const ChatMessage: React.FC<Props> = ({ message }) => {
-  const [userImage, setUserImage] = React.useState<string>("");
-  const [userName, setUserName] = React.useState<string>("");
-
-  React.useEffect(() => {
-    (async () => {
-      const docRef = doc(db, "users", message.senderId);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.data()) {
-        setUserImage(docSnap.data()!.photoURL);
-        setUserName(docSnap.data()!.username);
-      }
-    })();
-  }, [message.senderId]);
+  const { userData, loading } = getUserData(message.senderId);
 
   const data: any = useAppSelector((state) => state.chat);
-
- 
 
   const ref = React.useRef<HTMLElement>(null);
 
@@ -36,22 +25,33 @@ const ChatMessage: React.FC<Props> = ({ message }) => {
     }
   }, [message]);
 
+  const createdDate = formatDistanceToNow(message.date) + " " + "ago";
+
+  const navigate = useNavigate();
+
+  if (!userData) return <>Loading...</>;
+
   return (
     <Stack ref={ref} flexDirection="row" gap="10px">
-      <Box>
-        <CurrentUserAvatar username={userName} photoURL={userImage} />
+      <Box onClick={() => navigate(`/profile/${message.senderId}`)}>
+        <CurrentUserAvatar
+          username={userData.username}
+          photoURL={userData.photoURL}
+          id={userData.id}
+        />
       </Box>
       <Stack
         gap="8px"
         bgcolor="#f3f2ef"
         padding="8px"
+        minWidth="250px"
         borderRadius="10px"
         width="fit-content"
       >
         <Stack flexDirection="row" justifyContent="space-between">
-          <Typography>{userName}</Typography>
+          <Typography>{userData.username}</Typography>
           <Typography fontSize="14px" color="gray">
-            10 minutes ago
+            {createdDate}
           </Typography>
         </Stack>
         {message.img && (

@@ -19,7 +19,6 @@ import {
   doc,
   setDoc,
   updateDoc,
-  serverTimestamp,
   onSnapshot,
 } from "firebase/firestore";
 import React, { useState } from "react";
@@ -83,14 +82,14 @@ const ChatLeftSide: React.FC = () => {
           [combinedId + ".userInfo"]: {
             uid: user.id,
           },
-          [combinedId + ".date"]: serverTimestamp(),
+          [combinedId + ".date"]: Date.now(),
         });
 
         await updateDoc(doc(db, "userChats", user.id), {
           [combinedId + ".userInfo"]: {
             uid: currentUser!.uid,
           },
-          [combinedId + ".date"]: serverTimestamp(),
+          [combinedId + ".date"]: Date.now(),
         });
       }
     } catch (err) {}

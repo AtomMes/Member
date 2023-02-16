@@ -32,6 +32,8 @@ const RegisterPage: React.FC = () => {
             username,
             email,
             id: user.uid,
+            requests: [],
+            contacts: [],
           });
           if (auth.currentUser) {
             await updateProfile(auth.currentUser, { displayName: username });

@@ -8,10 +8,7 @@ const CommentsSection = styled(Stack)(({ theme }) => ({
 
 interface Props {
   comments: Array<{
-    author: {
-      id: string;
-      name: string;
-    };
+    authorId: string;
     comment: string;
     date: Date;
   }> | null;

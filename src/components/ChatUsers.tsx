@@ -12,7 +12,7 @@ const ChatUsers: React.FC = () => {
     const getChats = () => {
       const unsub = onSnapshot(
         doc(db, "userChats", currentUser!.uid),
-        (doc: any) => {
+        (doc: any) => { 
           setChats(doc.data());
         }
       );
@@ -24,8 +24,6 @@ const ChatUsers: React.FC = () => {
 
     currentUser!.uid && getChats();
   }, [currentUser!.uid]);
-
-  console.log(chats);
 
   return (
     <div>
