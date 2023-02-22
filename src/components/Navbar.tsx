@@ -36,9 +36,10 @@ import {
 } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { removeUser } from "../redux/userSlice/slice";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import CurrentUserAvatar from "./CurrentUserAvatar";
 import { auth } from "../firebase";
+import { getUserData } from "../hooks/getUserData";
 
 export const StyledTab = styled(Tab)(({ theme }) => ({
   maxWidth: "none",
@@ -77,7 +78,19 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-const Navbar: React.FC = () => {
+interface Props {
+  loggedIn?: boolean;
+}
+
+const Navbar: React.FC<Props> = ({ loggedIn }) => {
+  const { pathname } = useLocation();
+
+  const location =
+    (pathname.includes("/profile") && "0") ||
+    (pathname.includes("/messaging") && "3") ||
+    (pathname.includes("/contacts") && "2") ||
+    (pathname.includes("/") && "1");
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
@@ -91,13 +104,19 @@ const Navbar: React.FC = () => {
     setAnchorEl(null);
   };
 
-  const [value, setValue] = React.useState("1");
+  const [value, setValue] = React.useState(location);
 
   const handleChange = (e: any, newValue: string) => {
     setValue(newValue);
   };
 
-  const { isAuth } = useAuth();
+  React.useEffect(() => {
+    setValue(location);
+  }, [location]);
+
+  const { userData } = getUserData(auth.currentUser?.uid);
+
+  if (!userData) return <>Loading</>;
 
   return (
     <AppBar
@@ -123,7 +142,7 @@ const Navbar: React.FC = () => {
             </IconButton>
           </Stack>
 
-          {isAuth && (
+          {loggedIn && (
             <Stack direction="row" spacing={2} alignItems="center">
               <Tabs value={value} onChange={handleChange}>
                 <StyledTab
@@ -156,13 +175,9 @@ const Navbar: React.FC = () => {
                 variant="dot"
               >
                 <CurrentUserAvatar
-                  username={auth.currentUser!.displayName}
-                  photoURL={
-                    auth.currentUser?.photoURL
-                      ? auth.currentUser.photoURL
-                      : null
-                  }
-                  id={auth.currentUser!.uid}
+                  username={userData.username}
+                  photoURL={userData.photoURL}
+                  id={userData.id}
                   disableNav
                 />{" "}
               </StyledBadge>
@@ -205,22 +220,25 @@ const Navbar: React.FC = () => {
           >
             <MenuItem
               onClick={() => {
-                handleClose(), navigate(`/profile/${auth.currentUser!.uid}`);
+                handleClose(),
+                  navigate(`/profile/${auth.currentUser!.uid}`),
+                  setValue("4");
               }}
             >
-              <Avatar /> Profile
+              <CurrentUserAvatar
+                username={userData!.username}
+                photoURL={userData!.photoURL}
+                id={userData!.id}
+              />{" "}
+              Profile
             </MenuItem>
             <Divider />
-            <MenuItem onClick={handleClose}>
-              <ListItemIcon>
-                <Settings fontSize="small" />
-              </ListItemIcon>
-              Settings
-            </MenuItem>
             <MenuItem
               onClick={() => {
-                navigate("/login");
+                auth.signOut();
+                localStorage.removeItem("isAuth");
                 dispatch(removeUser());
+                navigate("/login");
               }}
             >
               <ListItemIcon>

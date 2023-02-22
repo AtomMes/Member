@@ -12,8 +12,6 @@ const ChatPage: React.FC = () => {
 
   if (!isAuth) navigate("/login");
 
-  if (!auth.currentUser) return <>Loading...</>;
-
   return <Chat />;
 };
 

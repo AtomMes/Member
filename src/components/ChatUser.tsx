@@ -1,4 +1,11 @@
-import { Avatar, Box, Divider, Stack, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Divider,
+  Skeleton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import React from "react";
 import CurrentUserAvatar from "./CurrentUserAvatar";
 import { ChatType } from "./ChatLeftSide";
@@ -28,7 +35,48 @@ const ChatUser: React.FC<Props> = ({ chat }) => {
     );
   };
 
-  if (!userData) return <>Loading...</>;
+  if (!userData)
+    return (
+      <Stack
+        flexDirection="row"
+        padding="10px"
+        gap="5px"
+        width="100%"
+        sx={{ boxSizing: "border-box" }}
+        onClick={onUserClick}
+        height="100%"
+        alignItems="center"
+      >
+        <Box>
+          <Skeleton
+            variant="circular"
+            width={50}
+            height={50}
+            animation="wave"
+          />
+        </Box>
+        <Stack width="100%" height="100%">
+          <Stack
+            flexDirection="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography alignSelf="center">
+              <Skeleton variant="text" width="100px" animation="wave" />
+            </Typography>
+            {chat[1].lastMessage?.text && (
+              <Typography fontSize="14px" sx={{ whiteSpace: "nowrap" }}>
+                <Skeleton variant="text" width="60px" animation="wave" />
+              </Typography>
+            )}
+          </Stack>
+          <Typography color="gray" fontSize="14px">
+            <Skeleton variant="text" width="150px" animation="wave" />
+          </Typography>
+        </Stack>
+      </Stack>
+    );
+
   return (
     <Stack
       flexDirection="row"
@@ -42,6 +90,7 @@ const ChatUser: React.FC<Props> = ({ chat }) => {
     >
       <CurrentUserAvatar
         username={userData!.username}
+        size="50px"
         photoURL={userData!.photoURL}
         id={userData!.id}
         disableNav
@@ -53,17 +102,15 @@ const ChatUser: React.FC<Props> = ({ chat }) => {
           alignItems="center"
         >
           <Typography alignSelf="center">{userData!.username}</Typography>
-          {chat[1].lastMessage.text && (
+          {chat[1].lastMessage?.text && (
             <Typography fontSize="14px" sx={{ whiteSpace: "nowrap" }}>
               {chat[1].date && formatDistanceToNow(chat[1].date) + " " + "ago"}
             </Typography>
           )}
         </Stack>
-        {chat[1].lastMessage.text && (
-          <Typography color="gray" fontSize="14px">
-            {chat[1].lastMessage.text}aa
-          </Typography>
-        )}
+        <Typography color="gray" fontSize="14px">
+          {chat[1].lastMessage?.text ? chat[1].lastMessage?.text : ""}
+        </Typography>
       </Stack>
     </Stack>
   );

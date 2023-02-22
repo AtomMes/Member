@@ -30,6 +30,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import React from "react";
 import { IconButton, ListItemDecorator, Textarea } from "@mui/joy";
 import {
+  AddCircle,
   Check,
   FormatBold,
   FormatItalic,
@@ -42,6 +43,7 @@ import { auth, db } from "../firebase";
 import { uuidv4 } from "@firebase/util";
 import CurrentUserAvatar from "./CurrentUserAvatar";
 import { useAppSelector } from "../hooks/redux-hooks";
+import { getUserData } from "../hooks/getUserData";
 
 const CreatePostButton = styled(Button)(({ theme }) => ({
   color: "black",
@@ -57,8 +59,13 @@ const CreatePostButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const CreatePost: React.FC = () => {
-  const { username, id } = useAppSelector((state) => state.user);
+interface Props {
+  feed?: boolean;
+  children?: React.ReactNode;
+}
+
+const CreatePost: React.FC<Props> = ({ feed, children }) => {
+  const { userData } = getUserData(auth.currentUser?.uid);
 
   const [loading, setLoading] = React.useState<boolean>(false);
   const [open, setOpen] = React.useState<boolean>(false);
@@ -121,17 +128,31 @@ const CreatePost: React.FC = () => {
     }
   };
 
+  if (!userData) return <>Loading</>;
+
   return (
-    <WrapperBox>
+    <Box>
       <Stack flexDirection="row" gap={1}>
-        <CurrentUserAvatar
-          username={username}
-          photoURL={auth.currentUser!.photoURL && auth.currentUser!.photoURL}
-          id={id!}
-        />
-        <CreatePostButton variant={"outlined"} onClick={() => setOpen(true)}>
-          Start a post
-        </CreatePostButton>
+        {feed ? (
+          <>
+            <CurrentUserAvatar
+              username={userData.username}
+              photoURL={userData.photoURL}
+              id={userData.id}
+            />
+            <CreatePostButton variant="outlined" onClick={() => setOpen(true)}>
+              Start a post
+            </CreatePostButton>
+          </>
+        ) : (
+          <CreatePostButton
+            variant="outlined"
+            startIcon={<AddCircle />}
+            onClick={() => setOpen(true)}
+          >
+            Add post
+          </CreatePostButton>
+        )}
 
         <Modal
           open={open}
@@ -139,8 +160,6 @@ const CreatePost: React.FC = () => {
           sx={{ width: "500px", margin: "0 auto" }}
         >
           <ModalDialog
-            aria-labelledby="basic-modal-dialog-title"
-            aria-describedby="basic-modal-dialog-description"
             sx={{
               borderRadius: "md",
               boxShadow: "lg",
@@ -244,7 +263,7 @@ const CreatePost: React.FC = () => {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
-    </WrapperBox>
+    </Box>
   );
 };
 

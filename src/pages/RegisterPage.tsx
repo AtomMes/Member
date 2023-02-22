@@ -8,10 +8,11 @@ import { setUser } from "../redux/userSlice/slice";
 
 import LoginAndRegister from "../components/LoginAndRegister";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
+import { useAuth } from "../hooks/useAuth";
 
 const RegisterPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const RegisterPage: React.FC = () => {
           await setDoc(doc(db, "userChats", user.uid), {});
 
           await setDoc(doc(db, "users", user.uid), {
+            searchUsername: username.toLowerCase(),
             username,
             email,
             id: user.uid,
@@ -47,11 +49,19 @@ const RegisterPage: React.FC = () => {
               token: user.refreshToken,
             })
           );
+          localStorage.setItem("isAuth", "true");
           navigate("/");
         }
       );
     }
   };
+
+  const { isAuth } = useAuth();
+
+  console.log(isAuth);
+  if (isAuth) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <div>

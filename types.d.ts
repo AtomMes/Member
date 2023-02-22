@@ -7,5 +7,4 @@ declare module "*@mui/material/styles";
 declare module "*.jpg";
 declare module "*.png";
 declare module "*react-helmet";
-
 declare module "nivo";

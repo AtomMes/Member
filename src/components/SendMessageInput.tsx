@@ -30,7 +30,6 @@ const SendMessageInput = () => {
 
       const uploadTask = uploadBytesResumable(storageRef, img);
 
-      console.log("hasav", storageRef, uploadTask);
 
       setText("");
       setImg(null);

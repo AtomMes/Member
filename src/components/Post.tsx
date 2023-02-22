@@ -262,7 +262,7 @@ const Post: React.FC<PostProps> = ({
             onClick={() => onLike()}
             sx={{ color: "gray", width: "100%", textAlign: "center" }}
           >
-            Like
+            {likes.length}
           </Button>
         </Grid>
         <Grid
@@ -277,7 +277,7 @@ const Post: React.FC<PostProps> = ({
             sx={{ color: "gray", width: "100%", textAlign: "center" }}
             onClick={() => setShowAddComment(!showAddComment)}
           >
-            Comments
+            {comments?.length}
           </Button>
         </Grid>
       </AboutPost>
@@ -313,13 +313,23 @@ const Post: React.FC<PostProps> = ({
           <Stack flexDirection="row" justifyContent="space-between">
             <ShowMoreButton
               fullWidth={false}
-              onClick={() => setLimit(limit + 2)}
+              onClick={() => {
+                if (comments!.length > limit) {
+                  setLimit(limit + 2);
+                  console.log(limit);
+                }
+              }}
             >
               Show more
             </ShowMoreButton>
             <ShowMoreButton
               fullWidth={false}
-              onClick={() => setLimit(limit - 2)}
+              onClick={() => {
+                if (limit > 2) {
+                  setLimit(limit - 2);
+                  console.log(limit);
+                }
+              }}
             >
               Show less
             </ShowMoreButton>

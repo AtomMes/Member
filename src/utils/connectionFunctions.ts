@@ -1,5 +1,6 @@
 import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { auth, db } from "./../firebase";
+import { createChat } from "./chatFunctions";
 
 export const removeConnection = async (userId: string) => {
   if (userId) {
@@ -49,6 +50,7 @@ export const sendRequest = async (userId: string) => {
       requests: arrayUnion(auth.currentUser!.uid),
     });
   }
+  createChat(userId);
 };
 
 export const declineRequest = async (userId: string) => {

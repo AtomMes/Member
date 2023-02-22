@@ -22,6 +22,7 @@ import {
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { WrapperBox } from "../App";
+import CreatePost from "../components/CreatePost";
 import CurrentUserAvatar from "../components/CurrentUserAvatar";
 import { StyledTab } from "../components/Navbar";
 import ProfileContacts from "../components/ProfileContacts";
@@ -31,6 +32,7 @@ import ProfilePosts from "../components/ProfilePosts";
 import ProfileRequests from "../components/ProfileRequests";
 import { auth, db } from "../firebase";
 import { useAuth } from "../hooks/useAuth";
+import { useConnectionType } from "../hooks/useConnectionType";
 import { getMutualConnections } from "../hooks/useMutualConnections";
 import {
   connectBack,
@@ -39,7 +41,7 @@ import {
   sendRequest,
 } from "../utils/connectionFunctions";
 
-const CreatePostButton = styled(Button)(({ theme }) => ({
+export const CreatePostButton = styled(Button)(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   color: "black",
@@ -73,26 +75,17 @@ const UserProfilePage: React.FC = () => {
 
   const [userName, setUserName] = React.useState<string>("");
   const [photoURL, setPhotoURL] = React.useState<string>("");
-  const [inRequests, setInRequests] = React.useState<boolean>(false);
-  const [inContacts, setInContacts] = React.useState<boolean>(false);
-  const [inMyRequests, setInMyRequests] = React.useState<boolean>(false);
-  const [myContacts, setMyContacts] = React.useState<string[]>([]);
-  const [contacts, setContacts] = React.useState<string[]>([]);
+
+  const { myContacts, inMyRequests, inContacts, inRequests } =
+    useConnectionType(id);
 
   React.useEffect(() => {
     if (id) {
       (async () => {
         const docRef = doc(db, "users", id);
         const docSnap = await getDoc(docRef);
-        const currentUserRef = doc(db, "users", auth.currentUser!.uid);
-        const currentUserDocSnap = await getDoc(currentUserRef);
         setPhotoURL(docSnap.data()!.photoURL);
         setUserName(docSnap.data()!.username);
-        setContacts(docSnap.data()!.contacts);
-        setMyContacts(currentUserDocSnap.data()!.contacts);
-        setInRequests(docSnap.data()!.requests.includes(auth.currentUser!.uid));
-        setInContacts(docSnap.data()!.contacts.includes(auth.currentUser!.uid));
-        setInMyRequests(currentUserDocSnap.data()!.requests.includes(id));
       })();
     }
   }, [id]);
@@ -170,12 +163,7 @@ const UserProfilePage: React.FC = () => {
                   >
                     {id === auth.currentUser!.uid ? (
                       <>
-                        <CreatePostButton
-                          variant="outlined"
-                          startIcon={<AddCircle />}
-                        >
-                          Add post
-                        </CreatePostButton>
+                        <CreatePost />
                         <CreatePostButton
                           variant="outlined"
                           startIcon={<Edit />}
@@ -190,7 +178,6 @@ const UserProfilePage: React.FC = () => {
                             variant="outlined"
                             onClick={() => {
                               removeRequest(id!);
-                              setInRequests(false);
                             }}
                           >
                             Pending
@@ -201,7 +188,6 @@ const UserProfilePage: React.FC = () => {
                             variant="outlined"
                             onClick={() => {
                               sendRequest(id!);
-                              setInRequests(true);
                             }}
                           >
                             Connect
@@ -212,7 +198,6 @@ const UserProfilePage: React.FC = () => {
                             variant="outlined"
                             onClick={() => {
                               removeConnection(id!);
-                              setInContacts(false);
                             }}
                           >
                             Connected
@@ -223,7 +208,6 @@ const UserProfilePage: React.FC = () => {
                             variant="outlined"
                             onClick={() => {
                               connectBack(id!);
-                              setInContacts(true);
                             }}
                           >
                             Connect back

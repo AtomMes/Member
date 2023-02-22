@@ -19,30 +19,15 @@ import ProfileContact from "./ProfileContact";
 
 const ProfileContacts: React.FC = () => {
   const { id } = useParams();
-  const { userData, loading } = getUserData(id);
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const { userData, loading } = getUserData(id || auth.currentUser!.uid);
 
   if (!userData) return <>Loading...</>;
+
   return (
     <Grid container spacing="20px" sx={{ padding: 0 }}>
       {userData!.contacts.map((contact: string) => (
-        <ProfileContact
-          handleClick={handleClick}
-          handleClose={handleClose}
-          anchorEl={anchorEl}
-          open={open}
-          key={contact}
-          contact={contact}
-        />
+        <ProfileContact key={contact} contact={contact} />
       ))}
     </Grid>
   );

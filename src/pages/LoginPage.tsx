@@ -1,14 +1,16 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import LoginAndRegister from "../components/LoginAndRegister";
 import { auth } from "../firebase";
+import { useAuth } from "../hooks/useAuth";
 import { setUser } from "../redux/userSlice/slice";
 
 const LoginPage: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   function onLogin(email: string, password: string, username: string | null) {
     if (email && password) {
@@ -23,9 +25,16 @@ const LoginPage: React.FC = () => {
             token: user.refreshToken,
           })
         );
+        localStorage.setItem("isAuth", "true");
         navigate("/");
       });
     }
+  }
+
+  const { isAuth } = useAuth();
+
+  if (isAuth) {
+    return <Navigate to="/" />;
   }
 
   return (
