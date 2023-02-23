@@ -5,18 +5,27 @@ import {
   Grid,
   InputAdornment,
   Paper,
+  styled,
   TextField,
   Typography,
 } from "@mui/material";
 import { DocumentData } from "firebase/firestore";
 import React from "react";
-import { AddCommentInput } from "../components/Post";
 import ProfileContact from "../components/ProfileContact";
 import ProfileContacts from "../components/ProfileContacts";
 import { auth } from "../firebase";
 import { getUserData } from "../hooks/getUserData";
 import { useConnectionType } from "../hooks/useConnectionType";
 import { useSearch } from "../hooks/useUserSearch";
+
+const SearchUserInput = styled(TextField)(({ theme }) => ({
+  [`& fieldset`]: {
+    borderRadius: 100,
+  },
+  width: "100%",
+  padding: "0",
+  margin: "0",
+}));
 
 const ContactsPage: React.FC = () => {
   const [commentText, setCommentText] = React.useState<string>("");
@@ -36,9 +45,10 @@ const ContactsPage: React.FC = () => {
     <>
       <Box>
         {/* <Paper> */}
-        <AddCommentInput
+        <SearchUserInput
           size="small"
           placeholder="Search for a user..."
+          sx={{ width: "350px", maxWidth: "100%" }}
           value={commentText}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setCommentText(e.target.value)
@@ -52,7 +62,6 @@ const ContactsPage: React.FC = () => {
               </InputAdornment>
             ),
           }}
-          sx={{ width: "350px" }}
         />
         {/* </Paper> */}
       </Box>

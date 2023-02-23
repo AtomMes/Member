@@ -19,28 +19,28 @@ const Home: React.FC = () => {
         <Grid
           item
           xs={3}
-          // sx={{
-          //   display: {
-          //     ut: "initial",
-          //     xs: "none",
-          //   },
-          // }}
+          sx={{
+            display: {
+              ut: "initial",
+              xs: "none",
+            },
+          }}
         >
           <Sidebar />
         </Grid>
         {/*@ts-ignore */}
-        <Grid item xs={6} sx={{ xs: 12, margin: "0 auto" }}>
+        <Grid item xs={12} ut={6} sx={{ xs: 12, margin: "0 auto" }}>
           <Feed />
         </Grid>
         <Grid
           item
           xs={3}
-          // sx={{
-          //   display: {
-          //     ut: "initial",
-          //     xs: "none",
-          //   },
-          // }}
+          sx={{
+            display: {
+              ut: "initial",
+              xs: "none",
+            },
+          }}
         >
           <RightBar />
         </Grid>

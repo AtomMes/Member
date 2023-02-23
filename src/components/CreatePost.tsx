@@ -9,6 +9,7 @@ import {
   MenuItem,
   ImageList,
   Backdrop,
+  useMediaQuery,
 } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import Modal from "@mui/joy/Modal";
@@ -44,6 +45,7 @@ import { uuidv4 } from "@firebase/util";
 import CurrentUserAvatar from "./CurrentUserAvatar";
 import { useAppSelector } from "../hooks/redux-hooks";
 import { getUserData } from "../hooks/getUserData";
+import { theme } from "../utils/theme";
 
 const CreatePostButton = styled(Button)(({ theme }) => ({
   color: "black",
@@ -128,6 +130,8 @@ const CreatePost: React.FC<Props> = ({ feed, children }) => {
     }
   };
 
+  const matches = useMediaQuery(theme.breakpoints.up(650));
+  const disButtons = useMediaQuery(theme.breakpoints.up(490));
   if (!userData) return <>Loading</>;
 
   return (
@@ -145,16 +149,27 @@ const CreatePost: React.FC<Props> = ({ feed, children }) => {
             </CreatePostButton>
           </>
         ) : (
-          <CreatePostButton
-            variant="outlined"
-            startIcon={<AddCircle />}
-            onClick={() => setOpen(true)}
-          >
-            Add post
-          </CreatePostButton>
+          <>
+            {matches ? (
+              <CreatePostButton
+                variant="outlined"
+                startIcon={<AddCircle />}
+                onClick={() => setOpen(true)}
+              >
+                {matches && "Add post"}
+              </CreatePostButton>
+            ) : (
+              <Box sx={{ display: disButtons ? "initial" : "none" }}>
+                <Button sx={{ color: "black" }}>
+                  <AddCircle />
+                </Button>
+              </Box>
+            )}
+          </>
         )}
+        {/*@ts-ignore */}
 
-        <Modal
+        {/* <Modal
           open={open}
           onClose={() => setOpen(false)}
           sx={{ width: "500px", margin: "0 auto" }}
@@ -255,7 +270,7 @@ const CreatePost: React.FC<Props> = ({ feed, children }) => {
               />
             </Stack>
           </ModalDialog>
-        </Modal>
+        </Modal> */}
       </Stack>
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}

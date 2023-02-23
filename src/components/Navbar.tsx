@@ -16,6 +16,7 @@ import {
   ListItemIcon,
   Divider,
   Tabs,
+  useMediaQuery,
 } from "@mui/material";
 import { Tab } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -40,6 +41,7 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import CurrentUserAvatar from "./CurrentUserAvatar";
 import { auth } from "../firebase";
 import { getUserData } from "../hooks/getUserData";
+import { theme } from "../utils/theme";
 
 export const StyledTab = styled(Tab)(({ theme }) => ({
   maxWidth: "none",
@@ -116,12 +118,18 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
 
   const { userData } = getUserData(auth.currentUser?.uid);
 
+  const float = useMediaQuery(theme.breakpoints.down(410));
+
   if (!userData) return <>Loading</>;
 
   return (
     <AppBar
       position="static"
-      sx={{ bgcolor: "white", color: "darkGray", marginBottom: "10px" }}
+      sx={{
+        bgcolor: "white",
+        color: "darkGray",
+        marginBottom: "10px",
+      }}
     >
       <Box maxWidth="1100px" width="100%" margin="0 auto">
         <Toolbar
@@ -129,6 +137,8 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            flexDirection: "row",
+            height: "72px",
           }}
         >
           <Stack flexDirection="row" alignItems="center">
@@ -144,26 +154,28 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
 
           {loggedIn && (
             <Stack direction="row" spacing={2} alignItems="center">
-              <Tabs value={value} onChange={handleChange}>
-                <StyledTab
-                  value="1"
-                  onClick={() => navigate("/")}
-                  icon={<HomeIcon sx={{ fontSize: "30px" }} />}
-                  label="Home"
-                />
-                <StyledTab
-                  value="2"
-                  onClick={() => navigate("/contacts")}
-                  icon={<Group sx={{ fontSize: "30px" }} />}
-                  label="Contacts"
-                />
-                <StyledTab
-                  value="3"
-                  onClick={() => navigate("/messaging")}
-                  icon={<Message sx={{ fontSize: "30px" }} />}
-                  label="Chats"
-                />
-              </Tabs>
+              {!float && (
+                <Tabs value={value} onChange={handleChange}>
+                  <StyledTab
+                    value="1"
+                    onClick={() => navigate("/")}
+                    icon={<HomeIcon sx={{ fontSize: "30px" }} />}
+                    label="Home"
+                  />
+                  <StyledTab
+                    value="2"
+                    onClick={() => navigate("/contacts")}
+                    icon={<Group sx={{ fontSize: "30px" }} />}
+                    label="Contacts"
+                  />
+                  <StyledTab
+                    value="3"
+                    onClick={() => navigate("/messaging")}
+                    icon={<Message sx={{ fontSize: "30px" }} />}
+                    label="Chats"
+                  />
+                </Tabs>
+              )}
               <StyledBadge
                 id="resources-button" //id enq tali karavarelu hamar
                 onClick={handleClick}
@@ -233,6 +245,49 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
               Profile
             </MenuItem>
             <Divider />
+            {float && (
+              <>
+                <MenuItem
+                  onClick={() => {
+                    auth.signOut();
+                    localStorage.removeItem("isAuth");
+                    dispatch(removeUser());
+                    navigate("/");
+                  }}
+                >
+                  <ListItemIcon>
+                    <HomeIcon />
+                  </ListItemIcon>
+                  Home
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    auth.signOut();
+                    localStorage.removeItem("isAuth");
+                    dispatch(removeUser());
+                    navigate("/contacts");
+                  }}
+                >
+                  <ListItemIcon>
+                    <Group />
+                  </ListItemIcon>
+                  Contacts
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    auth.signOut();
+                    localStorage.removeItem("isAuth");
+                    dispatch(removeUser());
+                    navigate("/messaging");
+                  }}
+                >
+                  <ListItemIcon>
+                    <Message />{" "}
+                  </ListItemIcon>
+                  Chats
+                </MenuItem>
+              </>
+            )}
             <MenuItem
               onClick={() => {
                 auth.signOut();

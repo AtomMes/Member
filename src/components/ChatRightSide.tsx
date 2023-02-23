@@ -1,6 +1,6 @@
-import { Image, Send } from "@mui/icons-material";
+import { ArrowBack, Image, Send } from "@mui/icons-material";
 import { uuidv4 } from "@firebase/util";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography, Button, useMediaQuery } from "@mui/material";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import React from "react";
 import { useParams } from "react-router-dom";
@@ -8,19 +8,26 @@ import { auth, db, storage } from "../firebase";
 import { useAppSelector } from "../hooks/redux-hooks";
 import ChatMessages from "./ChatMessages";
 import SendMessageInput from "./SendMessageInput";
+import { theme } from "../utils/theme";
 
-const ChatRightSide: React.FC = () => {
+interface Props {
+  handleClick: () => void;
+}
+
+const ChatRightSide: React.FC<Props> = ({ handleClick }) => {
   const user: any = useAppSelector((state) => state.chat.user);
   const data = useAppSelector((state) => state.chat);
+  const sm = useMediaQuery(theme.breakpoints.down(600));
 
   return (
-    <Stack height="100%">
+    <Stack height="100%" width="100%">
       <Box
         borderBottom="1px solid rgba(50, 50, 50, .2)"
         padding="10px"
         display="flex"
         justifyContent="space-between"
       >
+        {sm && <ArrowBack onClick={handleClick} />}
         <Typography>
           {user.displayName ? user.displayName : "chose User"}
         </Typography>

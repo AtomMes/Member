@@ -14,21 +14,21 @@ const WrapperBox = styled(Box)(({ theme }) => ({
 const Chat: React.FC = () => {
   const navigate = useNavigate();
 
+  const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+  const [position, setPosition] = React.useState("left");
+
+  const handleClick = () => {
+    setIsDrawerOpen(!isDrawerOpen);
+  };
+
   return (
-    <WrapperBox bgcolor="red" height="800px">
-      <Grid container>
-        <Grid
-          item
-          xs={4}
-          borderRight="1px solid rgba(50, 50, 50, .2)"
-          height="800px"
-        >
-          <ChatLeftSide />
-        </Grid>
-        <Grid item xs={8} height="800px">
-          <ChatRightSide />
-        </Grid>
-      </Grid>
+    <WrapperBox
+      height={window.innerHeight - 85}
+      maxHeight="calc(100% - 1000px)"
+      display="flex"
+    >
+      <ChatLeftSide isDrawerOpen={isDrawerOpen} handleClick={handleClick} />
+      <ChatRightSide handleClick={handleClick} />
     </WrapperBox>
   );
 };

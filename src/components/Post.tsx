@@ -200,8 +200,6 @@ const Post: React.FC<PostProps> = ({
           src={image}
           style={{
             maxWidth: "100%",
-            maxHeight: "600px",
-            minHeight: "300px",
             // height: "100%",
             margin: "0 auto",
             zIndex: "10",

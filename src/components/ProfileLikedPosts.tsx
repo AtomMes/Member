@@ -20,8 +20,9 @@ const ProfileLikedPosts = () => {
       display="flex"
       flexDirection="column"
       gap="10px"
-      width="550px"
       margin="0 auto"
+      width="600px"
+      maxWidth="100%"
     >
       {likedPosts.map((post) => (
         <Post

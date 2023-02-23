@@ -31,6 +31,8 @@ const ChatMessage: React.FC<Props> = ({ message }) => {
 
   if (!userData) return <>Loading...</>;
 
+  console.log(message.text.replace("less", ""));
+
   return (
     <Stack ref={ref} flexDirection="row" gap="10px">
       <Box onClick={() => navigate(`/profile/${message.senderId}`)}>
@@ -44,14 +46,14 @@ const ChatMessage: React.FC<Props> = ({ message }) => {
         gap="8px"
         bgcolor="#f3f2ef"
         padding="8px"
-        minWidth="250px"
+        // minWidth="250px"
         borderRadius="10px"
         width="fit-content"
       >
-        <Stack flexDirection="row" justifyContent="space-between">
+        <Stack flexDirection="row" justifyContent="space-between" gap="20px">
           <Typography>{userData.username}</Typography>
           <Typography fontSize="14px" color="gray">
-            {createdDate}
+            {createdDate.replace("less than a", "")}
           </Typography>
         </Stack>
         {message.img && (

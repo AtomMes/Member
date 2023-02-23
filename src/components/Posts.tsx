@@ -23,7 +23,12 @@ const Posts: React.FC = () => {
   }
 
   return (
-    <Box display="flex" flexDirection="column" gap="10px">
+    <Box
+      display="flex"
+      flexDirection="column"
+      gap="10px"
+      margin="0 auto"
+    >
       {posts.map((post) => (
         <Post
           authorId={post.authorId}

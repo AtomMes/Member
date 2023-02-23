@@ -10,6 +10,7 @@ import {
   Tab,
   Tabs,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import {
   arrayRemove,
@@ -40,6 +41,7 @@ import {
   removeRequest,
   sendRequest,
 } from "../utils/connectionFunctions";
+import { theme } from "../utils/theme";
 
 export const CreatePostButton = styled(Button)(({ theme }) => ({
   alignItems: "center",
@@ -92,7 +94,24 @@ const UserProfilePage: React.FC = () => {
 
   const { mutualContacts } = getMutualConnections(id);
 
+  const [windowWidth, setWindowWidth] = React.useState<number | null>();
+
+  React.useEffect(() => {
+    function handleResize() {
+      setWindowWidth(window.innerWidth);
+    }
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   if (!mutualContacts) return <>Loading...</>;
+
+  const matches = useMediaQuery(theme.breakpoints.up(650));
+  const disButtons = useMediaQuery(theme.breakpoints.up(490));
+  const float = useMediaQuery(theme.breakpoints.up(410));
 
   return (
     <>
@@ -109,20 +128,27 @@ const UserProfilePage: React.FC = () => {
                 position: "relative",
               }}
             ></Box>
-            <Box position="relative" height="183px" width="100%">
+            <Box
+              position="relative"
+              sx={{ height: float ? "183px" : "309px" }}
+              width="100%"
+            >
               <Box position="absolute" width="calc(100% - 30px) " top="-40px">
                 <Stack
-                  flexDirection="row"
+                  sx={{
+                    flexDirection: float ? "row" : "column",
+                    alignItems: !float ? "center" : "initial",
+                    paddingLeft: !float ? 0 : "30px",
+                  }}
                   width="100%"
                   borderBottom="1px solid black"
                   paddingBottom="20px"
-                  paddingLeft="30px"
                 >
                   <CurrentUserAvatar
                     username={userName}
                     photoURL={photoURL}
                     id={id!}
-                    size="170px"
+                    size={"170px"}
                   />
                   <Box
                     display="flex"
@@ -164,12 +190,23 @@ const UserProfilePage: React.FC = () => {
                     {id === auth.currentUser!.uid ? (
                       <>
                         <CreatePost />
-                        <CreatePostButton
-                          variant="outlined"
-                          startIcon={<Edit />}
-                        >
-                          Edit profile
-                        </CreatePostButton>
+                        {matches ? (
+                          <CreatePostButton
+                            variant="outlined"
+                            startIcon={<Edit />}
+                          >
+                            {matches && "Edit Profile"}
+                          </CreatePostButton>
+                        ) : (
+                          <Button
+                            sx={{
+                              color: "black",
+                              display: disButtons ? "initial" : "none",
+                            }}
+                          >
+                            <Edit />
+                          </Button>
+                        )}
                       </>
                     ) : (
                       <>
@@ -219,10 +256,19 @@ const UserProfilePage: React.FC = () => {
                 </Stack>
                 <Box>
                   <TabContext value={value}>
-                    <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                    <Box
+                      sx={{
+                        borderBottom: 1,
+                        borderColor: "divider",
+                        width: !float ? "100%" : "400px",
+                      }}
+                    >
                       <TabList
                         onChange={handleChange}
                         aria-label="lab API tabs example"
+                        variant="scrollable"
+                        scrollButtons
+                        allowScrollButtonsMobile
                       >
                         <StyledTab label="Contacts" value="1" />
                         <StyledTab label="Posts" value="2" />

@@ -62,193 +62,199 @@ const ProfileContact: React.FC<Props> = ({ contact }) => {
 
   if (!userData)
     return (
-      <Grid item xs={6} display="flex">
-        <Paper
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            bgcolor: "white",
-            padding: "15px",
-          }}
-        >
-          <Box marginRight="10px">
+      <>
+        {/*@ts-ignore */}
+        <Grid item xs={12} ut={6} sx={{ xs: 12 }} display="flex">
+          <Paper
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              bgcolor: "white",
+              padding: "15px",
+            }}
+          >
+            <Box marginRight="10px">
+              <Skeleton
+                variant="circular"
+                width={40}
+                height={40}
+                animation="wave"
+              />
+            </Box>
+            <Stack justifyContent="center" flex="1">
+              <Typography variant="body1" width="100%">
+                <Skeleton variant="text" width="100px" animation="wave" />
+              </Typography>
+              <Typography
+                sx={{
+                  color: "gray",
+                  fontSize: "14px",
+                }}
+              >
+                <Skeleton variant="text" width="200px" animation="wave" />
+              </Typography>
+            </Stack>
             <Skeleton
-              variant="circular"
-              width={40}
-              height={40}
+              variant="rectangular"
+              width="40px"
+              height="25px"
+              sx={{ borderRadius: "20px" }}
               animation="wave"
             />
-          </Box>
-          <Stack justifyContent="center" flex="1">
-            <Typography variant="body1" width="100%">
-              <Skeleton variant="text" width="100px" animation="wave" />
-            </Typography>
-            <Typography
-              sx={{
-                color: "gray",
-                fontSize: "14px",
-              }}
-            >
-              <Skeleton variant="text" width="200px" animation="wave" />
-            </Typography>
-          </Stack>
-          <Skeleton
-            variant="rectangular"
-            width="40px"
-            height="25px"
-            sx={{ borderRadius: "20px" }}
-            animation="wave"
-          />
-        </Paper>
-      </Grid>
+          </Paper>
+        </Grid>
+      </>
     );
 
   console.log(myContacts.includes(userData.id), userData.username, myContacts);
 
   return (
-    <Grid item xs={6} display="flex">
-      {userData && (
-        <Paper
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            bgcolor: "white",
-            padding: "15px",
-          }}
-        >
-          {" "}
-          <Box marginRight="10px">
-            <CurrentUserAvatar
-              username={userData!.username}
-              photoURL={userData!.photoURL}
-              id={userData!.id}
-              size="50px"
-            />
-          </Box>
-          <Stack justifyContent="center" flex="1">
-            <Typography>{userData!.username}</Typography>
-            <Typography
-              sx={{
-                color: "gray",
-                fontSize: "14px",
-                width: "fit-content",
-                height: "fit-content",
-              }}
-            >
-              {userData.id !== auth.currentUser!.uid
-                ? `${mutualContacts.length} mutual connections`
-                : "(You)"}
-            </Typography>
-          </Stack>
-          {myContacts.includes(userData.id) ? (
-            <>
-              {console.log(userData.id !== auth.currentUser!.uid)}
-              <Button
-                onClick={handleClick}
+    <>
+      {/*@ts-ignore */}
+      <Grid item xs={12} ut={6} sx={{ xs: 12 }} display="flex">
+        {userData && (
+          <Paper
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              bgcolor: "white",
+              padding: "15px",
+            }}
+          >
+            {" "}
+            <Box marginRight="10px">
+              <CurrentUserAvatar
+                username={userData!.username}
+                photoURL={userData!.photoURL}
+                id={userData!.id}
+                size="50px"
+              />
+            </Box>
+            <Stack justifyContent="center" flex="1">
+              <Typography>{userData!.username}</Typography>
+              <Typography
                 sx={{
-                  color: "black",
-                  textTransform: "none",
-                  minWidth: "0",
-                  minHeight: "0",
-                  padding: "0",
+                  color: "gray",
+                  fontSize: "14px",
+                  width: "fit-content",
                   height: "fit-content",
                 }}
               >
-                <MoreHoriz />
-              </Button>
-              <Menu
-                transformOrigin={{ horizontal: "right", vertical: "top" }}
-                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-                anchorEl={anchorEl}
-                open={open}
-                PaperProps={{
-                  elevation: 1,
-                }}
-                onClose={handleClose}
-              >
-                <MenuItem
-                  onClick={() => {
-                    handleClose();
-                    removeConnection(userData.id);
+                {userData.id !== auth.currentUser!.uid
+                  ? `${mutualContacts.length} mutual connections`
+                  : "(You)"}
+              </Typography>
+            </Stack>
+            {myContacts.includes(userData.id) ? (
+              <>
+                {console.log(userData.id !== auth.currentUser!.uid)}
+                <Button
+                  onClick={handleClick}
+                  sx={{
+                    color: "black",
+                    textTransform: "none",
+                    minWidth: "0",
+                    minHeight: "0",
+                    padding: "0",
+                    height: "fit-content",
                   }}
                 >
-                  Remove Connection
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    handleClose();
-                    dispatch(
-                      setChat({
-                        displayName: userData!.username,
-                        photoURL: userData!.photoURL,
-                        uid: userData!.id,
-                      })
-                    );
-                    navigate("/messaging");
+                  <MoreHoriz />
+                </Button>
+                <Menu
+                  transformOrigin={{ horizontal: "right", vertical: "top" }}
+                  anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                  anchorEl={anchorEl}
+                  open={open}
+                  PaperProps={{
+                    elevation: 1,
                   }}
+                  onClose={handleClose}
                 >
-                  Send Message
-                </MenuItem>
-                <MenuItem onClick={onView}>View Profile</MenuItem>
-              </Menu>
-            </>
-          ) : (
-            <>
-              {userData.id === auth.currentUser!.uid ? (
-                ""
-              ) : (
-                <>
-                  {inRequests && (
-                    <Button
-                      sx={{ color: "black", textTransform: "none" }}
-                      onClick={() => {
-                        removeRequest(userData.id);
-                      }}
-                    >
-                      Pending
-                    </Button>
-                  )}
-                  {!inContacts && !inRequests && !inMyRequests && (
-                    <Button
-                      sx={{ color: "black", textTransform: "none" }}
-                      onClick={() => {
-                        sendRequest(userData.id);
-                      }}
-                    >
-                      Connect
-                    </Button>
-                  )}
-                  {inContacts && (
-                    <Button
-                      sx={{ color: "black", textTransform: "none" }}
-                      onClick={() => {
-                        removeConnection(userData.id);
-                      }}
-                    >
-                      Connected
-                    </Button>
-                  )}
-                  {inMyRequests && !inContacts && (
-                    <Button
-                      sx={{ color: "black", textTransform: "none" }}
-                      onClick={() => {
-                        connectBack(userData.id);
-                      }}
-                    >
-                      Connect back
-                    </Button>
-                  )}
-                </>
-              )}
-            </>
-          )}
-        </Paper>
-      )}
-    </Grid>
+                  <MenuItem
+                    onClick={() => {
+                      handleClose();
+                      removeConnection(userData.id);
+                    }}
+                  >
+                    Remove Connection
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      handleClose();
+                      dispatch(
+                        setChat({
+                          displayName: userData!.username,
+                          photoURL: userData!.photoURL,
+                          uid: userData!.id,
+                        })
+                      );
+                      navigate("/messaging");
+                    }}
+                  >
+                    Send Message
+                  </MenuItem>
+                  <MenuItem onClick={onView}>View Profile</MenuItem>
+                </Menu>
+              </>
+            ) : (
+              <>
+                {userData.id === auth.currentUser!.uid ? (
+                  ""
+                ) : (
+                  <>
+                    {inRequests && (
+                      <Button
+                        sx={{ color: "black", textTransform: "none" }}
+                        onClick={() => {
+                          removeRequest(userData.id);
+                        }}
+                      >
+                        Pending
+                      </Button>
+                    )}
+                    {!inContacts && !inRequests && !inMyRequests && (
+                      <Button
+                        sx={{ color: "black", textTransform: "none" }}
+                        onClick={() => {
+                          sendRequest(userData.id);
+                        }}
+                      >
+                        Connect
+                      </Button>
+                    )}
+                    {inContacts && (
+                      <Button
+                        sx={{ color: "black", textTransform: "none" }}
+                        onClick={() => {
+                          removeConnection(userData.id);
+                        }}
+                      >
+                        Connected
+                      </Button>
+                    )}
+                    {inMyRequests && !inContacts && (
+                      <Button
+                        sx={{ color: "black", textTransform: "none" }}
+                        onClick={() => {
+                          connectBack(userData.id);
+                        }}
+                      >
+                        Connect back
+                      </Button>
+                    )}
+                  </>
+                )}
+              </>
+            )}
+          </Paper>
+        )}
+      </Grid>
+    </>
   );
 };
 

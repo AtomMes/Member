@@ -6,7 +6,13 @@ import Posts from "./Posts";
 
 const Feed: React.FC = () => {
   return (
-    <Stack gap="5px" marginTop="20px">
+    <Stack
+      gap="5px"
+      marginTop="20px"
+      width="100%"
+      maxWidth="600px"
+      margin="20px auto 0"
+    >
       <WrapperBox>
         <CreatePost feed={true} />
       </WrapperBox>
