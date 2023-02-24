@@ -108,8 +108,6 @@ const ProfileContact: React.FC<Props> = ({ contact }) => {
       </>
     );
 
-  console.log(myContacts.includes(userData.id), userData.username, myContacts);
-
   return (
     <>
       {/*@ts-ignore */}
@@ -151,7 +149,6 @@ const ProfileContact: React.FC<Props> = ({ contact }) => {
             </Stack>
             {myContacts.includes(userData.id) ? (
               <>
-                {console.log(userData.id !== auth.currentUser!.uid)}
                 <Button
                   onClick={handleClick}
                   sx={{

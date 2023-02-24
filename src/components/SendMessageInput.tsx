@@ -45,29 +45,6 @@ const SendMessageInput = () => {
     if (!img && !chosenImage && !text) {
       alert("write something");
     } else if (img && chosenImage) {
-      // const storageRef = ref(storage, uuidv4());
-      // const uploadTask = uploadBytes(img, { contentType: img.type });
-
-      // try {
-      //   const snapshot = await uploadTask;
-      //   const downloadURL = await getDownloadURL(snapshot.ref);
-
-      //   await updateDoc(doc(db, "chats", data.chatId), {
-      //     messages: arrayUnion({
-      //       id: uuidv4(),
-      //       text,
-      //       senderId: currentUser!.uid,
-      //       date: Date.now(),
-      //       img: downloadURL,
-      //     }),
-      //   });
-
-      //   setText("");
-      //   setImg(null);
-      //   setChosenImage("");
-      // } catch (error) {
-      //   console.log(error);
-      // }
       setImg(null);
       setText("");
       setLoading(false);
@@ -184,26 +161,41 @@ const SendMessageInput = () => {
                 marginTop="4px"
                 gap="5px"
               >
-                <Box>
+                <Button
+                  sx={{
+                    color: "gray",
+                    margin: "1px 0 0",
+                    padding: 0,
+                    minWidth: 0,
+                  }}
+                >
                   <label htmlFor="addPhotoInput">
                     <Image />
                   </label>
-                  <input
-                    type="file"
-                    id="addPhotoInput"
-                    style={{ display: "none" }}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      if (e.target.files) {
-                        const file = e.target.files[0];
-                        setChosenImage(URL.createObjectURL(file));
-                        setImg(file);
-                      }
-                    }}
-                  />
-                </Box>
-                <Box>
+                </Button>
+                <input
+                  type="file"
+                  id="addPhotoInput"
+                  style={{ display: "none" }}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    if (e.target.files) {
+                      const file = e.target.files[0];
+                      setChosenImage(URL.createObjectURL(file));
+                      setImg(file);
+                    }
+                  }}
+                />
+
+                <Button
+                  sx={{
+                    color: "gray",
+                    margin: " 0 0 7px",
+                    padding: 0,
+                    minWidth: 0,
+                  }}
+                >
                   <Send onClick={handleSend} />
-                </Box>
+                </Button>
               </Stack>
             </InputAdornment>
           ),

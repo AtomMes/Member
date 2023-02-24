@@ -1,10 +1,12 @@
-import { Add, AddCircle, Edit } from "@mui/icons-material";
+import { uuidv4 } from "@firebase/util";
+import { Add, AddAPhoto, AddCircle, Camera, Edit } from "@mui/icons-material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import {
   Avatar,
   AvatarGroup,
   Box,
   Button,
+  CircularProgress,
   Stack,
   styled,
   Tab,
@@ -12,6 +14,7 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
+import { updateProfile } from "firebase/auth";
 import {
   arrayRemove,
   arrayUnion,
@@ -20,6 +23,13 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+  uploadString,
+} from "firebase/storage";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { WrapperBox } from "../App";
@@ -32,6 +42,7 @@ import ProfileMutualContact from "../components/ProfileMutualContact";
 import ProfilePosts from "../components/ProfilePosts";
 import ProfileRequests from "../components/ProfileRequests";
 import { auth, db } from "../firebase";
+import { getUserData } from "../hooks/getUserData";
 import { useAuth } from "../hooks/useAuth";
 import { useConnectionType } from "../hooks/useConnectionType";
 import { getMutualConnections } from "../hooks/useMutualConnections";
@@ -60,6 +71,8 @@ export const CreatePostButton = styled(Button)(({ theme }) => ({
 
 const UserProfilePage: React.FC = () => {
   const [value, setValue] = React.useState("1");
+  const [loading, setLoading] = React.useState<Boolean>(false);
+  const [progress, setProgress] = React.useState<number>(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -75,22 +88,8 @@ const UserProfilePage: React.FC = () => {
 
   if (!auth.currentUser) navigate("/login");
 
-  const [userName, setUserName] = React.useState<string>("");
-  const [photoURL, setPhotoURL] = React.useState<string>("");
-
   const { myContacts, inMyRequests, inContacts, inRequests } =
     useConnectionType(id);
-
-  React.useEffect(() => {
-    if (id) {
-      (async () => {
-        const docRef = doc(db, "users", id);
-        const docSnap = await getDoc(docRef);
-        setPhotoURL(docSnap.data()!.photoURL);
-        setUserName(docSnap.data()!.username);
-      })();
-    }
-  }, [id]);
 
   const { mutualContacts } = getMutualConnections(id);
 
@@ -113,6 +112,49 @@ const UserProfilePage: React.FC = () => {
   const disButtons = useMediaQuery(theme.breakpoints.up(490));
   const float = useMediaQuery(theme.breakpoints.up(410));
 
+  function getFileType(image: File) {
+    if (image!.type === "image/jpeg") {
+      return "jpg";
+    } else if (image!.type === "image/png") {
+      return "png";
+    } else {
+      return "other";
+    }
+  }
+
+  const coverPhotoUpload = async (image: File) => {
+    if (image) {
+      setProgress(10);
+      setLoading(true);
+      console.log(image, "ste hasav");
+      const storage = getStorage();
+      const fileRef = ref(
+        storage,
+        "postImages/" + uuidv4() + getFileType(image)
+      );
+      setProgress(20);
+
+      await uploadBytes(fileRef, image).then(async () => {
+        setProgress(40);
+        await getDownloadURL(fileRef).then(async (coverPhoto) => {
+          setProgress(80);
+          const refer = doc(db, "users", auth.currentUser!.uid);
+          await updateDoc(refer, {
+            coverPhoto: coverPhoto,
+          });
+          setProgress(100);
+        });
+      });
+      setLoading(false);
+    } else {
+      alert("Please fill all the fields.");
+    }
+  };
+
+  const { userData } = getUserData(id);
+
+  if (!userData) return <>Loading...</>;
+
   return (
     <>
       <WrapperBox>
@@ -127,7 +169,104 @@ const UserProfilePage: React.FC = () => {
                 borderRadius: "10px",
                 position: "relative",
               }}
-            ></Box>
+            >
+              {userData.coverPhoto && (
+                <img
+                  src={userData.coverPhoto}
+                  alt="nkar"
+                  style={{
+                    display: "flex",
+                    objectFit: "cover",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                />
+              )}
+              {loading && (
+                <Box
+                  width="100%"
+                  position="absolute"
+                  top="0"
+                  height="100%"
+                  sx={{
+                    transition: ".2s",
+                    backgroundColor: "rgba(0,0,0,.5)",
+                    "&:hover": { opacity: "1" },
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    zIndex: "9910",
+                  }}
+                >
+                  <CircularProgress
+                    variant="determinate"
+                    value={progress}
+                    sx={{ color: "white", width: "40px", height: "40px" }}
+                  />
+                </Box>
+              )}
+
+              {id === auth.currentUser!.uid && (
+                <>
+                  <Box
+                    width="100%"
+                    height="100%"
+                    sx={{
+                      opacity: "0",
+                      transition: ".2s",
+                      "&:hover": { opacity: "1" },
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      zIndex: "10",
+                    }}
+                    component="label"
+                  >
+                    <Typography variant="h3" color="dimgray">
+                      Set a Photo
+                    </Typography>
+                    <input
+                      type="file"
+                      id="addPhotoInput"
+                      hidden
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        if (e.target.files) {
+                          const file = e.target.files[0];
+                          coverPhotoUpload(file);
+                        }
+                      }}
+                    />
+                  </Box>
+
+                  <Button
+                    sx={{
+                      minWidth: "0",
+                      position: "absolute",
+                      bottom: "-20px",
+                      right: 0,
+                      color: "dimgray",
+                      zIndex: "100",
+                    }}
+                    variant="contained"
+                    color="inherit"
+                    component="label"
+                  >
+                    <AddAPhoto />
+                    <input
+                      type="file"
+                      id="addPhotoInput"
+                      hidden
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        if (e.target.files) {
+                          const file = e.target.files[0];
+                          coverPhotoUpload(file);
+                        }
+                      }}
+                    />
+                  </Button>
+                </>
+              )}
+            </Box>
             <Box
               position="relative"
               sx={{ height: float ? "183px" : "309px" }}
@@ -145,9 +284,9 @@ const UserProfilePage: React.FC = () => {
                   paddingBottom="20px"
                 >
                   <CurrentUserAvatar
-                    username={userName}
-                    photoURL={photoURL}
-                    id={id!}
+                    username={userData.username}
+                    photoURL={userData.photoURL}
+                    id={userData.id}
                     size={"170px"}
                   />
                   <Box
@@ -157,7 +296,7 @@ const UserProfilePage: React.FC = () => {
                     justifyContent="end"
                     alignItems="start"
                   >
-                    <Typography variant="h3">{userName}</Typography>
+                    <Typography variant="h3">{userData.username}</Typography>
                     {id === auth.currentUser!.uid ? (
                       <>
                         <Typography>{myContacts.length} Contacts</Typography>
@@ -190,23 +329,6 @@ const UserProfilePage: React.FC = () => {
                     {id === auth.currentUser!.uid ? (
                       <>
                         <CreatePost />
-                        {matches ? (
-                          <CreatePostButton
-                            variant="outlined"
-                            startIcon={<Edit />}
-                          >
-                            {matches && "Edit Profile"}
-                          </CreatePostButton>
-                        ) : (
-                          <Button
-                            sx={{
-                              color: "black",
-                              display: disButtons ? "initial" : "none",
-                            }}
-                          >
-                            <Edit />
-                          </Button>
-                        )}
                       </>
                     ) : (
                       <>

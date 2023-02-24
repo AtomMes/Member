@@ -172,13 +172,13 @@ const CreatePost: React.FC<Props> = ({ feed, children }) => {
         <Modal
           open={open}
           onClose={() => setOpen(false)}
-          sx={{ width: "500px", margin: "0 auto" }}
+          sx={{ width: "100%", maxWidth: "500px", margin: "0 auto" }}
         >
           <ModalDialog
             sx={{
               borderRadius: "md",
               boxShadow: "lg",
-              minWidth: "100%",
+              width: "100%",
               backgroundColor: "rgba(255,255,255, .9)",
             }}
           >
@@ -198,6 +198,7 @@ const CreatePost: React.FC<Props> = ({ feed, children }) => {
                       src={chosenImage}
                       style={{
                         maxWidth: "600px",
+                        width: "100%",
                         maxHeight: "600px",
                         margin: "0 auto",
                       }}
@@ -216,21 +217,6 @@ const CreatePost: React.FC<Props> = ({ feed, children }) => {
                         flex: "auto",
                       }}
                     >
-                      <IconButton
-                        variant="plain"
-                        color="neutral"
-                        onClick={() => setBald(!bald)}
-                      >
-                        <FormatBold />
-                      </IconButton>
-                      <IconButton
-                        variant={italic ? "soft" : "plain"}
-                        color={italic ? "primary" : "neutral"}
-                        aria-pressed={italic}
-                        onClick={() => setItalic(!italic)}
-                      >
-                        <FormatItalic />
-                      </IconButton>
                       <IconButton>
                         <label htmlFor="addPhotoInput">
                           <Image />
@@ -263,7 +249,6 @@ const CreatePost: React.FC<Props> = ({ feed, children }) => {
                   </>
                 }
                 sx={{
-                  minWidth: 300,
                   fontWeight: bald ? 700 : 400,
                   fontStyle: italic ? "italic" : "initial",
                 }}

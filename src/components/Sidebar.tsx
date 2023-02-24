@@ -120,7 +120,7 @@ const Sidebar: React.FC = () => {
             setOpen(false);
             setPhoto(undefined);
           }}
-          sx={{ width: "500px", margin: "0 auto" }}
+          sx={{ width: "100%", maxWidth: "500px", margin: "0 auto" }}
         >
           <ModalDialog
             aria-labelledby="basic-modal-dialog-title"
@@ -139,15 +139,12 @@ const Sidebar: React.FC = () => {
               overflow="auto"
             >
               <Avatar
-                width={300}
-                height={300}
+                width={250}
+                height={250}
                 onCrop={onCrop}
                 onClose={onClose}
                 src={undefined}
               />
-            </Box>
-            <Box display="flex" justifyContent="center">
-              {photo && <img src={photo} alt="Preview" />}
             </Box>
             <Box
               display="flex"
