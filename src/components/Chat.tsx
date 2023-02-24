@@ -1,9 +1,8 @@
-import { Box, Grid, styled } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import React from "react";
-import ChatRightSide from "./ChatRightSide";
-import ChatLeftSide from "./ChatLeftSide";
-import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import ChatLeftSide from "./ChatLeftSide";
+import ChatRightSide from "./ChatRightSide";
 
 const WrapperBox = styled(Box)(({ theme }) => ({
   backgroundColor: "#ffffff",

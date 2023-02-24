@@ -5,6 +5,7 @@ import RightBar from "../components/RightBar";
 import { Box, Grid, Stack, useMediaQuery } from "@mui/material";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { theme } from "../utils/theme";
 
 const Home: React.FC = () => {
   const { isAuth } = useAuth();
@@ -12,6 +13,8 @@ const Home: React.FC = () => {
   const navigate = useNavigate();
 
   if (!isAuth) navigate("/login");
+
+  const ut = useMediaQuery(theme.breakpoints.down(850));
 
   return (
     <Stack display="flex" flexDirection="row">
@@ -21,7 +24,7 @@ const Home: React.FC = () => {
           xs={3}
           sx={{
             display: {
-              ut: "initial",
+              md: "initial",
               xs: "none",
             },
           }}
@@ -29,7 +32,7 @@ const Home: React.FC = () => {
           <Sidebar />
         </Grid>
         {/*@ts-ignore */}
-        <Grid item xs={12} ut={6} sx={{ xs: 12, margin: "0 auto" }}>
+        <Grid item xs={ut ? 12 : 6} sx={{ xs: 12, margin: "0 auto" }}>
           <Feed />
         </Grid>
         <Grid
@@ -37,7 +40,7 @@ const Home: React.FC = () => {
           xs={3}
           sx={{
             display: {
-              ut: "initial",
+              md: "initial",
               xs: "none",
             },
           }}

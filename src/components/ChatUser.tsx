@@ -1,20 +1,10 @@
-import {
-  Avatar,
-  Box,
-  Divider,
-  Skeleton,
-  Stack,
-  Typography,
-} from "@mui/material";
-import React from "react";
-import CurrentUserAvatar from "./CurrentUserAvatar";
-import { ChatType } from "./ChatLeftSide";
-import { setChat } from "../redux/chatSlice/slice";
-import { useAppDispatch } from "../hooks/redux-hooks";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { Box, Skeleton, Stack, Typography } from "@mui/material";
 import { formatDistanceToNow } from "date-fns";
+import React from "react";
 import { getUserData } from "../hooks/getUserData";
+import { useAppDispatch } from "../hooks/redux-hooks";
+import { setChat } from "../redux/chatSlice/slice";
+import CurrentUserAvatar from "./CurrentUserAvatar";
 
 interface Props {
   chat: any;
@@ -104,12 +94,17 @@ const ChatUser: React.FC<Props> = ({ chat }) => {
           <Typography alignSelf="center">{userData!.username}</Typography>
           {chat[1].lastMessage?.text && (
             <Typography fontSize="14px" sx={{ whiteSpace: "nowrap" }}>
-              {chat[1].date && formatDistanceToNow(chat[1].date) + " " + "ago"}
+              {chat[1].date &&
+                formatDistanceToNow(chat[1].date).replace("less than a", "") +
+                  " " +
+                  "ago"}
             </Typography>
           )}
         </Stack>
         <Typography color="gray" fontSize="14px">
-          {chat[1].lastMessage?.text ? chat[1].lastMessage?.text : ""}
+          {chat[1].lastMessage?.text
+            ? chat[1].lastMessage?.text.substring(0, 30)
+            : ""}
         </Typography>
       </Stack>
     </Stack>

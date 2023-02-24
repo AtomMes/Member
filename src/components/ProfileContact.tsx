@@ -1,6 +1,5 @@
-import React from "react";
+import { MoreHoriz } from "@mui/icons-material";
 import {
-  Avatar,
   Box,
   Button,
   Grid,
@@ -10,25 +9,24 @@ import {
   Skeleton,
   Stack,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
-import { WrapperBox } from "../App";
-import { MoreHoriz, ThreeDRotationSharp } from "@mui/icons-material";
-import { doc, DocumentData, getDoc } from "firebase/firestore";
-import CurrentUserAvatar from "./CurrentUserAvatar";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { auth } from "../firebase";
 import { getUserData } from "../hooks/getUserData";
+import { useAppDispatch } from "../hooks/redux-hooks";
+import { useConnectionType } from "../hooks/useConnectionType";
+import { getMutualConnections } from "../hooks/useMutualConnections";
+import { setChat } from "../redux/chatSlice/slice";
 import {
   connectBack,
   removeConnection,
   removeRequest,
   sendRequest,
 } from "../utils/connectionFunctions";
-import { useNavigate } from "react-router-dom";
-import { auth, db } from "../firebase";
-import { getMutualConnections } from "../hooks/useMutualConnections";
-import { setChat } from "../redux/chatSlice/slice";
-import { useDispatch } from "react-redux";
-import { useAppDispatch } from "../hooks/redux-hooks";
-import { useConnectionType } from "../hooks/useConnectionType";
+import { theme } from "../utils/theme";
+import CurrentUserAvatar from "./CurrentUserAvatar";
 
 interface Props {
   contact: string;
@@ -60,11 +58,13 @@ const ProfileContact: React.FC<Props> = ({ contact }) => {
   const { myContacts, inMyRequests, inContacts, inRequests } =
     useConnectionType(contact);
 
+  const ut = useMediaQuery(theme.breakpoints.down(850));
+
   if (!userData)
     return (
       <>
         {/*@ts-ignore */}
-        <Grid item xs={12} ut={6} sx={{ xs: 12 }} display="flex">
+        <Grid item xs={ut ? 12 : 6} sx={{ xs: 12 }} display="flex">
           <Paper
             sx={{
               display: "flex",
@@ -113,7 +113,7 @@ const ProfileContact: React.FC<Props> = ({ contact }) => {
   return (
     <>
       {/*@ts-ignore */}
-      <Grid item xs={12} ut={6} sx={{ xs: 12 }} display="flex">
+      <Grid item xs={ut ? 12 : 6} sx={{ xs: 12 }} display="flex">
         {userData && (
           <Paper
             sx={{

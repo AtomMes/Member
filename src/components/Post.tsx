@@ -1,12 +1,5 @@
+import { Comment, Send, ThumbUp, ThumbUpOffAlt } from "@mui/icons-material";
 import {
-  Comment,
-  LinkedCamera,
-  Send,
-  ThumbUp,
-  ThumbUpOffAlt,
-} from "@mui/icons-material";
-import {
-  Avatar,
   Box,
   Button,
   Grid,
@@ -19,30 +12,25 @@ import {
 import { formatDistanceToNow } from "date-fns";
 import {
   addDoc,
-  collection,
-  query,
-  onSnapshot,
-  orderBy,
-  where,
-  getDocs,
-  doc,
-  updateDoc,
-  arrayUnion,
   arrayRemove,
-  getDoc,
+  arrayUnion,
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
 } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 import { WrapperBox } from "../App";
 import { auth, db } from "../firebase";
-import Comments from "./Comments";
-import { v4 as uuidv4 } from "uuid";
-import CurrentUserAvatar from "./CurrentUserAvatar";
 import { useComments } from "../hooks/comments";
-import { useSelector } from "react-redux";
-import { useAppSelector } from "../hooks/redux-hooks";
 import { getUserData } from "../hooks/getUserData";
+import { useAppSelector } from "../hooks/redux-hooks";
+import Comments from "./Comments";
+import CurrentUserAvatar from "./CurrentUserAvatar";
 
 const UserData = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -200,7 +188,7 @@ const Post: React.FC<PostProps> = ({
           src={image}
           style={{
             maxWidth: "100%",
-            // height: "100%",
+            maxHeight: "600px",
             margin: "0 auto",
             zIndex: "10",
           }}

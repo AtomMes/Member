@@ -1,4 +1,4 @@
-import { Box, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import React from "react";
 import { WrapperBox } from "../App";
 import CreatePost from "./CreatePost";

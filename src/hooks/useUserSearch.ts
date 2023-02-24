@@ -1,11 +1,11 @@
-import React from "react";
 import {
   collection,
   DocumentData,
   onSnapshot,
   query,
-  where,
+  where
 } from "firebase/firestore";
+import React from "react";
 import { auth, db } from "../firebase";
 
 export const useSearch = (input: string) => {

@@ -1,14 +1,5 @@
 import { Box } from "@mui/material";
-import {
-  collection,
-  onSnapshot,
-  doc,
-  getDocs,
-  query,
-  orderBy,
-} from "firebase/firestore";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 import { usePosts } from "../hooks/usePosts";
 import Post from "./Post";

@@ -1,7 +1,4 @@
-import { updateDoc } from "firebase/firestore";
-import { setDoc } from "firebase/firestore";
-import { doc } from "firebase/firestore";
-import { getDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "./../firebase";
 
 export const createChat = async (id: string) => {

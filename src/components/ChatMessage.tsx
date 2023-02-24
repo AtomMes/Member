@@ -1,9 +1,7 @@
-import { Stack, Box, Avatar, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { formatDistanceToNow } from "date-fns";
-import { doc, getDoc } from "firebase/firestore";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { auth, db } from "../firebase";
 import { getUserData } from "../hooks/getUserData";
 import { useAppSelector } from "../hooks/redux-hooks";
 import { Message } from "./ChatMessages";
@@ -26,6 +24,8 @@ const ChatMessage: React.FC<Props> = ({ message }) => {
   }, [message]);
 
   const createdDate = formatDistanceToNow(message.date) + " " + "ago";
+
+  console.log(message.date);
 
   const navigate = useNavigate();
 

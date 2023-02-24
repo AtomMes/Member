@@ -1,47 +1,30 @@
-import React from "react";
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-  Button,
-  Menu,
-  MenuItem,
-  Box,
-  styled,
-  Avatar,
-  Badge,
-  TextField,
-  InputAdornment,
-  ListItemIcon,
-  Divider,
-  Tabs,
-  useMediaQuery,
-} from "@mui/material";
-import { Tab } from "@mui/material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import { useAuth } from "../hooks/useAuth";
+import { Group, Logout, Message } from "@mui/icons-material";
 import CatchingPokemonIcon from "@mui/icons-material/CatchingPokemon";
 import HomeIcon from "@mui/icons-material/Home";
-import { Stack } from "@mui/material";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import {
-  AccountCircle,
-  AccountCircleRounded,
-  Group,
-  Logout,
-  Message,
-  Search,
-  Settings,
-  VerifiedUser,
-} from "@mui/icons-material";
+  AppBar,
+  Badge,
+  Box,
+  Divider,
+  IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  Stack,
+  styled,
+  Tab,
+  Tabs,
+  Toolbar,
+  useMediaQuery,
+} from "@mui/material";
+import React from "react";
 import { useDispatch } from "react-redux";
-import { removeUser } from "../redux/userSlice/slice";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import CurrentUserAvatar from "./CurrentUserAvatar";
+import { useLocation, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import { getUserData } from "../hooks/getUserData";
+import { removeUser } from "../redux/userSlice/slice";
 import { theme } from "../utils/theme";
+import CurrentUserAvatar from "./CurrentUserAvatar";
 
 export const StyledTab = styled(Tab)(({ theme }) => ({
   maxWidth: "none",
@@ -120,7 +103,18 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
 
   const float = useMediaQuery(theme.breakpoints.down(410));
 
-  if (!userData) return <>Loading</>;
+  if (!userData)
+    return (
+      <AppBar
+        position="static"
+        sx={{
+          bgcolor: "white",
+          color: "darkGray",
+          marginBottom: "10px",
+          height: "72px",
+        }}
+      ></AppBar>
+    );
 
   return (
     <AppBar
@@ -189,6 +183,7 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
                 <CurrentUserAvatar
                   username={userData.username}
                   photoURL={userData.photoURL}
+                  size="45px"
                   id={userData.id}
                   disableNav
                 />{" "}

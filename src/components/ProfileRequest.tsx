@@ -1,5 +1,5 @@
 import { Check, Delete } from "@mui/icons-material";
-import { Grid, Paper, Avatar, Stack, Typography, Box } from "@mui/material";
+import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
 import React from "react";
 import { getUserData } from "../hooks/getUserData";
 import { connectBack, declineRequest } from "../utils/connectionFunctions";

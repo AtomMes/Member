@@ -1,5 +1,4 @@
 import { Box } from "@mui/material";
-import React from "react";
 import { auth } from "../firebase";
 import { useLikedPosts } from "../hooks/useLikedPosts";
 import Post from "./Post";

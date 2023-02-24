@@ -1,6 +1,5 @@
 import { Avatar, Box, Stack, Typography } from "@mui/material";
 import React from "react";
-import { auth } from "../firebase";
 import { getUserData } from "../hooks/getUserData";
 
 interface Props {

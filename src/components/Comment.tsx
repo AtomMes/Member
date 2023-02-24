@@ -1,9 +1,7 @@
-import { Avatar, Box, Stack, Typography, styled } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { formatDistanceToNow } from "date-fns";
-import { doc, getDoc } from "firebase/firestore";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { db } from "../firebase";
 import { getUserData } from "../hooks/getUserData";
 import CurrentUserAvatar from "./CurrentUserAvatar";
 

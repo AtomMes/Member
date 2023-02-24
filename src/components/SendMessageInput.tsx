@@ -2,15 +2,20 @@ import { uuidv4 } from "@firebase/util";
 import { Image, Send } from "@mui/icons-material";
 import {
   Box,
+  Button,
   InputAdornment,
   Stack,
   TextField,
-  Button,
   Typography,
-  tabClasses,
 } from "@mui/material";
 import { arrayUnion, doc, Timestamp, updateDoc } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+} from "firebase/storage";
 import React from "react";
 import { auth, db, storage } from "../firebase";
 import { useAppSelector } from "../hooks/redux-hooks";
@@ -24,46 +29,74 @@ const SendMessageInput = () => {
 
   const data = useAppSelector((state) => state.chat);
 
+  const [loading, setLoading] = React.useState(false);
+
+  function getFileType() {
+    if (img!.type === "image/jpeg") {
+      return "jpg";
+    } else if (img!.type === "image/png") {
+      return "png";
+    } else {
+      return "other";
+    }
+  }
+
   const handleSend = async () => {
-    if (img) {
-      const storageRef = ref(storage, uuidv4());
+    if (!img && !chosenImage && !text) {
+      alert("write something");
+    } else if (img && chosenImage) {
+      // const storageRef = ref(storage, uuidv4());
+      // const uploadTask = uploadBytes(img, { contentType: img.type });
 
-      const uploadTask = uploadBytesResumable(storageRef, img);
+      // try {
+      //   const snapshot = await uploadTask;
+      //   const downloadURL = await getDownloadURL(snapshot.ref);
 
+      //   await updateDoc(doc(db, "chats", data.chatId), {
+      //     messages: arrayUnion({
+      //       id: uuidv4(),
+      //       text,
+      //       senderId: currentUser!.uid,
+      //       date: Date.now(),
+      //       img: downloadURL,
+      //     }),
+      //   });
 
-      setText("");
+      //   setText("");
+      //   setImg(null);
+      //   setChosenImage("");
+      // } catch (error) {
+      //   console.log(error);
+      // }
       setImg(null);
+      setText("");
+      setLoading(false);
       setChosenImage("");
+      const storage = getStorage();
+      const fileRef = ref(storage, "postImages/" + uuidv4() + getFileType());
 
-      uploadTask.on(
-        //@ts-ignore
-        (error: any) => {
-          console.log(error);
-        },
-        async () => {
-          await getDownloadURL(uploadTask.snapshot.ref).then(
-            async (downloadURL) => {
-              console.log("ste hasanq");
-              try {
-                await updateDoc(doc(db, "chats", data.chatId), {
-                  messages: arrayUnion({
-                    id: uuidv4(),
-                    text,
-                    senderId: currentUser!.uid,
-                    date: Timestamp.now(),
-                    img: downloadURL,
-                  }),
-                });
-                console.log("normaler");
-              } catch (error: any) {
-                console.log(error);
-                alert(error.message);
-              }
-              console.log("update arav");
-            }
-          );
-        }
-      );
+      await uploadBytes(fileRef, img)
+        .then(async () => {
+          await getDownloadURL(fileRef)
+            .then(async (imageURL) => {
+              await updateDoc(doc(db, "chats", data.chatId), {
+                messages: arrayUnion({
+                  id: uuidv4(),
+                  text,
+                  senderId: currentUser!.uid,
+                  date: Date.now(),
+                  img: imageURL,
+                }),
+              });
+            })
+            .catch((e) => {
+              console.log(e.message);
+            });
+        })
+        .catch((e) => {
+          console.log(e.message);
+        })
+        .finally(() => setLoading(false));
     } else {
       setText("");
       await updateDoc(doc(db, "chats", data.chatId), {
@@ -89,6 +122,7 @@ const SendMessageInput = () => {
       },
       [data.chatId + ".date"]: Date.now(),
     });
+    setLoading(false);
   };
 
   return (

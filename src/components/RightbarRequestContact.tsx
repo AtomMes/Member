@@ -1,18 +1,12 @@
 import { Check, Delete, Message } from "@mui/icons-material";
 import {
-  Grid,
-  Paper,
-  Avatar,
-  Stack,
-  Typography,
   Box,
-  Skeleton,
+  Skeleton, Stack,
+  Typography
 } from "@mui/material";
-import { DocumentData } from "firebase/firestore";
 import React from "react";
 import { getUserData } from "../hooks/getUserData";
 import CurrentUserAvatar from "./CurrentUserAvatar";
-import { onClickTypes } from "./RightBar";
 
 interface Props {
   onClick: (

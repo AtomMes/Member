@@ -1,6 +1,6 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { removeUser, setUser } from "../redux/userSlice/slice";
 import { store } from "../redux/store";
+import { removeUser, setUser } from "../redux/userSlice/slice";
 
 export const checkLoggedInUser = () => {
   const auth = getAuth();

@@ -1,11 +1,9 @@
-import { useCollectionData } from "react-firebase-hooks/firestore";
 import {
-  query,
-  where,
   collection,
-  orderBy,
-  limitToLast,
+  orderBy, query,
+  where
 } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db } from "../firebase";
 
 export function useComments(id:string) {

@@ -1,4 +1,4 @@
-import { Box, styled, ThemeProvider, Typography } from "@mui/material";
+import { Box, styled, ThemeProvider } from "@mui/material";
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
@@ -12,7 +12,6 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import { checkLoggedInUser } from "./utils/checkAuthUser";
-import { createTheme } from "@mui/material/styles";
 import { theme } from "./utils/theme";
 
 export const WrapperBox = styled(Box)(({ theme }) => ({
@@ -39,38 +38,39 @@ const App: React.FC = () => {
 
   return (
     <Box>
-      <ThemeProvider theme={theme}>
-        {isAuth && isUserReady ? <Navbar loggedIn /> : <Navbar />}
-        <Box width="100%" maxWidth="1100px" margin="0 auto">
-          {!isAuth && (
-            <>
-              <Routes>
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-              </Routes>
-            </>
-          )}
-          {isAuth && isUserReady && (
-            <>
-              <Routes>
-                <Route path="/messaging" element={<ChatPage />} />
-                <Route path="/profile" element={<UserProfilePage />} />
-                <Route path="/" element={<Home />} />
-                <Route
-                  path="*"
-                  element={
-                    <>
-                      <Navigate to="/" /> <Home />
-                    </>
-                  }
-                />
-                <Route path="/profile/:id" element={<UserProfilePage />} />
-                <Route path="/contacts" element={<ContactsPage />} />
-              </Routes>
-            </>
-          )}
-        </Box>
-      </ThemeProvider>
+      {/* <ThemeProvider theme={theme}> */}
+      {isAuth && isUserReady ? <Navbar loggedIn /> : <Navbar />}
+      <Box width="100%" maxWidth="1100px" margin="0 auto">
+        {!isAuth && (
+          <>
+            <Routes>
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="*" element={<LoginPage />} />
+            </Routes>
+          </>
+        )}
+        {isAuth && isUserReady && (
+          <>
+            <Routes>
+              <Route path="/messaging" element={<ChatPage />} />
+              <Route path="/profile" element={<UserProfilePage />} />
+              <Route path="/" element={<Home />} />
+              <Route
+                path="*"
+                element={
+                  <>
+                    <Navigate to="/" /> <Home />
+                  </>
+                }
+              />
+              <Route path="/profile/:id" element={<UserProfilePage />} />
+              <Route path="/contacts" element={<ContactsPage />} />
+            </Routes>
+          </>
+        )}
+      </Box>
+      {/* </ThemeProvider> */}
     </Box>
   );
 };

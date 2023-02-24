@@ -1,22 +1,7 @@
 import {
-  Check,
-  Delete,
-  MoreHoriz,
-  ThreeDRotationSharp,
-} from "@mui/icons-material";
-import {
-  Avatar,
-  Box,
-  Button,
-  Grid,
-  Menu,
-  MenuItem,
-  Paper,
-  Stack,
-  Typography,
+  Grid
 } from "@mui/material";
 import React from "react";
-import { WrapperBox } from "../App";
 import { auth } from "../firebase";
 import { getUserData } from "../hooks/getUserData";
 import ProfileRequest from "./ProfileRequest";

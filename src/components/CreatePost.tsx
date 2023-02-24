@@ -169,7 +169,7 @@ const CreatePost: React.FC<Props> = ({ feed, children }) => {
         )}
         {/*@ts-ignore */}
 
-        {/* <Modal
+        <Modal
           open={open}
           onClose={() => setOpen(false)}
           sx={{ width: "500px", margin: "0 auto" }}
@@ -270,7 +270,7 @@ const CreatePost: React.FC<Props> = ({ feed, children }) => {
               />
             </Stack>
           </ModalDialog>
-        </Modal> */}
+        </Modal>
       </Stack>
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}

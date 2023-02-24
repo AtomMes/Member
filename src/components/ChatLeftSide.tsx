@@ -1,36 +1,19 @@
-import { Search, Send } from "@mui/icons-material";
+import { Search } from "@mui/icons-material";
 import {
-  Avatar,
-  Box,
-  Button,
-  Divider,
+  Box, Divider,
   Drawer,
   InputAdornment,
   Stack,
   styled,
   TextField,
   Typography,
-  useMediaQuery,
+  useMediaQuery
 } from "@mui/material";
-import {
-  getDocs,
-  query,
-  collection,
-  where,
-  getDoc,
-  doc,
-  setDoc,
-  updateDoc,
-  onSnapshot,
-} from "firebase/firestore";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { auth, db } from "../firebase";
+import { auth } from "../firebase";
 import { getUserData } from "../hooks/getUserData";
-import { createChat } from "../utils/chatFunctions";
 import { theme } from "../utils/theme";
 import ChatContactsSearch from "./ChatContactsSearch";
-import ChatUser from "./ChatUser";
 import ChatUsers from "./ChatUsers";
 
 const SearchUserInput = styled(TextField)(({ theme }) => ({

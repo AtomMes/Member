@@ -1,23 +1,20 @@
 import { Article, People } from "@mui/icons-material";
-import { Button, Modal, Stack, styled, Typography } from "@mui/material";
-import { Box } from "@mui/system";
-import React from "react";
-import { useSelector } from "react-redux";
-import Avatar from "react-avatar-edit";
-import CurrentUserAvatar from "./CurrentUserAvatar";
 import { ModalDialog } from "@mui/joy";
+import { Button, Modal, styled, Typography } from "@mui/material";
+import { Box } from "@mui/system";
+import { getAuth, updateProfile } from "firebase/auth";
+import { doc, updateDoc } from "firebase/firestore";
 import {
   getDownloadURL,
   getStorage,
   ref,
-  uploadBytes,
   uploadString,
 } from "firebase/storage";
-import { getAuth, updateProfile } from "firebase/auth";
-import { collection, doc, setDoc, updateDoc } from "firebase/firestore";
+import React from "react";
+import Avatar from "react-avatar-edit";
 import { db } from "../firebase";
-import { v4 as uuidv4 } from "uuid";
 import { useAppSelector } from "../hooks/redux-hooks";
+import CurrentUserAvatar from "./CurrentUserAvatar";
 
 const StyledButton = styled(Button)(({ theme }) => ({
   display: "flex",
@@ -97,7 +94,6 @@ const Sidebar: React.FC = () => {
             id={id!}
           />
           <Typography>{username}</Typography>
-
           <Typography onClick={() => setOpen(!open)}>
             {auth.currentUser!.photoURL ? "Change Photo" : "Add a photo"}
           </Typography>

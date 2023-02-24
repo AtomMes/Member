@@ -1,4 +1,3 @@
-import { Avatar } from "@mui/material";
 import React from "react";
 import { getUserData } from "../hooks/getUserData";
 import CurrentUserAvatar from "./CurrentUserAvatar";

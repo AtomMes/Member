@@ -1,5 +1,5 @@
+import { collection, orderBy, query, where } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { query, where, collection, orderBy } from "firebase/firestore";
 import { db } from "../firebase";
 
 export function useLikedPosts(id: string) {

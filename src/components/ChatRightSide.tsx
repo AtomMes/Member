@@ -1,14 +1,10 @@
-import { ArrowBack, Image, Send } from "@mui/icons-material";
-import { uuidv4 } from "@firebase/util";
-import { Box, Stack, Typography, Button, useMediaQuery } from "@mui/material";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { ArrowBack } from "@mui/icons-material";
+import { Box, Stack, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
-import { useParams } from "react-router-dom";
-import { auth, db, storage } from "../firebase";
 import { useAppSelector } from "../hooks/redux-hooks";
+import { theme } from "../utils/theme";
 import ChatMessages from "./ChatMessages";
 import SendMessageInput from "./SendMessageInput";
-import { theme } from "../utils/theme";
 
 interface Props {
   handleClick: () => void;
@@ -20,7 +16,7 @@ const ChatRightSide: React.FC<Props> = ({ handleClick }) => {
   const sm = useMediaQuery(theme.breakpoints.down(600));
 
   return (
-    <Stack height="100%" width="100%">
+    <Stack height="100%" width="100%" maxWidth="800px">
       <Box
         borderBottom="1px solid rgba(50, 50, 50, .2)"
         padding="10px"
