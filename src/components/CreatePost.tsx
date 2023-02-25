@@ -130,43 +130,20 @@ const CreatePost: React.FC<Props> = ({ feed, children }) => {
     }
   };
 
-  const matches = useMediaQuery(theme.breakpoints.up(650));
-  const disButtons = useMediaQuery(theme.breakpoints.up(490));
   if (!userData) return <>Loading</>;
 
   return (
     <Box>
       <Stack flexDirection="row" gap={1}>
-        {feed ? (
-          <>
-            <CurrentUserAvatar
-              username={userData.username}
-              photoURL={userData.photoURL}
-              id={userData.id}
-            />
-            <CreatePostButton variant="outlined" onClick={() => setOpen(true)}>
-              Start a post
-            </CreatePostButton>
-          </>
-        ) : (
-          <>
-            {matches ? (
-              <CreatePostButton
-                variant="outlined"
-                startIcon={<AddCircle />}
-                onClick={() => setOpen(true)}
-              >
-                {matches && "Add post"}
-              </CreatePostButton>
-            ) : (
-              <Box sx={{ display: disButtons ? "initial" : "none" }}>
-                <Button sx={{ color: "black" }}>
-                  <AddCircle />
-                </Button>
-              </Box>
-            )}
-          </>
-        )}
+        <CurrentUserAvatar
+          username={userData.username}
+          photoURL={userData.photoURL}
+          id={userData.id}
+        />
+        <CreatePostButton variant="outlined" onClick={() => setOpen(true)}>
+          Start a post
+        </CreatePostButton>
+
         {/*@ts-ignore */}
 
         <Modal

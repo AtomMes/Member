@@ -1,13 +1,30 @@
-import { Comment, Send, ThumbUp, ThumbUpOffAlt } from "@mui/icons-material";
+import {
+  Comment,
+  Delete,
+  DockRounded,
+  Send,
+  ThumbUp,
+  ThumbUpOffAlt,
+} from "@mui/icons-material";
 import {
   Box,
   Button,
   Grid,
+  IconButton,
   InputAdornment,
   Stack,
   styled,
   TextField,
+  Tooltip,
   Typography,
+  Zoom,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { formatDistanceToNow } from "date-fns";
 import {
@@ -15,6 +32,7 @@ import {
   arrayRemove,
   arrayUnion,
   collection,
+  deleteDoc,
   doc,
   getDocs,
   query,
@@ -31,6 +49,14 @@ import { getUserData } from "../hooks/getUserData";
 import { useAppSelector } from "../hooks/redux-hooks";
 import Comments from "./Comments";
 import CurrentUserAvatar from "./CurrentUserAvatar";
+
+const SnackbarAlert = React.forwardRef(function SnackbarAlert(
+  props: any,
+  ref: any
+) {
+  //stexeq chjogi incher arav bayc ena arel vor castomni snackvara stexcel(ira stylerov eli)
+  return <Alert elevation={6} ref={ref} {...props} />;
+});
 
 const UserData = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -81,6 +107,7 @@ interface PostProps {
   image: string;
   likes: string[];
   text: string;
+  del?: Boolean;
 }
 
 const Post: React.FC<PostProps> = ({
@@ -90,6 +117,7 @@ const Post: React.FC<PostProps> = ({
   date,
   id,
   likes,
+  del,
 }) => {
   const [close, setClose] = React.useState<boolean>(true);
   const [descText, setDescText] = React.useState<string>("");
@@ -99,6 +127,8 @@ const Post: React.FC<PostProps> = ({
   const [isPostLiked, setIsPostLiked] = React.useState<boolean>(
     likes.includes(auth.currentUser!.uid)
   );
+  const [openDialog, setOpenDialog] = React.useState<boolean>(false);
+  const [openSnackbar, setOpenSnackbar] = React.useState<boolean>(false);
 
   const createdDate = formatDistanceToNow(date) + " " + "ago";
   const { username, imageURL } = useAppSelector((state) => state.user);
@@ -151,6 +181,25 @@ const Post: React.FC<PostProps> = ({
     }
   };
 
+  const finnalyDeletePost = async (id: string) => {
+    console.log(id);
+    await deleteDoc(doc(db, "comments", id));
+  };
+
+  const deletePost = async () => {
+    let docId = "";
+    const q = query(collection(db, "posts"), where("id", "==", id));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(async (doc) => (docId = doc.id));
+    await deleteDoc(doc(db, "posts", docId));
+
+    const c = query(collection(db, "comments"), where("postId", "==", id));
+    const comsSnapshot = await getDocs(c);
+    comsSnapshot.forEach(async (doc) => {
+      finnalyDeletePost(doc.id);
+    });
+  };
+
   const navigate = useNavigate();
 
   if (!userData) {
@@ -168,9 +217,59 @@ const Post: React.FC<PostProps> = ({
           />
         </Box>
         <Typography>{userData!.username}</Typography>
-        <Typography fontSize="14px" color="gray">
+        <Typography fontSize="14px" color="gray" flex="1">
           {createdDate.replace("about", "")}
         </Typography>
+        {del && (
+          <>
+            <Tooltip
+              title="Delete"
+              TransitionComponent={Zoom}
+              arrow
+              placement="left"
+            >
+              <IconButton>
+                <Delete onClick={() => setOpenDialog(true)} />
+              </IconButton>
+            </Tooltip>
+            <Dialog
+              aria-labelledby="dialog-title" //
+              aria-describedby="dialog-description" //es 2y yanm ban chen poxm bayc tox mnan //?
+              open={openDialog}
+              onClose={() => setOpenDialog(false)} //vor urish tex sxmen onClose a kanchvelu
+            >
+              <DialogTitle id="dialog-title">Delete the post?</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="dialog-description">
+                  Please note that once you delete this post, any comments or
+                  interactions associated with it will also be removed.
+                </DialogContentText>
+                <DialogActions>
+                  <Button
+                    autoFocus //vor miangamic sra vra fokusy exni,
+                    onClick={deletePost}
+                  >
+                    Submit
+                  </Button>
+                  <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
+                </DialogActions>
+              </DialogContent>
+            </Dialog>
+
+            <Snackbar
+              open={openSnackbar}
+              autoHideDuration={6000}
+              onClose={() => setOpenSnackbar(false)}
+            >
+              <SnackbarAlert
+                onClose={() => setOpenSnackbar(false)}
+                severity="success"
+              >
+                Post deleted successfully!
+              </SnackbarAlert>
+            </Snackbar>
+          </>
+        )}
       </UserData>
       <PostImg>
         <img
@@ -244,9 +343,36 @@ const Post: React.FC<PostProps> = ({
           display="flex"
         >
           <Button
-            startIcon={isPostLiked ? <ThumbUp /> : <ThumbUpOffAlt />}
+            startIcon={
+              isPostLiked ? (
+                <ThumbUp
+                  sx={{
+                    transition: ".2s",
+                    "&:hover": {
+                      transform: "scale(1.2)",
+                    },
+                  }}
+                />
+              ) : (
+                <ThumbUpOffAlt
+                  sx={{
+                    transition: ".2s",
+                    "&:hover": {
+                      transform: "scale(1.2)",
+                    },
+                  }}
+                />
+              )
+            }
             onClick={() => onLike()}
-            sx={{ color: "gray", width: "100%", textAlign: "center" }}
+            sx={{
+              color: "gray",
+              width: "100%",
+              textAlign: "center",
+              "&:hover": {
+                bgcolor: "initial",
+              },
+            }}
           >
             {likes.length}
           </Button>
@@ -259,8 +385,24 @@ const Post: React.FC<PostProps> = ({
           display="flex"
         >
           <Button
-            startIcon={<Comment />}
-            sx={{ color: "gray", width: "100%", textAlign: "center" }}
+            startIcon={
+              <Comment
+                sx={{
+                  transition: ".2s",
+                  "&:hover": {
+                    transform: "scale(1.2)",
+                  },
+                }}
+              />
+            }
+            sx={{
+              color: "gray",
+              width: "100%",
+              textAlign: "center",
+              "&:hover": {
+                bgcolor: "initial",
+              },
+            }}
             onClick={() => setShowAddComment(!showAddComment)}
           >
             {comments?.length}
