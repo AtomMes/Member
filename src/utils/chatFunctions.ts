@@ -29,9 +29,5 @@ export const createChat = async (id: string) => {
         [combinedId + ".date"]: Date.now(),
       });
     }
-
-
-    
-
   } catch (err) {}
 };

@@ -1,9 +1,5 @@
 import { Check, Delete, Message } from "@mui/icons-material";
-import {
-  Box,
-  Skeleton, Stack,
-  Typography
-} from "@mui/material";
+import { Box, Skeleton, Stack, Typography } from "@mui/material";
 import React from "react";
 import { getUserData } from "../hooks/getUserData";
 import CurrentUserAvatar from "./CurrentUserAvatar";

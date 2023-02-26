@@ -38,7 +38,6 @@ const App: React.FC = () => {
 
   return (
     <Box>
-      {/* <ThemeProvider theme={theme}> */}
       {isAuth && isUserReady ? <Navbar loggedIn /> : <Navbar />}
       <Box width="100%" maxWidth="1100px" margin="0 auto">
         {!isAuth && (
@@ -70,7 +69,6 @@ const App: React.FC = () => {
           </>
         )}
       </Box>
-      {/* </ThemeProvider> */}
     </Box>
   );
 };

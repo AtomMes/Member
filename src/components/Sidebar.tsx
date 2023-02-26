@@ -14,7 +14,9 @@ import React from "react";
 import Avatar from "react-avatar-edit";
 import { db } from "../firebase";
 import { useAppSelector } from "../hooks/redux-hooks";
+import { addProfilePicture } from "../utils/profileFunctions";
 import CurrentUserAvatar from "./CurrentUserAvatar";
+import UserPhotoModal from "./UserPhotoModal";
 
 const StyledButton = styled(Button)(({ theme }) => ({
   display: "flex",
@@ -45,42 +47,6 @@ const Sidebar: React.FC = () => {
   const auth = getAuth();
 
   const user = auth.currentUser;
-
-  const [photo, setPhoto] = React.useState<string | undefined>(undefined);
-
-  function onClose() {
-    setPhoto(undefined);
-  }
-  function onCrop(pv: any) {
-    setPhoto(pv);
-  }
-
-  const addUserPhoto = async () => {
-    if (photo) {
-      setOpen(false);
-      const storage = getStorage();
-      if (user) {
-        const fileRef = ref(storage, "userAvatars/" + user.uid + ".png");
-        try {
-          await uploadString(fileRef, photo, "data_url");
-          const photoURL = await getDownloadURL(fileRef);
-          await updateProfile(user, {
-            photoURL: photoURL,
-          });
-          const refer = doc(db, "users", auth.currentUser.uid);
-          await updateDoc(refer, {
-            photoURL: auth.currentUser.photoURL,
-          });
-        } catch (error) {
-          console.log(error);
-        }
-      }
-      setPhoto(undefined);
-      // refresh();
-    } else {
-      alert("Please fill all the fields.");
-    }
-  };
 
   return (
     <div className="sticky">
@@ -114,64 +80,7 @@ const Sidebar: React.FC = () => {
             <Article sx={{ fontSize: "30px", marginRight: "10px" }} /> Posts
           </StyledButton>
         </Box>
-        <Modal
-          open={open}
-          onClose={() => {
-            setOpen(false);
-            setPhoto(undefined);
-          }}
-          sx={{ width: "100%", maxWidth: "500px", margin: "0 auto" }}
-        >
-          <ModalDialog
-            aria-labelledby="basic-modal-dialog-title"
-            aria-describedby="basic-modal-dialog-description"
-            sx={{
-              borderRadius: "md",
-              boxShadow: "lg",
-              minWidth: "100%",
-              backgroundColor: "rgba(255,255,255, .9)",
-            }}
-          >
-            <Box
-              display="flex"
-              justifyContent="center"
-              width="100%"
-              overflow="auto"
-            >
-              <Avatar
-                width={250}
-                height={250}
-                onCrop={onCrop}
-                onClose={onClose}
-                src={undefined}
-              />
-            </Box>
-            <Box
-              display="flex"
-              justifyContent="center"
-              margin="20px 0 0"
-              gap="80px"
-            >
-              <Button
-                variant="contained"
-                color="success"
-                onClick={addUserPhoto}
-              >
-                Save
-              </Button>
-              <Button
-                variant="outlined"
-                color="error"
-                onClick={() => {
-                  setPhoto(undefined);
-                  setOpen(false);
-                }}
-              >
-                Cancel
-              </Button>
-            </Box>
-          </ModalDialog>
-        </Modal>
+        <UserPhotoModal open={open} setOpen={setOpen} />
       </WrapperBox>
     </div>
   );

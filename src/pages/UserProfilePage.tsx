@@ -60,6 +60,7 @@ import { getUserData } from "../hooks/getUserData";
 import { useAuth } from "../hooks/useAuth";
 import { useConnectionType } from "../hooks/useConnectionType";
 import { getMutualConnections } from "../hooks/useMutualConnections";
+import { setChat } from "../redux/chatSlice/slice";
 import { removeUser } from "../redux/userSlice/slice";
 import {
   connectBack,
@@ -68,6 +69,8 @@ import {
   sendRequest,
 } from "../utils/connectionFunctions";
 import { theme } from "../utils/theme";
+import { createChat } from "../utils/chatFunctions";
+import UserPhotoModal from "../components/UserPhotoModal";
 
 export const CreatePostButton = styled(Button)(({ theme }) => ({
   marginTop: "10px",
@@ -90,6 +93,7 @@ const UserProfilePage: React.FC = () => {
   const [loading, setLoading] = React.useState<Boolean>(false);
   const [progress, setProgress] = React.useState<number>(0);
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
+  const [openModal, setOpenModal] = React.useState<boolean>(false);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -168,14 +172,14 @@ const UserProfilePage: React.FC = () => {
     }
   };
 
+  const dispatch = useDispatch();
+
   const logOut = () => {
     auth.signOut();
     localStorage.removeItem("isAuth");
     dispatch(removeUser());
     navigate("/login");
   };
-
-  const dispatch = useDispatch();
 
   const { userData } = getUserData(id);
 
@@ -268,16 +272,22 @@ const UserProfilePage: React.FC = () => {
                     sx={{
                       minWidth: "0",
                       position: "absolute",
-                      bottom: "-20px",
-                      right: 0,
+                      bottom: "10px",
+                      right: "10px",
                       color: "dimgray",
                       zIndex: "100",
+                      bgcolor: "white",
+                      transition: ".2s",
+                      "&:hover": {
+                        backgroundColor: "white",
+                        transform: "scale(1.1)",
+                      },
                     }}
                     variant="contained"
-                    color="inherit"
                     component="label"
+                    size="small"
                   >
-                    <AddAPhoto />
+                    <AddAPhoto fontSize="small" />
                     <input
                       type="file"
                       id="addPhotoInput"
@@ -298,12 +308,16 @@ const UserProfilePage: React.FC = () => {
               sx={{ height: matches ? "183px" : float ? "230px" : "354px" }}
               width="100%"
             >
-              <Box position="absolute" width="calc(100% - 30px) " top="-40px">
+              <Box
+                position="absolute"
+                sx={{ width: !matches ? "100%" : "calc(100% - 30px)" }}
+                top="-40px"
+              >
                 <Stack
                   sx={{
                     flexDirection: matches ? "row" : "column",
                     alignItems: !float ? "center" : "initial",
-                    paddingLeft: !float ? 0 : "30px",
+                    paddingLeft: !matches ? 0 : "30px",
                   }}
                   width="100%"
                   borderBottom="1px solid black"
@@ -313,15 +327,38 @@ const UserProfilePage: React.FC = () => {
                     sx={{
                       flexDirection: float ? "row" : "column",
                       alignItems: !float ? "center" : "initial",
-                      paddingLeft: !float ? 0 : "30px",
                     }}
                   >
-                    <CurrentUserAvatar
-                      username={userData.username}
-                      photoURL={userData.photoURL}
-                      id={userData.id}
-                      size={"170px"}
-                    />
+                    <Box sx={{ position: "relative" }}>
+                      <CurrentUserAvatar
+                        username={userData.username}
+                        photoURL={userData.photoURL}
+                        id={userData.id}
+                        size={"170px"}
+                      />
+                      <IconButton
+                        sx={{
+                          minWidth: "0",
+                          position: "absolute",
+                          bottom: "10px",
+                          right: "10px",
+                          color: "dimgray",
+                          zIndex: "100",
+                          bgcolor: "white",
+                          border: "1px solid gray",
+                          transition: ".2s",
+                          "&:hover": {
+                            backgroundColor: "white",
+                            transform: "scale(1.1)",
+                          },
+                        }}
+                        size="small"
+                        onClick={() => setOpenModal(true)}
+                      >
+                        <AddAPhoto fontSize="small" />
+                      </IconButton>
+                      <UserPhotoModal open={openModal} setOpen={setOpenModal} />
+                    </Box>
                     <Box
                       display="flex"
                       marginLeft="20px"
@@ -372,13 +409,13 @@ const UserProfilePage: React.FC = () => {
                             />
                           </IconButton>
                         ) : (
-                          <CreatePostButton sx={{ width: "100%" }}>
-                            <Logout
-                              onClick={() => {
-                                setOpenDialog(true);
-                              }}
-                              sx={{ color: "dimgray" }}
-                            />
+                          <CreatePostButton
+                            sx={{ width: "100%" }}
+                            onClick={() => {
+                              setOpenDialog(true);
+                            }}
+                            startIcon={<Logout sx={{ color: "dimgray" }} />}
+                          >
                             Log out{" "}
                           </CreatePostButton>
                         )}
@@ -451,6 +488,17 @@ const UserProfilePage: React.FC = () => {
                         )}
                         <CreatePostButton
                           sx={{ width: !matches ? "100%" : "initial" }}
+                          onClick={() => {
+                            createChat(userData.id);
+                            dispatch(
+                              setChat({
+                                displayName: userData.username,
+                                photoURL: userData.photoURL,
+                                uid: userData.id,
+                              })
+                            );
+                            navigate("/messaging");
+                          }}
                         >
                           Message
                         </CreatePostButton>
