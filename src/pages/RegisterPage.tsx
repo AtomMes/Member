@@ -15,6 +15,7 @@ import { db } from "../firebase";
 import { useAuth } from "../hooks/useAuth";
 
 const RegisterPage: React.FC = () => {
+  const [err, setErr] = React.useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -25,8 +26,8 @@ const RegisterPage: React.FC = () => {
   ) => {
     if (email && password && username) {
       const auth = getAuth();
-      createUserWithEmailAndPassword(auth, email, password).then(
-        async ({ user }) => {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(async ({ user }) => {
           await setDoc(doc(db, "userChats", user.uid), {});
 
           await setDoc(doc(db, "users", user.uid), {
@@ -51,8 +52,10 @@ const RegisterPage: React.FC = () => {
           );
           localStorage.setItem("isAuth", "true");
           navigate("/");
-        }
-      );
+        })
+        .catch((err) => {
+          setErr(true);
+        });
     }
   };
 
@@ -67,9 +70,11 @@ const RegisterPage: React.FC = () => {
     <div>
       <LoginAndRegister
         title="Register"
+        header="Become a member"
         to="/login"
         reg
         handleClick={onRegister}
+        err={err}
       />
     </div>
   );

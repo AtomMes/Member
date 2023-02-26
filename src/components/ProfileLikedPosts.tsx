@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Alert } from "@mui/material";
 import { auth } from "../firebase";
 import { useLikedPosts } from "../hooks/useLikedPosts";
 import Post from "./Post";
@@ -8,10 +8,10 @@ const ProfileLikedPosts = () => {
 
   console.log(likedPosts);
 
-  if (isLoading) return <>Loading...</>;
+  if (isLoading) return <></>;
 
   if (!likedPosts) {
-    return <>Loading...</>;
+    return <></>;
   }
 
   return (
@@ -23,17 +23,24 @@ const ProfileLikedPosts = () => {
       width="600px"
       maxWidth="100%"
     >
-      {likedPosts.map((post) => (
-        <Post
-          authorId={post.authorId}
-          image={post.image}
-          text={post.text}
-          date={post.date}
-          id={post.id}
-          likes={post.likes}
-          key={post.id}
-        />
-      ))}
+      {likedPosts.length ? (
+        likedPosts.map((post) => (
+          <Post
+            authorId={post.authorId}
+            image={post.image}
+            text={post.text}
+            date={post.date}
+            id={post.id}
+            likes={post.likes}
+            key={post.id}
+          />
+        ))
+      ) : (
+        <Alert severity="info" variant="outlined" sx={{ margin: "20px auto" }}>
+          You haven't liked any posts yet. Browse through posts and like the
+          ones that you find interesting or helpful.
+        </Alert>
+      )}
     </Box>
   );
 };

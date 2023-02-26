@@ -7,19 +7,14 @@ import Post from "./Post";
 const Posts: React.FC = () => {
   const { posts, isLoading } = usePosts();
 
-  if (isLoading) return <>Loading...</>;
+  if (isLoading) return <></>;
 
   if (!posts) {
-    return <>Loading...</>;
+    return <></>;
   }
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      gap="10px"
-      margin="0 auto"
-    >
+    <Box display="flex" flexDirection="column" gap="10px" margin="0 auto">
       {posts.map((post) => (
         <Post
           authorId={post.authorId}

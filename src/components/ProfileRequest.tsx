@@ -1,8 +1,17 @@
 import { Check, Delete } from "@mui/icons-material";
-import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Paper,
+  Skeleton,
+  Stack,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import React from "react";
 import { getUserData } from "../hooks/getUserData";
 import { connectBack, declineRequest } from "../utils/connectionFunctions";
+import { theme } from "../utils/theme";
 import CurrentUserAvatar from "./CurrentUserAvatar";
 
 interface Props {
@@ -12,11 +21,58 @@ interface Props {
 const ProfileRequest: React.FC<Props> = ({ request }) => {
   const { userData, loading } = getUserData(request);
 
-  if (loading) return <>Loading...</>;
-  if (!userData) return <>Loading...</>;
+  const ut = useMediaQuery(theme.breakpoints.down(850));
+
+  if (!userData)
+    return (
+      <>
+        {/*@ts-ignore */}
+        <Grid item xs={ut ? 12 : 6} sx={{ xs: 12 }} display="flex">
+          <Paper
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              bgcolor: "white",
+              padding: "15px",
+            }}
+          >
+            <Box marginRight="10px">
+              <Skeleton
+                variant="circular"
+                width={40}
+                height={40}
+                animation="wave"
+              />
+            </Box>
+            <Stack justifyContent="center" flex="1">
+              <Typography variant="body1" width="100%">
+                <Skeleton variant="text" width="100px" animation="wave" />
+              </Typography>
+              <Typography
+                sx={{
+                  color: "gray",
+                  fontSize: "14px",
+                }}
+              >
+                <Skeleton variant="text" width="200px" animation="wave" />
+              </Typography>
+            </Stack>
+            <Skeleton
+              variant="rectangular"
+              width="40px"
+              height="25px"
+              sx={{ borderRadius: "20px" }}
+              animation="wave"
+            />
+          </Paper>
+        </Grid>
+      </>
+    );
 
   return (
-    <Grid item xs={6} display="flex">
+    <Grid item xs={ut ? 12 : 6} sx={{ xs: 12 }} display="flex">
       <Paper
         sx={{
           display: "flex",

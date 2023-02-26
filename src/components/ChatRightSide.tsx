@@ -27,7 +27,6 @@ const ChatRightSide: React.FC<Props> = ({ handleClick }) => {
         <Typography>
           {user.displayName ? user.displayName : "chose User"}
         </Typography>
-        <Typography color="gray">Online</Typography>
       </Box>
       <Box overflow="auto" flex="1" padding="15px">
         {data.chatId && <ChatMessages />}

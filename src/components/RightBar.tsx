@@ -20,7 +20,7 @@ const StyledTypography = styled(Stack)(({ theme }) => ({
   fontSize: "18px",
   width: "35px",
   height: "25px",
-  backgroundColor: "#f3f2ef",
+  backgroundColor: "#e8fdff",
   textAlign: "center",
 }));
 
@@ -65,7 +65,31 @@ const RightBar: React.FC = () => {
   const { userData, loading } = getUserData(id || undefined);
 
   if (!userData) {
-    return <>Loading...</>;
+    return (
+      <>
+        <div className="sticky">
+          {auth.currentUser && (
+            <WrapperBox>
+              {" "}
+              <Box marginBottom="30px">
+                <StyledStack marginBottom="10px">
+                  <Typography variant="h6">Requests</Typography>
+                  <StyledTypography>0</StyledTypography>
+                </StyledStack>
+              </Box>
+              <Box>
+                <StyledStack marginBottom="10px">
+                  <Typography variant="h6" whiteSpace="nowrap">
+                    Contacts{" "}
+                  </Typography>
+                  <StyledTypography>0</StyledTypography>
+                </StyledStack>
+              </Box>
+            </WrapperBox>
+          )}
+        </div>
+      </>
+    );
   }
 
   return (

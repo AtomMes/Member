@@ -29,7 +29,7 @@ const ChatMessage: React.FC<Props> = ({ message }) => {
 
   const navigate = useNavigate();
 
-  if (!userData) return <>Loading...</>;
+  if (!userData) return <></>;
 
   console.log(message.text.replace("less", ""));
 

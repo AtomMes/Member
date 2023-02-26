@@ -16,7 +16,7 @@ interface Props {
 }
 
 const Comments: React.FC<Props> = ({ comments, limit }) => {
-  if (!comments) return <>Loading...</>;
+  if (!comments) return <></>;
 
   return (
     <CommentsSection>

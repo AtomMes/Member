@@ -71,6 +71,7 @@ import {
 import { theme } from "../utils/theme";
 import { createChat } from "../utils/chatFunctions";
 import UserPhotoModal from "../components/UserPhotoModal";
+import coverPhoto from "../images/1569699848732.jpeg";
 
 export const CreatePostButton = styled(Button)(({ theme }) => ({
   marginTop: "10px",
@@ -127,7 +128,7 @@ const UserProfilePage: React.FC = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  if (!mutualContacts) return <>Loading...</>;
+  if (!mutualContacts) return <></>;
 
   const matches = useMediaQuery(theme.breakpoints.up(650));
   const disButtons = useMediaQuery(theme.breakpoints.up(490));
@@ -183,7 +184,7 @@ const UserProfilePage: React.FC = () => {
 
   const { userData } = getUserData(id);
 
-  if (!userData) return <>Loading...</>;
+  if (!userData) return <></>;
 
   return (
     <>
@@ -192,26 +193,40 @@ const UserProfilePage: React.FC = () => {
           <>
             <Box
               sx={{
-                background:
-                  "linear-gradient(to bottom, #FFFFFF 0%, #000000 130%)",
                 width: "100%",
                 height: "200px",
                 borderRadius: "10px",
                 position: "relative",
               }}
             >
-              {userData.coverPhoto && (
-                <img
-                  src={userData.coverPhoto}
-                  alt="nkar"
-                  style={{
-                    display: "flex",
-                    objectFit: "cover",
-                    width: "100%",
-                    height: "100%",
+              <img
+                src={userData.coverPhoto ? userData.coverPhoto : coverPhoto}
+                alt="PFP"
+                style={{
+                  display: "flex",
+                  objectFit: "cover",
+                  width: "100%",
+                  height: "100%",
+                  opacity: userData.coverPhoto ? "1" : ".3",
+                }}
+              />
+              {!userData.coverPhoto && (
+                <Typography
+                  sx={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "53%",
+                    transform: "translate(-50%, -50%)",
+                    letterSpacing: "25px",
+                    fontWeight: "500",
+                    color: "white",
+                    fontSize: "50px",
                   }}
-                />
+                >
+                  MEMBER
+                </Typography>
               )}
+
               {loading && (
                 <Box
                   width="100%"
@@ -336,28 +351,35 @@ const UserProfilePage: React.FC = () => {
                         id={userData.id}
                         size={"170px"}
                       />
-                      <IconButton
-                        sx={{
-                          minWidth: "0",
-                          position: "absolute",
-                          bottom: "10px",
-                          right: "10px",
-                          color: "dimgray",
-                          zIndex: "100",
-                          bgcolor: "white",
-                          border: "1px solid gray",
-                          transition: ".2s",
-                          "&:hover": {
-                            backgroundColor: "white",
-                            transform: "scale(1.1)",
-                          },
-                        }}
-                        size="small"
-                        onClick={() => setOpenModal(true)}
-                      >
-                        <AddAPhoto fontSize="small" />
-                      </IconButton>
-                      <UserPhotoModal open={openModal} setOpen={setOpenModal} />
+                      {id === auth.currentUser!.uid && (
+                        <>
+                          <IconButton
+                            sx={{
+                              minWidth: "0",
+                              position: "absolute",
+                              bottom: "10px",
+                              right: "10px",
+                              color: "dimgray",
+                              zIndex: "100",
+                              bgcolor: "white",
+                              border: "1px solid gray",
+                              transition: ".2s",
+                              "&:hover": {
+                                backgroundColor: "white",
+                                transform: "scale(1.1)",
+                              },
+                            }}
+                            size="small"
+                            onClick={() => setOpenModal(true)}
+                          >
+                            <AddAPhoto fontSize="small" />
+                          </IconButton>
+                          <UserPhotoModal
+                            open={openModal}
+                            setOpen={setOpenModal}
+                          />
+                        </>
+                      )}
                     </Box>
                     <Box
                       display="flex"
@@ -400,7 +422,7 @@ const UserProfilePage: React.FC = () => {
                     {id === auth.currentUser!.uid ? (
                       <>
                         {matches ? (
-                          <IconButton sx={{ bgcolor: "#f3f2ef" }}>
+                          <IconButton sx={{ bgcolor: "#f6fbfc" }}>
                             <Logout
                               onClick={() => {
                                 setOpenDialog(true);
@@ -455,7 +477,9 @@ const UserProfilePage: React.FC = () => {
                         )}
                         {!inContacts && !inRequests && !inMyRequests && (
                           <CreatePostButton
-                            sx={{ width: !matches ? "100%" : "initial" }}
+                            sx={{
+                              width: !matches ? "100%" : "initial",
+                            }}
                             variant="outlined"
                             onClick={() => {
                               sendRequest(id!);

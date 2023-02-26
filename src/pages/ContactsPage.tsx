@@ -13,6 +13,7 @@ import { DocumentData } from "firebase/firestore";
 import React from "react";
 import ProfileContact from "../components/ProfileContact";
 import ProfileContacts from "../components/ProfileContacts";
+import ProfileRequests from "../components/ProfileRequests";
 import { auth } from "../firebase";
 import { getUserData } from "../hooks/getUserData";
 import { useConnectionType } from "../hooks/useConnectionType";
@@ -83,6 +84,10 @@ const ContactsPage: React.FC = () => {
           Contacts
         </Typography>
         <ProfileContacts />
+        <Typography variant="h4" margin="25px 0">
+          Requests
+        </Typography>
+        <ProfileRequests />
       </Box>
     </>
   );

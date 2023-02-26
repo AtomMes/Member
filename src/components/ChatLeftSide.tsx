@@ -44,7 +44,7 @@ const ChatLeftSide: React.FC<Props> = ({ handleClick, isDrawerOpen }) => {
 
   const currentUser = auth.currentUser;
 
-  if (!userData) return <>Loading</>;
+  if (!userData) return <></>;
 
   return (
     <Stack

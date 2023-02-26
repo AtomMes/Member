@@ -25,6 +25,7 @@ import {
   DialogActions,
   Snackbar,
   Alert,
+  Avatar,
 } from "@mui/material";
 import { formatDistanceToNow } from "date-fns";
 import {
@@ -203,7 +204,7 @@ const Post: React.FC<PostProps> = ({
   const navigate = useNavigate();
 
   if (!userData) {
-    return <>Loading....</>;
+    return <></>;
   }
 
   return (

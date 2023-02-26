@@ -39,7 +39,13 @@ const LoginPage: React.FC = () => {
 
   return (
     <div>
-      <LoginAndRegister title="Login" to="/register" handleClick={onLogin} />
+      <LoginAndRegister
+        title="Login"
+        header="Welcome"
+        to="/register"
+        handleClick={onLogin}
+        err={false}
+      />
     </div>
   );
 };

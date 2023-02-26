@@ -3,6 +3,7 @@ import CatchingPokemonIcon from "@mui/icons-material/CatchingPokemon";
 import HomeIcon from "@mui/icons-material/Home";
 import {
   AppBar,
+  Avatar,
   Badge,
   Box,
   Divider,
@@ -25,6 +26,7 @@ import { getUserData } from "../hooks/getUserData";
 import { removeUser } from "../redux/userSlice/slice";
 import { theme } from "../utils/theme";
 import CurrentUserAvatar from "./CurrentUserAvatar";
+import logo from "../images/logoHope.png";
 
 export const StyledTab = styled(Tab)(({ theme }) => ({
   maxWidth: "none",
@@ -136,14 +138,10 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
           }}
         >
           <Stack flexDirection="row" alignItems="center">
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="logo"
-            >
-              <CatchingPokemonIcon />
-            </IconButton>
+            <Avatar
+              src={logo}
+              onClick={() => navigate("/")}
+            />
           </Stack>
 
           {loggedIn && (

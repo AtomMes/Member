@@ -15,7 +15,7 @@ const ChatContactsSearch: React.FC<Props> = ({
 }) => {
   const { userData } = getUserData(userId);
 
-  if (!userData) return <>Loading</>;
+  if (!userData) return <></>;
   if (!userData.searchUsername.includes(inputValue.toLowerCase()))
     return <Box display="none">aa</Box>;
 

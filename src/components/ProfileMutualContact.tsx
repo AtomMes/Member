@@ -10,7 +10,7 @@ const ProfileMutualContact: React.FC<Props> = ({ contact }) => {
   const { userData, loading } = getUserData(contact);
 
   if (!userData) {
-    return <>Loading</>;
+    return <></>;
   }
 
   return (

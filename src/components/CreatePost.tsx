@@ -10,6 +10,7 @@ import {
   ImageList,
   Backdrop,
   useMediaQuery,
+  AvatarGroup,
 } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import Modal from "@mui/joy/Modal";
@@ -130,7 +131,19 @@ const CreatePost: React.FC<Props> = ({ feed, children }) => {
     }
   };
 
-  if (!userData) return <>Loading</>;
+  if (!userData)
+    return (
+      <>
+        <Box>
+          <Stack flexDirection="row" gap={1}>
+            <Avatar />
+            <CreatePostButton variant="outlined" onClick={() => setOpen(true)}>
+              Start a post
+            </CreatePostButton>
+          </Stack>
+        </Box>
+      </>
+    );
 
   return (
     <Box>

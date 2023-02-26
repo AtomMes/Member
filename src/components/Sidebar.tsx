@@ -1,4 +1,9 @@
-import { Article, People } from "@mui/icons-material";
+import {
+  AccountBox,
+  AccountCircle,
+  Article,
+  People,
+} from "@mui/icons-material";
 import { ModalDialog } from "@mui/joy";
 import { Button, Modal, styled, Typography } from "@mui/material";
 import { Box } from "@mui/system";
@@ -12,6 +17,7 @@ import {
 } from "firebase/storage";
 import React from "react";
 import Avatar from "react-avatar-edit";
+import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import { useAppSelector } from "../hooks/redux-hooks";
 import { addProfilePicture } from "../utils/profileFunctions";
@@ -48,6 +54,8 @@ const Sidebar: React.FC = () => {
 
   const user = auth.currentUser;
 
+  const navigate = useNavigate();
+
   return (
     <div className="sticky">
       <WrapperBox>
@@ -65,7 +73,7 @@ const Sidebar: React.FC = () => {
           </Typography>
         </ProfileBox>
         <Box padding="15px">
-          <StyledButton>
+          <StyledButton onClick={() => navigate("/contacts")}>
             {" "}
             <People
               sx={{
@@ -75,9 +83,14 @@ const Sidebar: React.FC = () => {
             />{" "}
             Contacts
           </StyledButton>
-          <StyledButton>
+          <StyledButton
+            onClick={() => navigate(`/profile/${auth.currentUser!.uid}`)}
+          >
             {" "}
-            <Article sx={{ fontSize: "30px", marginRight: "10px" }} /> Posts
+            <AccountCircle
+              sx={{ fontSize: "30px", marginRight: "10px" }}
+            />{" "}
+            Profile
           </StyledButton>
         </Box>
         <UserPhotoModal open={open} setOpen={setOpen} />

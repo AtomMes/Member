@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   ImageList,
   ImageListItem,
@@ -14,8 +15,7 @@ const ProfilePosts: React.FC = () => {
   const { id } = useParams();
   const { authorPosts, isLoading } = useAuthorPosts(id!);
 
-
-  if (!authorPosts) return <>Loading...</>;
+  if (!authorPosts) return <></>;
 
   return (
     <Box
@@ -26,18 +26,24 @@ const ProfilePosts: React.FC = () => {
       width="600px"
       maxWidth="100%"
     >
-      {authorPosts.map((post) => (
-        <Post
-          authorId={post.authorId}
-          image={post.image}
-          text={post.text}
-          date={post.date}
-          id={post.id}
-          likes={post.likes}
-          key={post.id}
-          del={true}
-        />
-      ))}
+      {authorPosts.length ? (
+        authorPosts.map((post) => (
+          <Post
+            authorId={post.authorId}
+            image={post.image}
+            text={post.text}
+            date={post.date}
+            id={post.id}
+            likes={post.likes}
+            key={post.id}
+            del={true}
+          />
+        ))
+      ) : (
+        <Alert severity="info" variant="outlined" sx={{ margin: "20px auto" }}>
+          You haven't posted anything yet. Share your thoughts or experiences by creating a new post.
+        </Alert>
+      )}
     </Box>
   );
 };

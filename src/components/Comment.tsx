@@ -17,7 +17,7 @@ const Comment: React.FC<CommentProps> = ({ com }) => {
   const navigate = useNavigate();
 
   const { userData, loading } = getUserData(com.authorId);
-  if(!userData) return  <>Loading...</>
+  if(!userData) return  <></>
 
   return (
     <Stack flexDirection="row" gap="10px">
