@@ -12,7 +12,7 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  function onLogin(email: string, password: string, username: string | null) {
+  function onLogin(email: string, password: string, username?: string | null) {
     if (email && password) {
       const auth = getAuth();
       signInWithEmailAndPassword(auth, email, password).then(({ user }) => {

@@ -14,7 +14,13 @@ const Posts: React.FC = () => {
   }
 
   return (
-    <Box display="flex" flexDirection="column" gap="10px" margin="0 auto">
+    <Box
+      display="flex"
+      flexDirection="column"
+      gap="10px"
+      margin="0 auto"
+      sx={{ width: "100%" }}
+    >
       {posts.map((post) => (
         <Post
           authorId={post.authorId}

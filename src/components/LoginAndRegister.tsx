@@ -24,7 +24,7 @@ interface Props {
   handleClick: (
     email: string,
     password: string,
-    username: string | null
+    username?: string | null
   ) => void;
   err: boolean;
 }
@@ -72,10 +72,16 @@ const LoginAndRegister: React.FC<Props> = ({
     ]);
   };
 
-  const login = () => {
-    if (email && username && pass && confirmPass === pass) {
-      handleClick(email, pass, username);
+  const loginAndRegister = () => {
+    if (reg) {
+      if (email && username && pass && confirmPass === pass) {
+        handleClick(email!, pass!, username!);
+      } else {
+      }
     } else {
+      if (email && pass) {
+        handleClick(email, pass);
+      }
     }
   };
 
@@ -171,13 +177,12 @@ const LoginAndRegister: React.FC<Props> = ({
         )}
       </Stack>
       <Button
-        onClick={login}
+        onClick={loginAndRegister}
         variant="contained"
         sx={{ textTransform: "none" }}
       >
         {title}
       </Button>
-
       <Box display="flex">
         <Typography marginRight="5px">
           {reg ? "Already have an account? " : "don't have an account? "}
