@@ -1,4 +1,4 @@
-import { Alert, Grid } from "@mui/material";
+import { Alert, Box, Grid } from "@mui/material";
 import React from "react";
 import { auth } from "../firebase";
 import { getUserData } from "../hooks/getUserData";
@@ -15,10 +15,12 @@ const ProfileRequests: React.FC = () => {
           <ProfileRequest request={request} key={i} />
         ))
       ) : (
-        <Alert severity="info" variant="outlined" sx={{ margin: "20px auto" }}>
-          You don't have any requests at the moment. Check back later or invite
-          other users to connect with you.
-        </Alert>
+        <Box sx={{ margin: "40px auto" }}>
+          <Alert severity="info" variant="outlined" sx={{ marginLeft: "20px" }}>
+            You don't have any requests at the moment. Check back later or
+            invite other users to connect with you.
+          </Alert>
+        </Box>
       )}
     </Grid>
   );

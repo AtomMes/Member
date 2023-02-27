@@ -1,4 +1,4 @@
-import { Alert, Grid, Typography } from "@mui/material";
+import { Alert, Box, Grid, Typography } from "@mui/material";
 import React from "react";
 import { useParams } from "react-router-dom";
 import { auth } from "../firebase";
@@ -19,10 +19,12 @@ const ProfileContacts: React.FC = () => {
           <ProfileContact key={contact} contact={contact} />
         ))
       ) : (
-        <Alert severity="info" variant="outlined" sx={{ margin: "20px auto" }}>
-          You don't have any contacts yet. Use the search bar above to find and
-          add contacts.
-        </Alert>
+        <Box sx={{ margin: "40px auto" }}>
+          <Alert severity="info" variant="outlined" sx={{ marginLeft: "20px" }}>
+            You don't have any contacts yet. Use the search bar above to find
+            and add contacts.
+          </Alert>
+        </Box>
       )}
     </Grid>
   );

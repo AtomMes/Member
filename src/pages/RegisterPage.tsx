@@ -22,7 +22,7 @@ const RegisterPage: React.FC = () => {
   const onRegister = async (
     email: string,
     password: string,
-    username: string | null
+    username?: string | null
   ) => {
     if (email && password && username) {
       const auth = getAuth();

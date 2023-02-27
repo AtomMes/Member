@@ -43,7 +43,7 @@ const ContactsPage: React.FC = () => {
   }, [commentText]);
 
   return (
-    <>
+    <Box sx={{ padding: "0 20px" }}>
       <Box>
         {/* <Paper> */}
         <SearchUserInput
@@ -89,7 +89,7 @@ const ContactsPage: React.FC = () => {
         </Typography>
         <ProfileRequests />
       </Box>
-    </>
+    </Box>
   );
 };
 
