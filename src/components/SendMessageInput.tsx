@@ -102,6 +102,12 @@ const SendMessageInput = () => {
     setLoading(false);
   };
 
+  const keyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter") {
+      handleSend();
+    }
+  };
+
   return (
     <>
       {chosenImage && img && (
@@ -145,6 +151,7 @@ const SendMessageInput = () => {
         placeholder="Write a message..."
         value={text}
         onChange={(e) => setText(e.target.value)}
+        onKeyDown={(e) => keyDownHandler(e)}
         sx={{
           [`& fieldset`]: {
             borderRadius: 100,

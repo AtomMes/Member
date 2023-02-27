@@ -1,3 +1,4 @@
+import { tabClasses } from "@mui/material";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import React from "react";
 import { useDispatch } from "react-redux";
@@ -12,24 +13,39 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [err, setErr] = React.useState<boolean>(true);
+  const [fieldErr, setFieldErr] = React.useState<boolean>(false);
+
   function onLogin(email: string, password: string, username?: string | null) {
     if (email && password) {
+      setFieldErr(false);
       const auth = getAuth();
-      signInWithEmailAndPassword(auth, email, password).then(({ user }) => {
-        dispatch(
-          setUser({
-            username: user.displayName,
-            imageURL: user.photoURL && user.photoURL,
-            email: user.email,
-            id: user.uid,
-            token: user.refreshToken,
-          })
-        );
-        localStorage.setItem("isAuth", "true");
-        navigate("/");
-      });
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then(({ user }) => {
+          dispatch(
+            setUser({
+              username: user.displayName,
+              imageURL: user.photoURL && user.photoURL,
+              email: user.email,
+              id: user.uid,
+              token: user.refreshToken,
+            })
+          );
+          localStorage.setItem("isAuth", "true");
+          navigate("/");
+        })
+        .catch((err) => {
+          setErr(true);
+        });
+    } else {
+      setFieldErr(true);
     }
   }
+
+  React.useEffect(() => {
+    setErr(false);
+  }, []);
 
   const { isAuth } = useAuth();
 
@@ -44,7 +60,8 @@ const LoginPage: React.FC = () => {
         header="Welcome"
         to="/register"
         handleClick={onLogin}
-        err={false}
+        err={err}
+        fieldErr={fieldErr}
       />
     </div>
   );

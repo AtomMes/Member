@@ -203,7 +203,7 @@ const Post: React.FC<PostProps> = ({
 
   const navigate = useNavigate();
 
-  if (!userData) {
+  if (!userData || !auth.currentUser) {
     return <></>;
   }
 
@@ -414,8 +414,8 @@ const Post: React.FC<PostProps> = ({
         <Stack gap="20px">
           <AddComment>
             <CurrentUserAvatar
-              username={username}
-              photoURL={imageURL}
+              username={auth.currentUser!.displayName}
+              photoURL={auth.currentUser!.photoURL}
               id={auth.currentUser!.uid}
             />
             <AddCommentInput

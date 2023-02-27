@@ -65,7 +65,9 @@ const ChatMessage: React.FC<Props> = ({ message }) => {
             />
           </Box>
         )}
-        <Typography color="#585858">{message.text}</Typography>
+        <Typography color="#585858" sx={{ overflowWrap: "anywhere" }}>
+          {message.text}
+        </Typography>
       </Stack>
     </Stack>
   );

@@ -15,7 +15,8 @@ import { db } from "../firebase";
 import { useAuth } from "../hooks/useAuth";
 
 const RegisterPage: React.FC = () => {
-  const [err, setErr] = React.useState(false);
+  const [err, setErr] = React.useState<boolean>(false);
+  const [fieldErr, setFieldErr] = React.useState<boolean>(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -25,6 +26,7 @@ const RegisterPage: React.FC = () => {
     username?: string | null
   ) => {
     if (email && password && username) {
+      setFieldErr(false);
       const auth = getAuth();
       createUserWithEmailAndPassword(auth, email, password)
         .then(async ({ user }) => {
@@ -38,9 +40,6 @@ const RegisterPage: React.FC = () => {
             requests: [],
             contacts: [],
           });
-          if (auth.currentUser) {
-            await updateProfile(auth.currentUser, { displayName: username });
-          }
           dispatch(
             setUser({
               username: user.displayName,
@@ -56,8 +55,14 @@ const RegisterPage: React.FC = () => {
         .catch((err) => {
           setErr(true);
         });
+    } else {
+      setFieldErr(true);
     }
   };
+
+  React.useEffect(() => {
+    setErr(false);
+  }, []);
 
   const { isAuth } = useAuth();
 
@@ -75,6 +80,7 @@ const RegisterPage: React.FC = () => {
         reg
         handleClick={onRegister}
         err={err}
+        fieldErr={fieldErr}
       />
     </div>
   );

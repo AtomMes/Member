@@ -27,6 +27,7 @@ interface Props {
     username?: string | null
   ) => void;
   err: boolean;
+  fieldErr: boolean;
 }
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -50,6 +51,7 @@ const LoginAndRegister: React.FC<Props> = ({
   handleClick,
   header,
   err,
+  fieldErr,
 }) => {
   const [username, setUsername] = React.useState<string | null>();
   const [email, setEmail] = React.useState<string | null>();
@@ -62,8 +64,6 @@ const LoginAndRegister: React.FC<Props> = ({
     false,
   ]);
 
-  console.log(validateInputs);
-
   const updateItem = (index: number) => {
     setValidateInputs([
       ...validateInputs.slice(0, index),
@@ -74,16 +74,22 @@ const LoginAndRegister: React.FC<Props> = ({
 
   const loginAndRegister = () => {
     if (reg) {
-      if (email && username && pass && confirmPass === pass) {
-        handleClick(email!, pass!, username!);
-      } else {
-      }
+      handleClick(email!, pass!, username!);
     } else {
-      if (email && pass) {
-        handleClick(email, pass);
-      }
+      handleClick(email!, pass!);
     }
   };
+
+  React.useEffect(() => {
+    if (fieldErr) {
+      setValidateInputs([
+        username ? false : true,
+        email ? false : true,
+        pass ? false : true,
+        confirmPass ? false : true,
+      ]);
+    }
+  }, [fieldErr]);
 
   return (
     <StyledPaper>
@@ -112,7 +118,7 @@ const LoginAndRegister: React.FC<Props> = ({
             type="text"
             label="Username"
             error={!username && validateInputs[0] === true}
-            helperText={!username && "This field is required"}
+            helperText={!username && "*Username is required"}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             InputProps={{
@@ -129,7 +135,7 @@ const LoginAndRegister: React.FC<Props> = ({
           type="email"
           label="Email"
           error={!email && validateInputs[1] === true}
-          helperText={!email && "This field is required"}
+          helperText={!email && "*Email is required"}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           InputProps={{
@@ -145,7 +151,7 @@ const LoginAndRegister: React.FC<Props> = ({
           type="password"
           label="Password"
           error={!pass && validateInputs[2] === true}
-          helperText={!pass && "This field is required"}
+          helperText={!pass && "*Password is required"}
           value={pass}
           onChange={(e) => setPass(e.target.value)}
           InputProps={{
@@ -160,9 +166,9 @@ const LoginAndRegister: React.FC<Props> = ({
         {reg && (
           <TextField
             type="text"
-            label="Password"
+            label="Password Confirmation"
             error={!confirmPass && validateInputs[3] === true}
-            helperText={!confirmPass && "This field is required"}
+            helperText={!confirmPass && "*Password confirmation is required"}
             value={confirmPass}
             onChange={(e) => setConfirmPass(e.target.value)}
             InputProps={{
@@ -176,6 +182,13 @@ const LoginAndRegister: React.FC<Props> = ({
           />
         )}
       </Stack>
+      <Typography color="error" fontSize="15px">
+        {err &&
+          (reg
+            ? "*Something went wrong. User registration failed"
+            : "*Incorrect email addres or password")}
+        {fieldErr && "*Please fill all the fields"}
+      </Typography>
       <Button
         onClick={loginAndRegister}
         variant="contained"

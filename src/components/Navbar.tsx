@@ -138,10 +138,7 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
           }}
         >
           <Stack flexDirection="row" alignItems="center">
-            <Avatar
-              src={logo}
-              onClick={() => navigate("/")}
-            />
+            <Avatar src={logo} onClick={() => navigate("/")} />
           </Stack>
 
           {loggedIn && (
