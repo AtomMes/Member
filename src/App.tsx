@@ -36,9 +36,10 @@ const App: React.FC = () => {
     setIsUserReady(!!auth.currentUser);
   }, [email]);
 
+
   return (
     <Box>
-      {isAuth && isUserReady ? <Navbar loggedIn /> : <Navbar />}
+      {isAuth ? <Navbar loggedIn={true} /> : <Navbar loggedIn={false} />}
       <Box width="100%" maxWidth="1100px" margin="0 auto">
         {!isAuth && (
           <>

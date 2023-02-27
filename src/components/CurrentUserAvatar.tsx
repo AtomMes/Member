@@ -24,7 +24,12 @@ const CurrentUserAvatar: React.FC<Props> = ({
   return (
     <Avatar
       src={photoURL!}
-      sx={{ width: size, height: size, marginBottom: mb }}
+      sx={{
+        width: size,
+        height: size,
+        marginBottom: mb,
+        border: "1px solid #047891",
+      }}
       onClick={() => {
         !disableNav && navigate(`/profile/${id!}`);
       }}

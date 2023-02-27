@@ -17,7 +17,7 @@ const Comment: React.FC<CommentProps> = ({ com }) => {
   const navigate = useNavigate();
 
   const { userData, loading } = getUserData(com.authorId);
-  if(!userData) return  <></>
+  if (!userData) return <></>;
 
   return (
     <Stack flexDirection="row" gap="10px">
@@ -30,7 +30,7 @@ const Comment: React.FC<CommentProps> = ({ com }) => {
       </Box>
       <Stack
         gap="8px"
-        bgcolor="#f3f2ef"
+        bgcolor="#f0fafc"
         padding="8px"
         borderRadius="10px"
         width="100%"

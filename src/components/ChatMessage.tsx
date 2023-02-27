@@ -25,13 +25,11 @@ const ChatMessage: React.FC<Props> = ({ message }) => {
 
   const createdDate = formatDistanceToNow(message.date) + " " + "ago";
 
-  console.log(message.date);
 
   const navigate = useNavigate();
 
   if (!userData) return <></>;
 
-  console.log(message.text.replace("less", ""));
 
   return (
     <Stack ref={ref} flexDirection="row" gap="10px">
@@ -44,9 +42,8 @@ const ChatMessage: React.FC<Props> = ({ message }) => {
       </Box>
       <Stack
         gap="8px"
-        bgcolor="#f3f2ef"
+        bgcolor="#f0fafc"
         padding="8px"
-        // minWidth="250px"
         borderRadius="10px"
         width="fit-content"
       >

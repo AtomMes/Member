@@ -18,7 +18,7 @@ import {
 import React from "react";
 import Avatar from "react-avatar-edit";
 import { useNavigate } from "react-router-dom";
-import { db } from "../firebase";
+import { auth, db } from "../firebase";
 import { useAppSelector } from "../hooks/redux-hooks";
 import { addProfilePicture } from "../utils/profileFunctions";
 import CurrentUserAvatar from "./CurrentUserAvatar";
@@ -29,6 +29,8 @@ const StyledButton = styled(Button)(({ theme }) => ({
   justifyContent: "flex-start",
   width: "100%",
   color: "black",
+  textTransform: "none",
+  fontSize: "17px",
 }));
 
 const WrapperBox = styled(Box)(({ theme }) => ({
@@ -50,11 +52,11 @@ const Sidebar: React.FC = () => {
 
   const { username, id } = useAppSelector((state) => state.user);
 
-  const auth = getAuth();
-
   const user = auth.currentUser;
 
   const navigate = useNavigate();
+
+  console.log(auth.currentUser);
 
   return (
     <div className="sticky">
@@ -63,11 +65,11 @@ const Sidebar: React.FC = () => {
           <CurrentUserAvatar
             size="70px"
             mb="15px"
-            username={username}
-            photoURL={auth.currentUser!.photoURL && auth.currentUser!.photoURL}
+            username={auth.currentUser!.displayName}
+            photoURL={auth.currentUser!.photoURL}
             id={id!}
           />
-          <Typography>{username}</Typography>
+          <Typography>{auth.currentUser!.displayName}</Typography>
           <Typography onClick={() => setOpen(!open)}>
             {auth.currentUser!.photoURL ? "Change Photo" : "Add a photo"}
           </Typography>
@@ -79,6 +81,7 @@ const Sidebar: React.FC = () => {
               sx={{
                 fontSize: "30px",
                 marginRight: "10px",
+                color: "#047891",
               }}
             />{" "}
             Contacts
@@ -86,10 +89,9 @@ const Sidebar: React.FC = () => {
           <StyledButton
             onClick={() => navigate(`/profile/${auth.currentUser!.uid}`)}
           >
-            {" "}
             <AccountCircle
-              sx={{ fontSize: "30px", marginRight: "10px" }}
-            />{" "}
+              sx={{ fontSize: "30px", marginRight: "10px", color: "#047891" }}
+            />
             Profile
           </StyledButton>
         </Box>

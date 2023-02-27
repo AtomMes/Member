@@ -1,4 +1,4 @@
-import { Group, Logout, Message } from "@mui/icons-material";
+import { Group, Login, Logout, Message, PersonAdd } from "@mui/icons-material";
 import CatchingPokemonIcon from "@mui/icons-material/CatchingPokemon";
 import HomeIcon from "@mui/icons-material/Home";
 import {
@@ -6,6 +6,7 @@ import {
   Avatar,
   Badge,
   Box,
+  Button,
   Divider,
   IconButton,
   ListItemIcon,
@@ -29,6 +30,7 @@ import CurrentUserAvatar from "./CurrentUserAvatar";
 import logo from "../images/logoHope.png";
 
 export const StyledTab = styled(Tab)(({ theme }) => ({
+  color: "#047891",
   maxWidth: "none",
   minWidth: "none",
   minHeight: "none",
@@ -105,7 +107,7 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
 
   const float = useMediaQuery(theme.breakpoints.down(410));
 
-  if (!userData)
+  if (loggedIn && !userData)
     return (
       <AppBar
         position="static"
@@ -140,158 +142,180 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
           <Stack flexDirection="row" alignItems="center">
             <Avatar src={logo} onClick={() => navigate("/")} />
           </Stack>
-
-          {loggedIn && (
-            <Stack direction="row" spacing={2} alignItems="center">
-              {!float && (
-                <Tabs value={value} onChange={handleChange}>
-                  <StyledTab
-                    value="1"
-                    onClick={() => navigate("/")}
-                    icon={<HomeIcon sx={{ fontSize: "30px" }} />}
-                    label="Home"
-                  />
-                  <StyledTab
-                    value="2"
-                    onClick={() => navigate("/contacts")}
-                    icon={<Group sx={{ fontSize: "30px" }} />}
-                    label="Contacts"
-                  />
-                  <StyledTab
-                    value="3"
-                    onClick={() => navigate("/messaging")}
-                    icon={<Message sx={{ fontSize: "30px" }} />}
-                    label="Chats"
-                  />
-                </Tabs>
-              )}
-              <StyledBadge
-                id="resources-button" //id enq tali karavarelu hamar
-                onClick={handleClick}
-                aria-controls={open ? "resources-menu" : undefined} //aria controlsov karavarum enq resources-menu i exeliutyuny
-                aria-haspopup="true" //popup uni te che? asum enq ha
-                aria-expanded={open ? "true" : undefined} //asumenq razvernuta te che, openi heta kaxvac de parza
-                overlap="circular"
-                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                variant="dot"
+          {!loggedIn && (
+            <Stack flexDirection="row" gap="15px">
+              <Button
+                variant="outlined"
+                startIcon={<Login />}
+                sx={{ textTransform: "none" }}
+                onClick={() => navigate("/login")}
               >
-                <CurrentUserAvatar
-                  username={userData.username}
-                  photoURL={userData.photoURL}
-                  size="45px"
-                  id={userData.id}
-                  disableNav
-                />{" "}
-              </StyledBadge>
+                Log In
+              </Button>
+              <Button
+                variant="contained"
+                startIcon={<PersonAdd />}
+                sx={{ textTransform: "none" }}
+                onClick={() => navigate("/register")}
+              >
+                Register
+              </Button>
             </Stack>
           )}
-          <Menu
-            anchorEl={anchorEl!}
-            id="account-menu"
-            open={open}
-            onClose={handleClose}
-            onClick={handleClose}
-            PaperProps={{
-              elevation: 0,
-              sx: {
-                overflow: "visible",
-                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                mt: 1.5,
-                "& .MuiAvatar-root": {
-                  width: 32,
-                  height: 32,
-                  ml: -0.5,
-                  mr: 1,
-                },
-                "&:before": {
-                  content: '""',
-                  display: "block",
-                  position: "absolute",
-                  top: 0,
-                  right: 14,
-                  width: 10,
-                  height: 10,
-                  bgcolor: "background.paper",
-                  transform: "translateY(-50%) rotate(45deg)",
-                  zIndex: 0,
-                },
-              },
-            }}
-            transformOrigin={{ horizontal: "right", vertical: "top" }}
-            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-          >
-            <MenuItem
-              onClick={() => {
-                handleClose(),
-                  navigate(`/profile/${auth.currentUser!.uid}`),
-                  setValue("4");
-              }}
-            >
-              <CurrentUserAvatar
-                username={userData!.username}
-                photoURL={userData!.photoURL}
-                id={userData!.id}
-              />{" "}
-              Profile
-            </MenuItem>
-            <Divider />
-            {float && (
-              <>
+
+          {loggedIn && (
+            <>
+              <Stack direction="row" spacing={2} alignItems="center">
+                {!float && (
+                  <Tabs value={value} onChange={handleChange}>
+                    <StyledTab
+                      value="1"
+                      onClick={() => navigate("/")}
+                      icon={<HomeIcon sx={{ fontSize: "30px" }} />}
+                      label="Home"
+                    />
+                    <StyledTab
+                      value="2"
+                      onClick={() => navigate("/contacts")}
+                      icon={<Group sx={{ fontSize: "30px" }} />}
+                      label="Contacts"
+                    />
+                    <StyledTab
+                      value="3"
+                      onClick={() => navigate("/messaging")}
+                      icon={<Message sx={{ fontSize: "30px" }} />}
+                      label="Chats"
+                    />
+                  </Tabs>
+                )}
+                <StyledBadge
+                  id="resources-button" //id enq tali karavarelu hamar
+                  onClick={handleClick}
+                  aria-controls={open ? "resources-menu" : undefined} //aria controlsov karavarum enq resources-menu i exeliutyuny
+                  aria-haspopup="true" //popup uni te che? asum enq ha
+                  aria-expanded={open ? "true" : undefined} //asumenq razvernuta te che, openi heta kaxvac de parza
+                  overlap="circular"
+                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                  variant="dot"
+                >
+                  <CurrentUserAvatar
+                    username={userData!.username}
+                    photoURL={userData!.photoURL}
+                    size="45px"
+                    id={userData!.id}
+                    disableNav
+                  />{" "}
+                </StyledBadge>
+              </Stack>
+              <Menu
+                anchorEl={anchorEl!}
+                id="account-menu"
+                open={open}
+                onClose={handleClose}
+                onClick={handleClose}
+                PaperProps={{
+                  elevation: 0,
+                  sx: {
+                    overflow: "visible",
+                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                    mt: 1.5,
+                    "& .MuiAvatar-root": {
+                      width: 32,
+                      height: 32,
+                      ml: -0.5,
+                      mr: 1,
+                    },
+                    "&:before": {
+                      content: '""',
+                      display: "block",
+                      position: "absolute",
+                      top: 0,
+                      right: 14,
+                      width: 10,
+                      height: 10,
+                      bgcolor: "background.paper",
+                      transform: "translateY(-50%) rotate(45deg)",
+                      zIndex: 0,
+                    },
+                  },
+                }}
+                transformOrigin={{ horizontal: "right", vertical: "top" }}
+                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+              >
+                <MenuItem
+                  onClick={() => {
+                    handleClose(),
+                      navigate(`/profile/${auth.currentUser!.uid}`),
+                      setValue("4");
+                  }}
+                >
+                  <CurrentUserAvatar
+                    username={userData!.username}
+                    photoURL={userData!.photoURL}
+                    id={userData!.id}
+                  />{" "}
+                  Profile
+                </MenuItem>
+                <Divider />
+                {float && (
+                  <>
+                    <MenuItem
+                      onClick={() => {
+                        auth.signOut();
+                        localStorage.removeItem("isAuth");
+                        dispatch(removeUser());
+                        navigate("/");
+                      }}
+                    >
+                      <ListItemIcon>
+                        <HomeIcon />
+                      </ListItemIcon>
+                      Home
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        auth.signOut();
+                        localStorage.removeItem("isAuth");
+                        dispatch(removeUser());
+                        navigate("/contacts");
+                      }}
+                    >
+                      <ListItemIcon>
+                        <Group />
+                      </ListItemIcon>
+                      Contacts
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        auth.signOut();
+                        localStorage.removeItem("isAuth");
+                        dispatch(removeUser());
+                        navigate("/messaging");
+                      }}
+                    >
+                      <ListItemIcon>
+                        <Message />{" "}
+                      </ListItemIcon>
+                      Chats
+                    </MenuItem>
+                  </>
+                )}
                 <MenuItem
                   onClick={() => {
                     auth.signOut();
                     localStorage.removeItem("isAuth");
                     dispatch(removeUser());
-                    navigate("/");
+                    navigate("/login");
                   }}
                 >
                   <ListItemIcon>
-                    <HomeIcon />
+                    <Logout fontSize="small" />
                   </ListItemIcon>
-                  Home
+                  Logout
                 </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    auth.signOut();
-                    localStorage.removeItem("isAuth");
-                    dispatch(removeUser());
-                    navigate("/contacts");
-                  }}
-                >
-                  <ListItemIcon>
-                    <Group />
-                  </ListItemIcon>
-                  Contacts
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    auth.signOut();
-                    localStorage.removeItem("isAuth");
-                    dispatch(removeUser());
-                    navigate("/messaging");
-                  }}
-                >
-                  <ListItemIcon>
-                    <Message />{" "}
-                  </ListItemIcon>
-                  Chats
-                </MenuItem>
-              </>
-            )}
-            <MenuItem
-              onClick={() => {
-                auth.signOut();
-                localStorage.removeItem("isAuth");
-                dispatch(removeUser());
-                navigate("/login");
-              }}
-            >
-              <ListItemIcon>
-                <Logout fontSize="small" />
-              </ListItemIcon>
-              Logout
-            </MenuItem>
-          </Menu>
+              </Menu>
+            </>
+          )}
         </Toolbar>
       </Box>
     </AppBar>

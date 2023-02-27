@@ -80,7 +80,7 @@ export const CreatePostButton = styled(Button)(({ theme }) => ({
   color: "black",
   fontWeight: "400",
   borderRadius: "5px",
-  border: "1px solid gray",
+  border: "1px solid #047891",
   whiteSpace: "nowrap",
   padding: "5px 10px",
   textTransform: "none",
@@ -297,12 +297,13 @@ const UserProfilePage: React.FC = () => {
                         backgroundColor: "white",
                         transform: "scale(1.1)",
                       },
+                      backgroundColor: "#047891",
                     }}
                     variant="contained"
                     component="label"
                     size="small"
                   >
-                    <AddAPhoto fontSize="small" />
+                    <AddAPhoto fontSize="small" sx={{ color: "white" }} />
                     <input
                       type="file"
                       id="addPhotoInput"
@@ -320,7 +321,7 @@ const UserProfilePage: React.FC = () => {
             </Box>
             <Box
               position="relative"
-              sx={{ height: matches ? "183px" : float ? "230px" : "354px" }}
+              sx={{ height: matches ? "185px" : float ? "232px" : "356px" }}
               width="100%"
             >
               <Box
@@ -335,7 +336,7 @@ const UserProfilePage: React.FC = () => {
                     paddingLeft: !matches ? 0 : "30px",
                   }}
                   width="100%"
-                  borderBottom="1px solid black"
+                  borderBottom="1px solid #047891"
                   paddingBottom="20px"
                 >
                   <Stack
@@ -368,11 +369,15 @@ const UserProfilePage: React.FC = () => {
                                 backgroundColor: "white",
                                 transform: "scale(1.1)",
                               },
+                              backgroundColor: "#047891",
                             }}
                             size="small"
                             onClick={() => setOpenModal(true)}
                           >
-                            <AddAPhoto fontSize="small" />
+                            <AddAPhoto
+                              fontSize="small"
+                              sx={{ color: "white" }}
+                            />
                           </IconButton>
                           <UserPhotoModal
                             open={openModal}
@@ -422,21 +427,21 @@ const UserProfilePage: React.FC = () => {
                     {id === auth.currentUser!.uid ? (
                       <>
                         {matches ? (
-                          <IconButton sx={{ bgcolor: "#f6fbfc" }}>
+                          <IconButton sx={{ bgcolor: "#047891" }}>
                             <Logout
                               onClick={() => {
                                 setOpenDialog(true);
                               }}
-                              sx={{ color: "dimgray" }}
+                              sx={{ color: "white" }}
                             />
                           </IconButton>
                         ) : (
                           <CreatePostButton
-                            sx={{ width: "100%" }}
+                            sx={{ color: "#047891", width: "100%" }}
                             onClick={() => {
                               setOpenDialog(true);
                             }}
-                            startIcon={<Logout sx={{ color: "dimgray" }} />}
+                            startIcon={<Logout sx={{ color: "#047891" }} />}
                           >
                             Log out{" "}
                           </CreatePostButton>

@@ -40,6 +40,9 @@ const RegisterPage: React.FC = () => {
             requests: [],
             contacts: [],
           });
+          if (auth.currentUser) {
+            await updateProfile(auth.currentUser, { displayName: username });
+          }
           dispatch(
             setUser({
               username: user.displayName,

@@ -74,10 +74,11 @@ const RightbarRequestContact: React.FC<Props> = ({
       <Stack justifyContent="center" flex="1">
         <Typography>{userData!.username}</Typography>
       </Stack>
-      {isContact ? (
+    {isContact ? (
         <Box>
           <Message
-            sx={{ color: "gray" }}
+            // color="primary"
+            sx={{ color: "#047891" }}
             onClick={() =>
               onClick("", id, userData.username, userData.photoURL)
             }

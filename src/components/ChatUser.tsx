@@ -2,7 +2,7 @@ import { Box, Skeleton, Stack, Typography } from "@mui/material";
 import { formatDistanceToNow } from "date-fns";
 import React from "react";
 import { getUserData } from "../hooks/getUserData";
-import { useAppDispatch } from "../hooks/redux-hooks";
+import { useAppDispatch, useAppSelector } from "../hooks/redux-hooks";
 import { setChat } from "../redux/chatSlice/slice";
 import CurrentUserAvatar from "./CurrentUserAvatar";
 
@@ -12,6 +12,8 @@ interface Props {
 
 const ChatUser: React.FC<Props> = ({ chat }) => {
   const { userData, loading } = getUserData(chat[1].userInfo.uid);
+
+  const user: any = useAppSelector((state) => state.chat.user);
 
   const dispatch = useAppDispatch();
 
@@ -73,7 +75,7 @@ const ChatUser: React.FC<Props> = ({ chat }) => {
       padding="10px"
       gap="5px"
       width="100%"
-      sx={{ boxSizing: "border-box" }}
+      sx={{ boxSizing: "border-box", backgroundColor: "#f0fafc" }}
       onClick={onUserClick}
       height="100%"
       alignItems="center"

@@ -2,6 +2,8 @@ import {
   Comment,
   Delete,
   DockRounded,
+  Favorite,
+  FavoriteBorder,
   Send,
   ThumbUp,
   ThumbUpOffAlt,
@@ -230,7 +232,10 @@ const Post: React.FC<PostProps> = ({
               placement="left"
             >
               <IconButton>
-                <Delete onClick={() => setOpenDialog(true)} />
+                <Delete
+                  onClick={() => setOpenDialog(true)}
+                  sx={{ color: "#047891" }}
+                />
               </IconButton>
             </Tooltip>
             <Dialog
@@ -346,20 +351,24 @@ const Post: React.FC<PostProps> = ({
           <Button
             startIcon={
               isPostLiked ? (
-                <ThumbUp
+                <Favorite
                   sx={{
+                    color: "#047891",
+                    transform: "scale(1.3)",
                     transition: ".2s",
                     "&:hover": {
-                      transform: "scale(1.2)",
+                      transform: "scale(1.4)",
                     },
                   }}
                 />
               ) : (
-                <ThumbUpOffAlt
+                <FavoriteBorder
                   sx={{
+                    color: "#047891",
+                    transform: "scale(1.2)",
                     transition: ".2s",
                     "&:hover": {
-                      transform: "scale(1.2)",
+                      transform: "scale(1.4)",
                     },
                   }}
                 />
@@ -367,7 +376,7 @@ const Post: React.FC<PostProps> = ({
             }
             onClick={() => onLike()}
             sx={{
-              color: "gray",
+              color: "#047891",
               width: "100%",
               textAlign: "center",
               "&:hover": {
@@ -389,15 +398,17 @@ const Post: React.FC<PostProps> = ({
             startIcon={
               <Comment
                 sx={{
+                  color: "#047891",
+                  transform: "scale(1.2)",
                   transition: ".2s",
                   "&:hover": {
-                    transform: "scale(1.2)",
+                    transform: "scale(1.4)",
                   },
                 }}
               />
             }
             sx={{
-              color: "gray",
+              color: "#047891",
               width: "100%",
               textAlign: "center",
               "&:hover": {
