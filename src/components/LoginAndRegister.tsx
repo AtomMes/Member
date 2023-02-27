@@ -118,7 +118,14 @@ const LoginAndRegister: React.FC<Props> = ({
             type="text"
             label="Username"
             error={!username && validateInputs[0] === true}
-            helperText={!username && "*Username is required"}
+            helperText={
+              !username && validateInputs[0] === true && "*Username is required"
+            }
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                loginAndRegister();
+              }
+            }}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             InputProps={{
@@ -135,7 +142,14 @@ const LoginAndRegister: React.FC<Props> = ({
           type="email"
           label="Email"
           error={!email && validateInputs[1] === true}
-          helperText={!email && "*Email is required"}
+          helperText={
+            !email && validateInputs[1] === true && "*Email is required"
+          }
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              loginAndRegister();
+            }
+          }}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           InputProps={{
@@ -151,7 +165,14 @@ const LoginAndRegister: React.FC<Props> = ({
           type="password"
           label="Password"
           error={!pass && validateInputs[2] === true}
-          helperText={!pass && "*Password is required"}
+          helperText={
+            !pass && validateInputs[2] === true && "*Password is required"
+          }
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              loginAndRegister();
+            }
+          }}
           value={pass}
           onChange={(e) => setPass(e.target.value)}
           InputProps={{
@@ -168,7 +189,16 @@ const LoginAndRegister: React.FC<Props> = ({
             type="text"
             label="Password Confirmation"
             error={!confirmPass && validateInputs[3] === true}
-            helperText={!confirmPass && "*Password confirmation is required"}
+            helperText={
+              !confirmPass &&
+              validateInputs[3] === true &&
+              "*Password confirmation is required"
+            }
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                loginAndRegister();
+              }
+            }}
             value={confirmPass}
             onChange={(e) => setConfirmPass(e.target.value)}
             InputProps={{

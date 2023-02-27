@@ -25,7 +25,7 @@ const ChatRightSide: React.FC<Props> = ({ handleClick }) => {
       >
         {sm && <ArrowBack onClick={handleClick} />}
         <Typography>
-          {user.displayName ? user.displayName : "chose User"}
+          {user.displayName ? user.displayName : "choose User"}
         </Typography>
       </Box>
       <Box overflow="auto" flex="1" padding="15px">
