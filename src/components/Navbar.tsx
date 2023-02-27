@@ -17,6 +17,7 @@ import {
   Tab,
   Tabs,
   Toolbar,
+  Typography,
   useMediaQuery,
 } from "@mui/material";
 import React from "react";
@@ -110,14 +111,49 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
   if (loggedIn && !userData)
     return (
       <AppBar
-        position="static"
         sx={{
+          height: "100vh",
           bgcolor: "white",
           color: "darkGray",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
           marginBottom: "10px",
-          height: "72px",
         }}
-      ></AppBar>
+      >
+        <Stack gap={"20px"}>
+          <Typography variant="h3" sx={{ textAlign: "center" }}>
+            Oops!
+          </Typography>
+          <Typography
+            variant="h4"
+            sx={{ textAlign: "center", width: "100%", maxWidth: "700px" }}
+          >
+            Something went wrong. We're sorry for the inconvenience. Please
+            click the button below to see if it resolves the issue.
+          </Typography>
+          <Button
+            variant="contained"
+            sx={{
+              textTransform: "none",
+              color: "white",
+              bgcolor: "#047891",
+              width: "100%",
+              maxWidth: "300px",
+              margin: "30px auto",
+              "&:hover": {
+                bgcolor: "#016d85",
+              },
+            }}
+            onClick={() => {
+              localStorage.removeItem("isAuth");
+              window.location.reload();
+            }}
+          >
+            Try Again
+          </Button>
+        </Stack>
+      </AppBar>
     );
 
   return (

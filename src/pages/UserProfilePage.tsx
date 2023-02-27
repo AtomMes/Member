@@ -294,7 +294,7 @@ const UserProfilePage: React.FC = () => {
                       bgcolor: "white",
                       transition: ".2s",
                       "&:hover": {
-                        backgroundColor: "white",
+                        backgroundColor: "#00637a",
                         transform: "scale(1.1)",
                       },
                       backgroundColor: "#047891",
@@ -366,7 +366,7 @@ const UserProfilePage: React.FC = () => {
                               border: "1px solid gray",
                               transition: ".2s",
                               "&:hover": {
-                                backgroundColor: "white",
+                                backgroundColor: "#00637a",
                                 transform: "scale(1.1)",
                               },
                               backgroundColor: "#047891",
@@ -427,7 +427,12 @@ const UserProfilePage: React.FC = () => {
                     {id === auth.currentUser!.uid ? (
                       <>
                         {matches ? (
-                          <IconButton sx={{ bgcolor: "#047891" }}>
+                          <IconButton
+                            sx={{
+                              bgcolor: "#047891",
+                              "&:hover": { backgroundColor: "#00637a" },
+                            }}
+                          >
                             <Logout
                               onClick={() => {
                                 setOpenDialog(true);
@@ -437,7 +442,11 @@ const UserProfilePage: React.FC = () => {
                           </IconButton>
                         ) : (
                           <CreatePostButton
-                            sx={{ color: "#047891", width: "100%" }}
+                            sx={{
+                              color: "#047891",
+                              width: "100%",
+                              "&:hover": { backgroundColor: "#dcf5fa" },
+                            }}
                             onClick={() => {
                               setOpenDialog(true);
                             }}
@@ -471,7 +480,10 @@ const UserProfilePage: React.FC = () => {
                       <>
                         {inRequests && (
                           <CreatePostButton
-                            sx={{ width: !matches ? "100%" : "initial" }}
+                            sx={{
+                              width: !matches ? "100%" : "initial",
+                              "&:hover": { backgroundColor: "#dcf5fa" },
+                            }}
                             variant="outlined"
                             onClick={() => {
                               removeRequest(id!);
@@ -484,6 +496,7 @@ const UserProfilePage: React.FC = () => {
                           <CreatePostButton
                             sx={{
                               width: !matches ? "100%" : "initial",
+                              "&:hover": { backgroundColor: "#dcf5fa" },
                             }}
                             variant="outlined"
                             onClick={() => {
@@ -495,7 +508,10 @@ const UserProfilePage: React.FC = () => {
                         )}
                         {inContacts && (
                           <CreatePostButton
-                            sx={{ width: !matches ? "100%" : "initial" }}
+                            sx={{
+                              width: !matches ? "100%" : "initial",
+                              "&:hover": { backgroundColor: "#dcf5fa" },
+                            }}
                             variant="outlined"
                             onClick={() => {
                               removeConnection(id!);
@@ -506,7 +522,10 @@ const UserProfilePage: React.FC = () => {
                         )}
                         {inMyRequests && !inContacts && (
                           <CreatePostButton
-                            sx={{ width: !matches ? "100%" : "initial" }}
+                            sx={{
+                              width: !matches ? "100%" : "initial",
+                              "&:hover": { backgroundColor: "#dcf5fa" },
+                            }}
                             variant="outlined"
                             onClick={() => {
                               connectBack(id!);
@@ -516,7 +535,10 @@ const UserProfilePage: React.FC = () => {
                           </CreatePostButton>
                         )}
                         <CreatePostButton
-                          sx={{ width: !matches ? "100%" : "initial" }}
+                          sx={{
+                            width: !matches ? "100%" : "initial",
+                            "&:hover": { backgroundColor: "#dcf5fa" },
+                          }}
                           onClick={() => {
                             createChat(userData.id);
                             dispatch(

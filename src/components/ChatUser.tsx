@@ -75,7 +75,11 @@ const ChatUser: React.FC<Props> = ({ chat }) => {
       padding="10px"
       gap="5px"
       width="100%"
-      sx={{ boxSizing: "border-box", backgroundColor: "#f0fafc" }}
+      sx={{
+        boxSizing: "border-box",
+        backgroundColor:
+          chat[1].userInfo.uid === user.uid ? "#f0fafc" : "initial",
+      }}
       onClick={onUserClick}
       height="100%"
       alignItems="center"

@@ -21,8 +21,11 @@ const ProfileContacts: React.FC = () => {
       ) : (
         <Box sx={{ margin: "40px auto" }}>
           <Alert severity="info" variant="outlined" sx={{ marginLeft: "20px" }}>
-            You don't have any contacts yet. Use the search bar above to find
-            and add contacts.
+            {userData.id === auth.currentUser!.uid
+              ? "You don't"
+              : `${userData.username} doesn't`}{" "}
+            have any contacts yet. Use the search bar above to find and add
+            contacts.
           </Alert>
         </Box>
       )}

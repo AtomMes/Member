@@ -170,7 +170,7 @@ const SendMessageInput = () => {
               >
                 <Button
                   sx={{
-                    color: "gray",
+                    color: "#047891",
                     margin: "1px 0 0",
                     padding: 0,
                     minWidth: 0,
@@ -195,7 +195,7 @@ const SendMessageInput = () => {
 
                 <Button
                   sx={{
-                    color: "gray",
+                    color: "#047891",
                     margin: " 0 0 7px",
                     padding: 0,
                     minWidth: 0,

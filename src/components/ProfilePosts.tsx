@@ -8,6 +8,8 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useParams } from "react-router-dom";
+import { auth } from "../firebase";
+import { getUserData } from "../hooks/getUserData";
 import { useAuthorPosts } from "../hooks/useAuthorPosts";
 import Post from "./Post";
 
@@ -15,7 +17,9 @@ const ProfilePosts: React.FC = () => {
   const { id } = useParams();
   const { authorPosts, isLoading } = useAuthorPosts(id!);
 
-  if (!authorPosts) return <></>;
+  const { userData } = getUserData(id);
+
+  if (!authorPosts || !userData) return <></>;
 
   return (
     <Box
@@ -41,7 +45,11 @@ const ProfilePosts: React.FC = () => {
         ))
       ) : (
         <Alert severity="info" variant="outlined" sx={{ margin: "20px auto" }}>
-          You haven't posted anything yet. Share your thoughts or experiences by creating a new post.
+          {userData.id === auth.currentUser!.uid
+            ? "You haven't"
+            : `${userData.username} hasn't`}{" "}
+          posted anything yet. Share your thoughts or experiences by creating a
+          new post.
         </Alert>
       )}
     </Box>
