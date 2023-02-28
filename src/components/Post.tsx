@@ -330,7 +330,7 @@ const Post: React.FC<PostProps> = ({
                 color="gray"
                 sx={{
                   "&:hover": {
-                    color: "blue",
+                    color: "#047891",
                   },
                 }}
               >
