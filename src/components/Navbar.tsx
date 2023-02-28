@@ -82,6 +82,8 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
     (pathname.includes("/") && "1");
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [showError, setShowError] = React.useState<boolean>(false);
+  console.log(showError);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
 
@@ -104,56 +106,91 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
     setValue(location);
   }, [location]);
 
+  React.useEffect(() => {
+    setShowError(false);
+    setTimeout(() => {
+      setShowError(true);
+    }, 3000);
+  }, []);
+
   const { userData } = getUserData(auth.currentUser?.uid);
 
   const float = useMediaQuery(theme.breakpoints.down(410));
 
   if (loggedIn && !userData)
     return (
-      <AppBar
-        sx={{
-          height: "100vh",
-          bgcolor: "white",
-          color: "darkGray",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginBottom: "10px",
-        }}
-      >
-        <Stack gap={"20px"}>
-          <Typography variant="h3" sx={{ textAlign: "center" }}>
-            Oops!
-          </Typography>
-          <Typography
-            variant="h4"
-            sx={{ textAlign: "center", width: "100%", maxWidth: "700px" }}
-          >
-            Something went wrong. We're sorry for the inconvenience. Please
-            click the button below to see if it resolves the issue.
-          </Typography>
-          <Button
-            variant="contained"
+      <>
+        {showError ? (
+          <AppBar
             sx={{
-              textTransform: "none",
-              color: "white",
-              bgcolor: "#047891",
-              width: "100%",
-              maxWidth: "300px",
-              margin: "30px auto",
-              "&:hover": {
-                bgcolor: "#016d85",
-              },
-            }}
-            onClick={() => {
-              localStorage.removeItem("isAuth");
-              window.location.reload();
+              height: "100vh",
+              bgcolor: "white",
+              color: "darkGray",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginBottom: "10px",
             }}
           >
-            Try Again
-          </Button>
-        </Stack>
-      </AppBar>
+            <Stack gap={"20px"}>
+              <Typography variant="h3" sx={{ textAlign: "center" }}>
+                Oops!
+              </Typography>
+              <Typography
+                variant="h4"
+                sx={{ textAlign: "center", width: "100%", maxWidth: "700px" }}
+              >
+                Something went wrong. We're sorry for the inconvenience. Please
+                click the button below to see if it resolves the issue.
+              </Typography>
+              <Button
+                variant="contained"
+                sx={{
+                  textTransform: "none",
+                  color: "white",
+                  bgcolor: "#047891",
+                  width: "100%",
+                  maxWidth: "300px",
+                  margin: "30px auto",
+                  "&:hover": {
+                    bgcolor: "#016d85",
+                  },
+                }}
+                onClick={() => {
+                  localStorage.removeItem("isAuth");
+                  window.location.reload();
+                }}
+              >
+                Try Again
+              </Button>
+            </Stack>
+          </AppBar>
+        ) : (
+          <AppBar
+            position="static"
+            sx={{
+              bgcolor: "white",
+              color: "darkGray",
+              marginBottom: "10px",
+              height: "72px",
+            }}
+          >
+            <Box maxWidth="1100px" width="100%" margin="0 auto">
+              <Toolbar
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexDirection: "row",
+                  height: "72px",
+                }}
+              >
+                <Avatar src={logo} onClick={() => navigate("/")} />
+              </Toolbar>
+            </Box>
+          </AppBar>
+        )}
+      </>
     );
 
   return (

@@ -1,4 +1,10 @@
-import { Check, Delete, Message } from "@mui/icons-material";
+import {
+  Check,
+  Delete,
+  Message,
+  PersonAdd,
+  PersonOff,
+} from "@mui/icons-material";
 import { Box, Skeleton, Stack, Typography } from "@mui/material";
 import React from "react";
 import { getUserData } from "../hooks/getUserData";
@@ -74,7 +80,7 @@ const RightbarRequestContact: React.FC<Props> = ({
       <Stack justifyContent="center" flex="1">
         <Typography>{userData!.username}</Typography>
       </Stack>
-    {isContact ? (
+      {isContact ? (
         <Box>
           <Message
             // color="primary"
@@ -86,11 +92,19 @@ const RightbarRequestContact: React.FC<Props> = ({
         </Box>
       ) : (
         <>
-          <Box onClick={() => onClick("y", id)}>
-            <Check color="success" />
+          <Box onClick={() => onClick("y", id)} marginRight="5px">
+            <PersonAdd
+              sx={{
+                color: "#047891",
+              }}
+            />
           </Box>
           <Box onClick={() => onClick("n", id)}>
-            <Delete color="error" />
+            <PersonOff
+              sx={{
+                color: "#ba2323",
+              }}
+            />
           </Box>
         </>
       )}

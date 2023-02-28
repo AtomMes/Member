@@ -1,4 +1,4 @@
-import { Check, Delete } from "@mui/icons-material";
+import { Check, Delete, PersonAdd, PersonOff } from "@mui/icons-material";
 import {
   Box,
   Grid,
@@ -104,8 +104,8 @@ const ProfileRequest: React.FC<Props> = ({ request }) => {
             3 mutual connections
           </Typography>
         </Stack>
-        <Check color="success" onClick={() => connectBack(userData.id)} />
-        <Delete color="error" onClick={() => declineRequest(userData.id)} />
+        <PersonAdd color="success" onClick={() => connectBack(userData.id)} />
+        <PersonOff color="error" onClick={() => declineRequest(userData.id)} />
       </Paper>
     </Grid>
   );
