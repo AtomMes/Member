@@ -28,7 +28,7 @@ import { getUserData } from "../hooks/getUserData";
 import { removeUser } from "../redux/userSlice/slice";
 import { theme } from "../utils/theme";
 import CurrentUserAvatar from "./CurrentUserAvatar";
-import logo from "../images/logoHope.png";
+import logo from "../images/logoM.png";
 
 export const StyledTab = styled(Tab)(({ theme }) => ({
   color: "#047891",
@@ -185,7 +185,7 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
                   height: "72px",
                 }}
               >
-                <Avatar src={logo} onClick={() => navigate("/")} />
+                <img src={logo} width="30px" onClick={() => navigate("/")} />
               </Toolbar>
             </Box>
           </AppBar>
@@ -213,7 +213,7 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
           }}
         >
           <Stack flexDirection="row" alignItems="center">
-            <Avatar src={logo} onClick={() => navigate("/")} />
+            <img src={logo} width="30px" onClick={() => navigate("/")} />
           </Stack>
           {!loggedIn && (
             <Stack flexDirection="row" gap="15px">
