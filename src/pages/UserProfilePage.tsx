@@ -393,7 +393,9 @@ const UserProfilePage: React.FC = () => {
                       justifyContent="end"
                       alignItems="start"
                     >
-                      <Typography variant="h3">{userData.username}</Typography>
+                      <Typography variant="h3" textAlign="center">
+                        {userData.username}
+                      </Typography>
                       {id === auth.currentUser!.uid ? (
                         <>
                           <Typography>{myContacts.length} Contacts</Typography>

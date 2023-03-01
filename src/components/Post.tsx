@@ -332,6 +332,7 @@ const Post: React.FC<PostProps> = ({
                   "&:hover": {
                     color: "#047891",
                   },
+                  cursor: "pointer",
                 }}
               >
                 ...see more

@@ -217,22 +217,35 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
           </Stack>
           {!loggedIn && (
             <Stack flexDirection="row" gap="15px">
-              <Button
-                variant="outlined"
-                startIcon={<Login />}
-                sx={{ textTransform: "none" }}
-                onClick={() => navigate("/login")}
-              >
-                Log In
-              </Button>
-              <Button
-                variant="contained"
-                startIcon={<PersonAdd />}
-                sx={{ textTransform: "none" }}
-                onClick={() => navigate("/register")}
-              >
-                Register
-              </Button>
+              {!float ? (
+                <>
+                  <Button
+                    variant="outlined"
+                    startIcon={<Login />}
+                    sx={{ textTransform: "none", whiteSpace: "nowrap" }}
+                    onClick={() => navigate("/login")}
+                  >
+                    Log In
+                  </Button>
+                  <Button
+                    variant="contained"
+                    startIcon={<PersonAdd />}
+                    sx={{ textTransform: "none" }}
+                    onClick={() => navigate("/register")}
+                  >
+                    Register
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <IconButton onClick={() => navigate("/login")}>
+                    <Login sx={{ color: "#047891" }} />
+                  </IconButton>
+                  <IconButton onClick={() => navigate("/register")}>
+                    <PersonAdd sx={{ color: "#047891" }} />
+                  </IconButton>
+                </>
+              )}
             </Stack>
           )}
 
@@ -341,7 +354,7 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
                       }}
                     >
                       <ListItemIcon>
-                        <HomeIcon />
+                        <HomeIcon sx={{ color: "#047891" }} />
                       </ListItemIcon>
                       Home
                     </MenuItem>
@@ -354,7 +367,7 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
                       }}
                     >
                       <ListItemIcon>
-                        <Group />
+                        <Group sx={{ color: "#047891" }} />
                       </ListItemIcon>
                       Contacts
                     </MenuItem>
@@ -367,7 +380,7 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
                       }}
                     >
                       <ListItemIcon>
-                        <Message />{" "}
+                        <Message sx={{ color: "#047891" }} />{" "}
                       </ListItemIcon>
                       Chats
                     </MenuItem>
@@ -382,7 +395,7 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
                   }}
                 >
                   <ListItemIcon>
-                    <Logout fontSize="small" />
+                    <Logout fontSize="small" sx={{ color: "#047891" }} />
                   </ListItemIcon>
                   Logout
                 </MenuItem>
