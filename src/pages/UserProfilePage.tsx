@@ -321,7 +321,7 @@ const UserProfilePage: React.FC = () => {
             </Box>
             <Box
               position="relative"
-              sx={{ height: matches ? "185px" : float ? "232px" : "356px" }}
+              sx={{ height: matches ? "187px" : float ? "234px" : "358px" }}
               width="100%"
             >
               <Box
