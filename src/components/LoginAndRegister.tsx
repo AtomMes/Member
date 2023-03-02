@@ -57,6 +57,8 @@ const LoginAndRegister: React.FC<Props> = ({
   const [email, setEmail] = React.useState<string | null>();
   const [pass, setPass] = React.useState<string | null>();
   const [confirmPass, setConfirmPass] = React.useState<string | null>();
+  const [localErr, setLocalErr] = React.useState<string | null>();
+
   const [validateInputs, setValidateInputs] = React.useState([
     false,
     false,
@@ -74,9 +76,51 @@ const LoginAndRegister: React.FC<Props> = ({
 
   const loginAndRegister = () => {
     if (reg) {
-      handleClick(email!, pass!, username!);
+      if (!(pass && confirmPass && email && username)) {
+        setValidateInputs([
+          username ? false : true,
+          email ? false : true,
+          pass ? false : true,
+          confirmPass ? false : true,
+        ]);
+      } else if (pass !== confirmPass) {
+        setLocalErr("*Password confirmation failed");
+      } else if (pass!.length < 6) {
+        setLocalErr("*Password must have at least 6 characters");
+      } else if (
+        !String(email)
+          .toLowerCase()
+          .match(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          )
+      ) {
+        setLocalErr("*Invalid email address");
+      } else {
+        setLocalErr(null);
+        handleClick(email!, pass!, username!);
+      }
     } else {
-      handleClick(email!, pass!);
+      if (!(pass && email)) {
+        setValidateInputs([
+          false,
+          email ? false : true,
+          pass ? false : true,
+          false,
+        ]);
+      } else if (pass.length < 6) {
+        setLocalErr("*Password must have at least 6 characters");
+      } else if (
+        !String(email)
+          .toLowerCase()
+          .match(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          )
+      ) {
+        setLocalErr("*Invalid email address");
+      } else {
+        setLocalErr(null);
+        handleClick(email!, pass!);
+      }
     }
   };
 
@@ -213,6 +257,7 @@ const LoginAndRegister: React.FC<Props> = ({
         )}
       </Stack>
       <Typography color="error" fontSize="15px">
+        {localErr}
         {err &&
           (reg
             ? "*Something went wrong. User registration failed"

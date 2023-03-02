@@ -12,9 +12,14 @@ const Home: React.FC = () => {
 
   const navigate = useNavigate();
 
-  if (!isAuth) navigate("/login");
-
   const ut = useMediaQuery(theme.breakpoints.down(850));
+
+  React.useEffect(() => {
+    navigate("/");
+  }, []);
+
+
+  if (!isAuth) navigate("/login");
 
   return (
     <Stack display="flex" flexDirection="row">

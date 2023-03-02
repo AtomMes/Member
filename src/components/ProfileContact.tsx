@@ -143,7 +143,7 @@ const ProfileContact: React.FC<Props> = ({ contact }) => {
                 }}
               >
                 {userData.id !== auth.currentUser!.uid
-                  ? `${mutualContacts.length} mutual connections`
+                  ? `${mutualContacts.length} mutual contacts`
                   : "(You)"}
               </Typography>
             </Stack>

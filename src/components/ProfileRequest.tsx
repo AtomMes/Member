@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { getUserData } from "../hooks/getUserData";
+import { getMutualConnections } from "../hooks/useMutualConnections";
 import { connectBack, declineRequest } from "../utils/connectionFunctions";
 import { theme } from "../utils/theme";
 import CurrentUserAvatar from "./CurrentUserAvatar";
@@ -20,6 +21,8 @@ interface Props {
 
 const ProfileRequest: React.FC<Props> = ({ request }) => {
   const { userData, loading } = getUserData(request);
+
+  const { mutualContacts } = getMutualConnections(request);
 
   const ut = useMediaQuery(theme.breakpoints.down(850));
 
@@ -101,10 +104,14 @@ const ProfileRequest: React.FC<Props> = ({ request }) => {
               height: "fit-content",
             }}
           >
-            3 mutual connections
+            {mutualContacts.length} mutual contacts
           </Typography>
         </Stack>
-        <PersonAdd color="success" onClick={() => connectBack(userData.id)} />
+        <PersonAdd
+          color="success"
+          onClick={() => connectBack(userData.id)}
+          sx={{ marginRight: "5px" }}
+        />
         <PersonOff color="error" onClick={() => declineRequest(userData.id)} />
       </Paper>
     </Grid>

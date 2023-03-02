@@ -45,6 +45,7 @@ const LoginPage: React.FC = () => {
 
   React.useEffect(() => {
     setErr(false);
+    navigate("/login");
   }, []);
 
   const { isAuth } = useAuth();

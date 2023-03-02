@@ -36,7 +36,6 @@ const App: React.FC = () => {
     setIsUserReady(!!auth.currentUser);
   }, [email]);
 
-
   return (
     <Box>
       {isAuth ? <Navbar loggedIn={true} /> : <Navbar loggedIn={false} />}

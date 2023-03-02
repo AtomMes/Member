@@ -56,6 +56,7 @@ const RegisterPage: React.FC = () => {
           navigate("/");
         })
         .catch((err) => {
+          console.log("error ka", err.type);
           setErr(true);
         });
     } else {

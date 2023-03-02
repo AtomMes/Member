@@ -29,6 +29,7 @@ import { removeUser } from "../redux/userSlice/slice";
 import { theme } from "../utils/theme";
 import CurrentUserAvatar from "./CurrentUserAvatar";
 import logo from "../images/logoM.png";
+import ErrorNavBar from "./ErrorNavBar";
 
 export const StyledTab = styled(Tab)(({ theme }) => ({
   color: "#047891",
@@ -120,52 +121,8 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
   if (loggedIn && !userData)
     return (
       <>
-        {showError ? (
-          <AppBar
-            sx={{
-              height: "100vh",
-              bgcolor: "white",
-              color: "darkGray",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              marginBottom: "10px",
-            }}
-          >
-            <Stack gap={"20px"}>
-              <Typography variant="h3" sx={{ textAlign: "center" }}>
-                Oops!
-              </Typography>
-              <Typography
-                variant="h4"
-                sx={{ textAlign: "center", width: "100%", maxWidth: "700px" }}
-              >
-                Something went wrong. We're sorry for the inconvenience. Please
-                click the button below to see if it resolves the issue.
-              </Typography>
-              <Button
-                variant="contained"
-                sx={{
-                  textTransform: "none",
-                  color: "white",
-                  bgcolor: "#047891",
-                  width: "100%",
-                  maxWidth: "300px",
-                  margin: "30px auto",
-                  "&:hover": {
-                    bgcolor: "#016d85",
-                  },
-                }}
-                onClick={() => {
-                  localStorage.removeItem("isAuth");
-                  window.location.reload();
-                }}
-              >
-                Try Again
-              </Button>
-            </Stack>
-          </AppBar>
-        ) : (
+        <ErrorNavBar />
+        {!showError && (
           <AppBar
             position="static"
             sx={{
@@ -397,7 +354,7 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
                   <ListItemIcon>
                     <Logout fontSize="small" sx={{ color: "#047891" }} />
                   </ListItemIcon>
-                  Logout
+                  Log out
                 </MenuItem>
               </Menu>
             </>
