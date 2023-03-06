@@ -198,13 +198,15 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
                     />
                   </Tabs>
                 )}
-                <CurrentUserAvatar
-                  username={userData!.username}
-                  photoURL={userData!.photoURL}
-                  size="45px"
-                  id={userData!.id}
-                  disableNav
-                />{" "}
+                <Box onClick={handleClick}>
+                  <CurrentUserAvatar
+                    username={userData!.username}
+                    photoURL={userData!.photoURL}
+                    size="45px"
+                    id={userData!.id}
+                    disableNav
+                  />{" "}
+                </Box>
               </Stack>
               <Menu
                 anchorEl={anchorEl!}
