@@ -1,10 +1,7 @@
 import { Group, Login, Logout, Message, PersonAdd } from "@mui/icons-material";
-import CatchingPokemonIcon from "@mui/icons-material/CatchingPokemon";
 import HomeIcon from "@mui/icons-material/Home";
 import {
   AppBar,
-  Avatar,
-  Badge,
   Box,
   Button,
   Divider,
@@ -17,7 +14,6 @@ import {
   Tab,
   Tabs,
   Toolbar,
-  Typography,
   useMediaQuery,
 } from "@mui/material";
 import React from "react";
@@ -38,35 +34,6 @@ export const StyledTab = styled(Tab)(({ theme }) => ({
   minHeight: "none",
   textTransform: "none",
   padding: "0",
-}));
-
-const StyledBadge = styled(Badge)(({ theme }) => ({
-  "& .MuiBadge-badge": {
-    backgroundColor: "#44b700",
-    color: "#44b700",
-    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-    "&::after": {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      borderRadius: "50%",
-      animation: "ripple 1.2s infinite ease-in-out",
-      border: "1px solid currentColor",
-      content: '""',
-    },
-  },
-  "@keyframes ripple": {
-    "0%": {
-      transform: "scale(.8)",
-      opacity: 1,
-    },
-    "100%": {
-      transform: "scale(2.4)",
-      opacity: 0,
-    },
-  },
 }));
 
 interface Props {
@@ -231,24 +198,13 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
                     />
                   </Tabs>
                 )}
-                <StyledBadge
-                  id="resources-button" //id enq tali karavarelu hamar
-                  onClick={handleClick}
-                  aria-controls={open ? "resources-menu" : undefined} //aria controlsov karavarum enq resources-menu i exeliutyuny
-                  aria-haspopup="true" //popup uni te che? asum enq ha
-                  aria-expanded={open ? "true" : undefined} //asumenq razvernuta te che, openi heta kaxvac de parza
-                  overlap="circular"
-                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                  variant="dot"
-                >
-                  <CurrentUserAvatar
-                    username={userData!.username}
-                    photoURL={userData!.photoURL}
-                    size="45px"
-                    id={userData!.id}
-                    disableNav
-                  />{" "}
-                </StyledBadge>
+                <CurrentUserAvatar
+                  username={userData!.username}
+                  photoURL={userData!.photoURL}
+                  size="45px"
+                  id={userData!.id}
+                  disableNav
+                />{" "}
               </Stack>
               <Menu
                 anchorEl={anchorEl!}

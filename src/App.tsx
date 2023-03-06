@@ -1,18 +1,18 @@
-import { Box, styled, ThemeProvider } from "@mui/material";
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
+import { Box, styled } from "@mui/material";
 import Navbar from "./components/Navbar";
 import { auth } from "./firebase";
 import { useAppSelector } from "./hooks/redux-hooks";
 import { useAuth } from "./hooks/useAuth";
-import ChatPage from "./pages/ChatPage";
-import ContactsPage from "./pages/ContactsPage";
-import Home from "./pages/Home";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import UserProfilePage from "./pages/UserProfilePage";
 import { checkLoggedInUser } from "./utils/checkAuthUser";
-import { theme } from "./utils/theme";
+
+const ChatPage = lazy(() => import("./pages/ChatPage"));
+const ContactsPage = lazy(() => import("./pages/ContactsPage"));
+const Home = lazy(() => import("./pages/Home"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const RegisterPage = lazy(() => import("./pages/RegisterPage"));
+const UserProfilePage = lazy(() => import("./pages/UserProfilePage"));
 
 export const WrapperBox = styled(Box)(({ theme }) => ({
   backgroundColor: "white",

@@ -81,6 +81,7 @@ const AboutPost = styled(Grid)(({ theme }) => ({
   width: "100%",
 }));
 const AddComment = styled(Box)(({ theme }) => ({
+  alignItems: "center",
   display: "flex",
   gap: "5px",
   marginTop: "8px",
@@ -219,8 +220,8 @@ const Post: React.FC<PostProps> = ({
             id={userData.id}
           />
         </Box>
-        <Typography>{userData!.username}</Typography>
-        <Typography fontSize="14px" color="gray" flex="1">
+        <Typography flex="1">{userData!.username}</Typography>
+        <Typography fontSize="14px" color="gray">
           {createdDate.replace("about", "")}
         </Typography>
         {del && (
@@ -441,7 +442,7 @@ const Post: React.FC<PostProps> = ({
                 endAdornment: (
                   <InputAdornment position="end">
                     <Button sx={{ minWidth: "1px" }} onClick={onAddComment}>
-                      <Send />
+                      <Send sx={{ color: "#047891" }} />
                     </Button>
                   </InputAdornment>
                 ),
@@ -449,32 +450,42 @@ const Post: React.FC<PostProps> = ({
             />
           </AddComment>
           <Box width="100%" border=".1px solid rgba(220,220,220, .7)" />
-          {/*@ts-ignore */}
-          <Comments comments={comments!} limit={limit} />
-          <Stack flexDirection="row" justifyContent="space-between">
-            <ShowMoreButton
-              fullWidth={false}
-              onClick={() => {
-                if (comments!.length > limit) {
-                  setLimit(limit + 2);
-                  console.log(limit);
-                }
-              }}
-            >
-              Show more
-            </ShowMoreButton>
-            <ShowMoreButton
-              fullWidth={false}
-              onClick={() => {
-                if (limit > 2) {
-                  setLimit(limit - 2);
-                  console.log(limit);
-                }
-              }}
-            >
-              Show less
-            </ShowMoreButton>
-          </Stack>
+          {comments!.length ? (
+            <>
+              {/*@ts-ignore */}
+              <Comments comments={comments!} limit={limit} />
+              <Stack flexDirection="row" justifyContent="space-between">
+                <ShowMoreButton
+                  fullWidth={false}
+                  onClick={() => {
+                    if (comments!.length > limit) {
+                      setLimit(limit + 2);
+                      console.log(limit);
+                    }
+                  }}
+                  sx={{ color: "#047891" }}
+                >
+                  Show more
+                </ShowMoreButton>
+                <ShowMoreButton
+                  fullWidth={false}
+                  onClick={() => {
+                    if (limit > 2) {
+                      setLimit(limit - 2);
+                      console.log(limit);
+                    }
+                  }}
+                  sx={{ color: "#047891" }}
+                >
+                  Show less
+                </ShowMoreButton>
+              </Stack>
+            </>
+          ) : (
+            <Alert severity="info" variant="outlined" sx={{ maxWidth: "100%" }}>
+              There are currently no comments on this post yet.
+            </Alert>
+          )}
         </Stack>
       )}
     </WrapperBox>

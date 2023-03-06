@@ -1,4 +1,4 @@
-import { Lock, LockOpen, Mail, Person } from "@mui/icons-material";
+import { GppGood, Lock, LockOpen, Mail, Person } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -230,7 +230,7 @@ const LoginAndRegister: React.FC<Props> = ({
         />
         {reg && (
           <TextField
-            type="text"
+            type="password"
             label="Password Confirmation"
             error={!confirmPass && validateInputs[3] === true}
             helperText={
@@ -248,7 +248,7 @@ const LoginAndRegister: React.FC<Props> = ({
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <LockOpen color="primary" />
+                  <GppGood color="primary" />
                 </InputAdornment>
               ),
             }}
