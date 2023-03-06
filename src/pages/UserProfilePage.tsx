@@ -207,6 +207,7 @@ const UserProfilePage: React.FC = () => {
                   objectFit: "cover",
                   width: "100%",
                   height: "100%",
+                  borderRadius: "10px",
                   opacity: userData.coverPhoto ? "1" : ".3",
                 }}
               />

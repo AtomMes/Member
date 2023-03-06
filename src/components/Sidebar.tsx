@@ -5,7 +5,7 @@ import {
   People,
 } from "@mui/icons-material";
 import { ModalDialog } from "@mui/joy";
-import { Button, Modal, styled, Typography } from "@mui/material";
+import { Button, Modal, Skeleton, styled, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { getAuth, updateProfile } from "firebase/auth";
 import { doc, updateDoc } from "firebase/firestore";
@@ -19,6 +19,7 @@ import React from "react";
 import Avatar from "react-avatar-edit";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
+import { getUserData } from "../hooks/getUserData";
 import { useAppSelector } from "../hooks/redux-hooks";
 import { addProfilePicture } from "../utils/profileFunctions";
 import CurrentUserAvatar from "./CurrentUserAvatar";
@@ -55,8 +56,51 @@ const Sidebar: React.FC = () => {
   const user = auth.currentUser;
 
   const navigate = useNavigate();
+  const { userData } = getUserData(auth.currentUser!.uid);
 
-  console.log(auth.currentUser);
+  if (!userData)
+    return (
+      <div className="sticky">
+        <WrapperBox>
+          <ProfileBox>
+            <Skeleton
+              variant="circular"
+              width={72}
+              height={72}
+              animation="wave"
+              sx={{ marginBottom: "15px" }}
+            />
+            <Typography>
+              <Skeleton variant="rectangular" width="110px" height="16px" />
+            </Typography>
+            <Typography sx={{ marginTop: "10px" }}>Add a photo</Typography>
+          </ProfileBox>
+          <Box padding="15px">
+            <StyledButton>
+              {" "}
+              <People
+                sx={{
+                  fontSize: "30px",
+                  marginRight: "10px",
+                  color: "#047891",
+                }}
+              />{" "}
+              Contacts
+            </StyledButton>
+            <StyledButton>
+              <AccountCircle
+                sx={{
+                  fontSize: "30px",
+                  marginRight: "10px",
+                  color: "#047891",
+                }}
+              />
+              Profile
+            </StyledButton>
+          </Box>
+        </WrapperBox>
+      </div>
+    );
 
   return (
     <div className="sticky">
@@ -65,13 +109,13 @@ const Sidebar: React.FC = () => {
           <CurrentUserAvatar
             size="70px"
             mb="15px"
-            username={auth.currentUser!.displayName}
-            photoURL={auth.currentUser!.photoURL}
+            username={userData.username}
+            photoURL={userData.photoURL}
             id={id!}
           />
-          <Typography>{auth.currentUser!.displayName}</Typography>
+          <Typography>{userData.username}</Typography>
           <Typography onClick={() => setOpen(!open)}>
-            {auth.currentUser!.photoURL ? "Change Photo" : "Add a photo"}
+            {userData.photoURL ? "Change Photo" : "Add a photo"}
           </Typography>
         </ProfileBox>
         <Box padding="15px">

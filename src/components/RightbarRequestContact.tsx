@@ -84,7 +84,7 @@ const RightbarRequestContact: React.FC<Props> = ({
         <Box>
           <Message
             // color="primary"
-            sx={{ color: "#047891" }}
+            sx={{ color: "#047891", marginRight: "6px" }}
             onClick={() =>
               onClick("", id, userData.username, userData.photoURL)
             }

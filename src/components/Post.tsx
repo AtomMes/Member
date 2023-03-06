@@ -221,7 +221,13 @@ const Post: React.FC<PostProps> = ({
           />
         </Box>
         <Typography flex="1">{userData!.username}</Typography>
-        <Typography fontSize="14px" color="gray">
+        <Typography
+          fontSize="14px"
+          color="dimgray"
+          bgcolor="#e8fdff"
+          borderRadius="10px"
+          padding="5px 10px"
+        >
           {createdDate.replace("about", "")}
         </Typography>
         {del && (
@@ -432,6 +438,7 @@ const Post: React.FC<PostProps> = ({
               id={auth.currentUser!.uid}
             />
             <AddCommentInput
+              sx={{ marginLeft: "2px" }}
               size="small"
               placeholder="Add a comment..."
               value={commentText}
