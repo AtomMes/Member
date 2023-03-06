@@ -2,6 +2,7 @@ import { Box, Stack, Typography } from "@mui/material";
 import { formatDistanceToNow } from "date-fns";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { auth } from "../firebase";
 import { getUserData } from "../hooks/getUserData";
 import { useAppSelector } from "../hooks/redux-hooks";
 import { Message } from "./ChatMessages";
@@ -25,21 +26,28 @@ const ChatMessage: React.FC<Props> = ({ message }) => {
 
   const createdDate = formatDistanceToNow(message.date) + " " + "ago";
 
-
   const navigate = useNavigate();
 
   if (!userData) return <></>;
 
-
   return (
-    <Stack ref={ref} flexDirection="row" gap="10px">
-      <Box onClick={() => navigate(`/profile/${message.senderId}`)}>
-        <CurrentUserAvatar
-          username={userData.username}
-          photoURL={userData.photoURL}
-          id={userData.id}
-        />
-      </Box>
+    <Stack
+      ref={ref}
+      flexDirection="row"
+      gap="10px"
+      sx={{
+        alignSelf: message.senderId === auth.currentUser!.uid ? "end" : "start",
+      }}
+    >
+      {message.senderId !== auth.currentUser!.uid && (
+        <Box onClick={() => navigate(`/profile/${message.senderId}`)}>
+          <CurrentUserAvatar
+            username={userData.username}
+            photoURL={userData.photoURL}
+            id={userData.id}
+          />
+        </Box>
+      )}
       <Stack
         gap="8px"
         bgcolor="#f0fafc"
@@ -66,6 +74,15 @@ const ChatMessage: React.FC<Props> = ({ message }) => {
           {message.text}
         </Typography>
       </Stack>
+      {message.senderId === auth.currentUser!.uid && (
+        <Box onClick={() => navigate(`/profile/${message.senderId}`)}>
+          <CurrentUserAvatar
+            username={userData.username}
+            photoURL={userData.photoURL}
+            id={userData.id}
+          />
+        </Box>
+      )}
     </Stack>
   );
 };
