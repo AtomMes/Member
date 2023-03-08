@@ -5,6 +5,7 @@ import {
   AddCircle,
   Camera,
   Edit,
+  Lock,
   Logout,
 } from "@mui/icons-material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
@@ -24,8 +25,10 @@ import {
   styled,
   Tab,
   Tabs,
+  Tooltip,
   Typography,
   useMediaQuery,
+  Zoom,
 } from "@mui/material";
 import { updateProfile } from "firebase/auth";
 import {
@@ -80,7 +83,6 @@ export const CreatePostButton = styled(Button)(({ theme }) => ({
   color: "black",
   fontWeight: "400",
   borderRadius: "5px",
-  border: "1px solid #047891",
   whiteSpace: "nowrap",
   padding: "5px 10px",
   textTransform: "none",
@@ -95,9 +97,17 @@ const UserProfilePage: React.FC = () => {
   const [progress, setProgress] = React.useState<number>(0);
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
   const [openModal, setOpenModal] = React.useState<boolean>(false);
+  const [openTooltip, setOpenTooltip] = React.useState<boolean>(false);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
+  };
+
+  const handleOpenTooltip = () => {
+    setOpenTooltip(true);
+    setTimeout(() => {
+      setOpenTooltip(false);
+    }, 1000);
   };
 
   const { id } = useParams();
@@ -537,25 +547,46 @@ const UserProfilePage: React.FC = () => {
                             Connect back
                           </CreatePostButton>
                         )}
-                        <CreatePostButton
-                          sx={{
-                            width: !matches ? "100%" : "initial",
-                            "&:hover": { backgroundColor: "#dcf5fa" },
-                          }}
-                          onClick={() => {
-                            createChat(userData.id);
-                            dispatch(
-                              setChat({
-                                displayName: userData.username,
-                                photoURL: userData.photoURL,
-                                uid: userData.id,
-                              })
-                            );
-                            navigate("/messaging");
-                          }}
+                        <Tooltip
+                          title="You must be connected"
+                          open={openTooltip}
+                          onOpen={handleOpenTooltip}
+                          onClick={handleOpenTooltip}
+                          TransitionComponent={Zoom}
+                          arrow
+                          placement="top"
+                          disableHoverListener={inContacts}
                         >
-                          Message
-                        </CreatePostButton>
+                          <Box
+                            sx={{
+                              width: !matches ? "calc(100% + 20px)" : "initial",
+                            }}
+                          >
+                            <CreatePostButton
+                              disabled={!inContacts}
+                              sx={{
+                                width: !matches ? "100%" : "initial",
+                                border: !inContacts
+                                  ? "1px solid gray"
+                                  : "1px solid #047891",
+                                "&:hover": { backgroundColor: "#dcf5fa" },
+                              }}
+                              onClick={() => {
+                                dispatch(
+                                  setChat({
+                                    displayName: userData.username,
+                                    photoURL: userData.photoURL,
+                                    uid: userData.id,
+                                  })
+                                );
+                                navigate("/messaging");
+                              }}
+                              startIcon={!inContacts && <Lock />}
+                            >
+                              Message
+                            </CreatePostButton>
+                          </Box>
+                        </Tooltip>
                       </>
                     )}
                   </Stack>

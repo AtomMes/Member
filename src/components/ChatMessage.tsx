@@ -75,7 +75,7 @@ const ChatMessage: React.FC<Props> = ({ message }) => {
         </Typography>
       </Stack>
       {message.senderId === auth.currentUser!.uid && (
-        <Box onClick={() => navigate(`/profile/${message.senderId}`)} alignSelf='end' >
+        <Box onClick={() => navigate(`/profile/${message.senderId}`)}>
           <CurrentUserAvatar
             username={userData.username}
             photoURL={userData.photoURL}
