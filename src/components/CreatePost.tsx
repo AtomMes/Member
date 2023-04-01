@@ -113,18 +113,14 @@ const CreatePost: React.FC<Props> = ({ feed, children }) => {
                 likes: [],
               });
             })
-            .catch((e) => {
-              console.log(e.message);
-            });
+            .catch((e) => {});
           setOpen(false);
           setImage(null);
           setTextValue("");
           navigate("/");
           setLoading(false);
         })
-        .catch((e) => {
-          console.log(e.message);
-        })
+        .catch((e) => {})
         .finally(() => setLoading(false));
     } else {
       alert("Please fill all the fields.");

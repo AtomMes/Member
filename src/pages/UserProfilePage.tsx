@@ -81,6 +81,7 @@ export const CreatePostButton = styled(Button)(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   color: "black",
+  border: "1px solid #047891",
   fontWeight: "400",
   borderRadius: "5px",
   whiteSpace: "nowrap",
@@ -141,7 +142,6 @@ const UserProfilePage: React.FC = () => {
   if (!mutualContacts) return <></>;
 
   const matches = useMediaQuery(theme.breakpoints.up(650));
-  const disButtons = useMediaQuery(theme.breakpoints.up(490));
   const float = useMediaQuery(theme.breakpoints.up(410));
 
   function getFileType(image: File) {
@@ -158,7 +158,6 @@ const UserProfilePage: React.FC = () => {
     if (image) {
       setProgress(10);
       setLoading(true);
-      console.log(image, "ste hasav");
       const storage = getStorage();
       const fileRef = ref(
         storage,

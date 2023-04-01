@@ -26,7 +26,7 @@ export const addProfilePicture = async (photo: string) => {
         photoURL: auth.currentUser.photoURL,
       });
     } catch (error) {
-      console.log(error);
+      alert("Something went wrong");
     }
   }
 };

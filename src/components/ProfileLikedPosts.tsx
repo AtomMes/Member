@@ -6,8 +6,6 @@ import Post from "./Post";
 const ProfileLikedPosts = () => {
   const { likedPosts, isLoading } = useLikedPosts(auth.currentUser!.uid);
 
-  console.log(likedPosts);
-
   if (isLoading) return <></>;
 
   if (!likedPosts) {

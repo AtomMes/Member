@@ -56,7 +56,6 @@ const RegisterPage: React.FC = () => {
           navigate("/");
         })
         .catch((err) => {
-          console.log("error ka", err.type);
           setErr(true);
         });
     } else {
@@ -70,7 +69,6 @@ const RegisterPage: React.FC = () => {
 
   const { isAuth } = useAuth();
 
-  console.log(isAuth);
   if (isAuth) {
     return <Navigate to="/" />;
   }

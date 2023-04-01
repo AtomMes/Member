@@ -51,7 +51,6 @@ const Navbar: React.FC<Props> = ({ loggedIn }) => {
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [showError, setShowError] = React.useState<boolean>(false);
-  console.log(showError);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
 

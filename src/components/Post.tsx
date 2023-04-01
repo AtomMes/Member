@@ -177,8 +177,7 @@ const Post: React.FC<PostProps> = ({
           date: Date.now(),
         });
       } catch (err: any) {
-        alert(err.message);
-        console.log(err);
+        alert("Something went wrong");
       }
     } else {
       alert("Write some comment");
@@ -186,7 +185,6 @@ const Post: React.FC<PostProps> = ({
   };
 
   const finnalyDeletePost = async (id: string) => {
-    console.log(id);
     await deleteDoc(doc(db, "comments", id));
   };
 
@@ -467,7 +465,6 @@ const Post: React.FC<PostProps> = ({
                   onClick={() => {
                     if (comments!.length > limit) {
                       setLimit(limit + 2);
-                      console.log(limit);
                     }
                   }}
                   sx={{ color: "#047891" }}
@@ -479,7 +476,6 @@ const Post: React.FC<PostProps> = ({
                   onClick={() => {
                     if (limit > 2) {
                       setLimit(limit - 2);
-                      console.log(limit);
                     }
                   }}
                   sx={{ color: "#047891" }}

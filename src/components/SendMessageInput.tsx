@@ -67,11 +67,11 @@ const SendMessageInput = () => {
               });
             })
             .catch((e) => {
-              console.log(e.message);
+            
             });
         })
         .catch((e) => {
-          console.log(e.message);
+       
         })
         .finally(() => setLoading(false));
     } else {

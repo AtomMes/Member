@@ -14,8 +14,7 @@ export const removeConnection = async (userId: string) => {
         contacts: arrayRemove(userId),
       });
     } catch (error: any) {
-      console.log(error);
-      alert(error.message);
+      alert('Something went wrong');
     }
   }
 };
