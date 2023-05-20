@@ -3,7 +3,7 @@ import {
   DocumentData,
   onSnapshot,
   query,
-  where
+  where,
 } from "firebase/firestore";
 import React from "react";
 import { auth, db } from "../firebase";
@@ -21,10 +21,10 @@ export const useSearch = (input: string) => {
 
     if (input.length > 0) {
       onSnapshot(q, (data) => {
-        const dataa = data.docs.map((doc) => ({
+        const users = data.docs.map((doc) => ({
           ...(doc.data() as Record<string, unknown>),
         })) as any;
-        setUsers(dataa);
+        setUsers(users);
       });
     } else {
       setUsers([]);

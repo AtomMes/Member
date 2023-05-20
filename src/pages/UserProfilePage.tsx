@@ -72,7 +72,6 @@ import {
   sendRequest,
 } from "../utils/connectionFunctions";
 import { theme } from "../utils/theme";
-import { createChat } from "../utils/chatFunctions";
 import UserPhotoModal from "../components/UserPhotoModal";
 import coverPhoto from "../images/1569699848732.jpeg";
 

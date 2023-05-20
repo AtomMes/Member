@@ -1,6 +1,5 @@
 import { Box, styled } from "@mui/material";
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import ChatLeftSide from "./ChatLeftSide";
 import ChatRightSide from "./ChatRightSide";
 
@@ -11,11 +10,7 @@ const WrapperBox = styled(Box)(({ theme }) => ({
 }));
 
 const Chat: React.FC = () => {
-  const navigate = useNavigate();
-
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
-  const [position, setPosition] = React.useState("left");
-
   const handleClick = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };

@@ -47,6 +47,8 @@ import CurrentUserAvatar from "./CurrentUserAvatar";
 import { useAppSelector } from "../hooks/redux-hooks";
 import { getUserData } from "../hooks/getUserData";
 import { theme } from "../utils/theme";
+import { getFileType } from "../utils/fileType";
+import { addPost } from "../utils/postFunctions";
 
 const CreatePostButton = styled(Button)(({ theme }) => ({
   color: "black",
@@ -72,56 +74,22 @@ const CreatePost: React.FC<Props> = ({ feed, children }) => {
 
   const [loading, setLoading] = React.useState<boolean>(false);
   const [open, setOpen] = React.useState<boolean>(false);
-  const [italic, setItalic] = React.useState<boolean>(false);
-  const [bald, setBald] = React.useState<boolean>(false);
   const [textValue, setTextValue] = React.useState<string>("");
   const [chosenImage, setChosenImage] = React.useState<string>("");
   const [image, setImage] = React.useState<null | File>();
 
   const navigate = useNavigate();
 
-  function getFileType() {
-    if (image!.type === "image/jpeg") {
-      return "jpg";
-    } else if (image!.type === "image/png") {
-      return "png";
-    } else {
-      return "other";
-    }
-  }
-
   const handleAddPost = async () => {
-    const storage = getStorage();
-    const fileRef = ref(storage, "postImages/" + uuidv4() + getFileType());
-
     if (image && textValue) {
       setLoading(true);
       setOpen(false);
-      await uploadBytes(fileRef, image)
-        .then(async () => {
-          await getDownloadURL(fileRef)
-            .then(async (imageURL) => {
-              const postCollectionRef = collection(db, "posts");
-              const text = textValue;
-
-              await addDoc(postCollectionRef, {
-                id: uuidv4(),
-                authorId: auth.currentUser?.uid,
-                text,
-                image: imageURL,
-                date: Date.now(),
-                likes: [],
-              });
-            })
-            .catch((e) => {});
-          setOpen(false);
-          setImage(null);
-          setTextValue("");
-          navigate("/");
-          setLoading(false);
-        })
-        .catch((e) => {})
-        .finally(() => setLoading(false));
+      addPost(image, textValue);
+      setOpen(false);
+      setImage(null);
+      setTextValue("");
+      navigate("/");
+      setLoading(false);
     } else {
       alert("Please fill all the fields.");
     }
@@ -234,10 +202,6 @@ const CreatePost: React.FC<Props> = ({ feed, children }) => {
                     </Box>
                   </>
                 }
-                sx={{
-                  fontWeight: bald ? 700 : 400,
-                  fontStyle: italic ? "italic" : "initial",
-                }}
               />
             </Stack>
           </ModalDialog>

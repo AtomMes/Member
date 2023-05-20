@@ -8,7 +8,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { arrayUnion, doc, Timestamp, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import {
   getDownloadURL,
   getStorage,
@@ -66,13 +66,9 @@ const SendMessageInput = () => {
                 }),
               });
             })
-            .catch((e) => {
-            
-            });
+            .catch((e) => {});
         })
-        .catch((e) => {
-       
-        })
+        .catch((e) => {})
         .finally(() => setLoading(false));
     } else {
       setText("");

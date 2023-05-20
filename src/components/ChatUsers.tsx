@@ -5,9 +5,7 @@ import ChatUser from "./ChatUser";
 
 const ChatUsers: React.FC = () => {
   const [chats, setChats] = useState([]);
-
   const currentUser = auth.currentUser;
-
   useEffect(() => {
     const getChats = () => {
       const unsub = onSnapshot(

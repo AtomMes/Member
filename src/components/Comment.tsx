@@ -15,10 +15,8 @@ interface CommentProps {
 
 const Comment: React.FC<CommentProps> = ({ com }) => {
   const navigate = useNavigate();
-
   const { userData, loading } = getUserData(com.authorId);
   if (!userData) return <></>;
-
   return (
     <Stack flexDirection="row" gap="10px">
       <Box onClick={() => navigate(`/profile/${com.authorId}`)}>

@@ -1,13 +1,14 @@
 import { Search } from "@mui/icons-material";
 import {
-  Box, Divider,
+  Box,
+  Divider,
   Drawer,
   InputAdornment,
   Stack,
   styled,
   TextField,
   Typography,
-  useMediaQuery
+  useMediaQuery,
 } from "@mui/material";
 import React, { useState } from "react";
 import { auth } from "../firebase";
@@ -36,16 +37,9 @@ interface Props {
 
 const ChatLeftSide: React.FC<Props> = ({ handleClick, isDrawerOpen }) => {
   const [username, setUsername] = useState("");
-  const [err, setErr] = useState(false);
-
   const { userData } = getUserData(auth.currentUser!.uid);
-
   const sm = useMediaQuery(theme.breakpoints.down(600));
-
-  const currentUser = auth.currentUser;
-
   if (!userData) return <></>;
-
   return (
     <Stack
       position="relative"

@@ -15,21 +15,20 @@ const UserPhotoModal: React.FC<Props> = ({ open, setOpen }) => {
   function onClose() {
     setPhoto(undefined);
   }
-  function onCrop(pv: any) {
+  function onCrop(pv: string) {
     setPhoto(pv);
   }
 
-  
   const addUserPhoto = async () => {
-   if (photo) {
-     setOpen(false);
-     addProfilePicture(photo);
-     setPhoto(undefined);
-     // refresh();
-   } else {
-     alert("Please fill all the fields.");
-   }
- };
+    if (photo) {
+      setOpen(false);
+      addProfilePicture(photo);
+      setPhoto(undefined);
+      // refresh();
+    } else {
+      alert("Please fill all the fields.");
+    }
+  };
 
   return (
     <Modal

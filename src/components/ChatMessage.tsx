@@ -13,33 +13,25 @@ interface Props {
 }
 const ChatMessage: React.FC<Props> = ({ message }) => {
   const { userData, loading } = getUserData(message.senderId);
-
-  const data: any = useAppSelector((state) => state.chat);
-
   const ref = React.useRef<HTMLElement>(null);
-
   React.useEffect(() => {
     if (ref.current) {
       ref.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [message]);
-
   const createdDate = formatDistanceToNow(message.date) + " " + "ago";
-
   const navigate = useNavigate();
-
   if (!userData) return <></>;
-
   return (
     <Stack
       ref={ref}
       flexDirection="row"
       gap="10px"
       sx={{
-        alignSelf: message.senderId === auth.currentUser!.uid ? "end" : "start",
+        alignSelf: message.senderId !== auth.currentUser!.uid ? "end" : "start",
       }}
     >
-      {message.senderId !== auth.currentUser!.uid && (
+      {message.senderId === auth.currentUser!.uid && (
         <Box onClick={() => navigate(`/profile/${message.senderId}`)}>
           <CurrentUserAvatar
             username={userData.username}
@@ -74,7 +66,7 @@ const ChatMessage: React.FC<Props> = ({ message }) => {
           {message.text}
         </Typography>
       </Stack>
-      {message.senderId === auth.currentUser!.uid && (
+      {message.senderId !== auth.currentUser!.uid && (
         <Box onClick={() => navigate(`/profile/${message.senderId}`)}>
           <CurrentUserAvatar
             username={userData.username}

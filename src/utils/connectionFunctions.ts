@@ -39,6 +39,7 @@ export const connectBack = async (userId: string) => {
       contacts: arrayUnion(userId),
       requests: arrayRemove(userId),
     });
+    createChat(userId);
   }
 };
 
@@ -49,7 +50,6 @@ export const sendRequest = async (userId: string) => {
       requests: arrayUnion(auth.currentUser!.uid),
     });
   }
-  createChat(userId);
 };
 
 export const declineRequest = async (userId: string) => {

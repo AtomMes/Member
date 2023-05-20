@@ -88,7 +88,7 @@ const AddComment = styled(Box)(({ theme }) => ({
 }));
 export const AddCommentInput = styled(TextField)(({ theme }) => ({
   [`& fieldset`]: {
-    borderRadius: 100,
+    borderRadius: 30,
   },
   width: "100%",
   padding: "0",
@@ -152,7 +152,7 @@ const Post: React.FC<PostProps> = ({
     querySnapshot.forEach(async (doc) => (docId = doc.id));
     const postRef = doc(db, "posts", docId);
 
-    updateDoc(postRef, {
+    updateDoc(postRef, {  
       likes: isPostLiked
         ? arrayRemove(auth.currentUser!.uid)
         : arrayUnion(auth.currentUser!.uid),
@@ -439,6 +439,7 @@ const Post: React.FC<PostProps> = ({
               sx={{ marginLeft: "2px" }}
               size="small"
               placeholder="Add a comment..."
+              multiline
               value={commentText}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setCommentText(e.target.value)

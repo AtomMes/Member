@@ -36,7 +36,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   top: "50%",
   transform: "translate(-50%, -50%)",
   maxWidth: "350px",
-  width: "100%",
+  width: "66%",
   padding: "40px 50px",
   display: "flex",
   flexDirection: "column",
@@ -54,8 +54,8 @@ const LoginAndRegister: React.FC<Props> = ({
   fieldErr,
 }) => {
   const [username, setUsername] = React.useState<string | null>();
-  const [email, setEmail] = React.useState<string | null>();
-  const [pass, setPass] = React.useState<string | null>();
+  const [email, setEmail] = React.useState<string | null>("employer@gmail.com");
+  const [pass, setPass] = React.useState<string | null>("employer");
   const [confirmPass, setConfirmPass] = React.useState<string | null>();
   const [localErr, setLocalErr] = React.useState<string | null>();
 
@@ -156,6 +156,7 @@ const LoginAndRegister: React.FC<Props> = ({
             : "Enter your credentials to access your account."}
         </Typography>
       </Typography>
+
       <Stack gap="15px">
         {reg && (
           <TextField
