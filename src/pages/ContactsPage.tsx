@@ -11,9 +11,9 @@ import {
 } from "@mui/material";
 import { DocumentData } from "firebase/firestore";
 import React from "react";
-import ProfileContact from "../components/Profile/ProfileContact";
-import ProfileContacts from "../components/Profile/ProfileContacts";
-import ProfileRequests from "../components/Profile/ProfileRequests";
+import ProfileContact from "../components/Profile/ProfileTabs/Contacts/ProfileContact";
+import ProfileContacts from "../components/Profile/ProfileTabs/Contacts/ProfileContacts";
+import ProfileRequests from "../components/Profile/ProfileTabs/Requests/ProfileRequests";
 import { auth } from "../firebase";
 import { getUserData } from "../hooks/getUserData";
 import { useConnectionType } from "../hooks/useConnectionType";

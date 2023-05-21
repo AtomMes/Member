@@ -5,10 +5,10 @@ import {
   removeConnection,
   removeRequest,
   sendRequest,
-} from "../../utils/connectionFunctions";
-import { removeUser } from "../../redux/userSlice/slice";
-import { setChat } from "../../redux/chatSlice/slice";
-import { useConnectionType } from "../../hooks/useConnectionType";
+} from "../../../utils/connectionFunctions";
+import { removeUser } from "../../../redux/userSlice/slice";
+import { setChat } from "../../../redux/chatSlice/slice";
+import { useConnectionType } from "../../../hooks/useConnectionType";
 import {
   Box,
   Button,
@@ -17,7 +17,7 @@ import {
   styled,
   useMediaQuery,
 } from "@mui/material";
-import { theme } from "../../utils/theme";
+import { theme } from "../../../utils/theme";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { DocumentData } from "firebase/firestore";

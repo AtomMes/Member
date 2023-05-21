@@ -1,9 +1,9 @@
 import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import React from "react";
-import { auth, db } from "../../firebase";
+import { auth, db } from "../../../firebase";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { uuidv4 } from "@firebase/util";
-import { getFileType } from "../../utils/fileType";
+import { getFileType } from "../../../utils/fileType";
 import { DocumentData, doc, updateDoc } from "firebase/firestore";
 import coverPhoto from "../../images/1569699848732.jpeg";
 

@@ -8,10 +8,10 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useParams } from "react-router-dom";
-import { auth } from "../../firebase";
-import { getUserData } from "../../hooks/getUserData";
-import { useAuthorPosts } from "../../hooks/useAuthorPosts";
-import Post from "../Posts/Post";
+import { auth } from "../../../../firebase";
+import { getUserData } from "../../../../hooks/getUserData";
+import { useAuthorPosts } from "../../../../hooks/useAuthorPosts";
+import Post from "../../../Posts/Post";
 
 const ProfilePosts: React.FC = () => {
   const { id } = useParams();

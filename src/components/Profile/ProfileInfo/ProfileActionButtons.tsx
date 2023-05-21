@@ -9,9 +9,9 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { theme } from "../../utils/theme";
-import { removeUser } from "../../redux/userSlice/slice";
-import { auth } from "../../firebase";
+import { theme } from "../../../utils/theme";
+import { removeUser } from "../../../redux/userSlice/slice";
+import { auth } from "../../../firebase";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 

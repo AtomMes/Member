@@ -1,6 +1,6 @@
 import React from "react";
-import { getUserData } from "../../hooks/getUserData";
-import CurrentUserAvatar from "../CurrentUserAvatar";
+import { getUserData } from "../../../hooks/getUserData";
+import CurrentUserAvatar from "../../CurrentUserAvatar";
 
 interface Props {
   contact: string;

@@ -3,16 +3,16 @@ import { Box, Tab, styled, useMediaQuery } from "@mui/material";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { WrapperBox } from "../App";
-import ProfileContacts from "../components/Profile/ProfileContacts";
-import ProfileLikedPosts from "../components/Profile/ProfileLikedPosts";
-import ProfilePosts from "../components/Profile/ProfilePosts";
-import ProfileRequests from "../components/Profile/ProfileRequests";
+import ProfileContacts from "../components/Profile/ProfileTabs/Contacts/ProfileContacts";
+import ProfileLikedPosts from "../components/Profile/ProfileTabs/Posts/ProfileLikedPosts";
+import ProfilePosts from "../components/Profile/ProfileTabs/Posts/ProfilePosts";
+import ProfileRequests from "../components/Profile/ProfileTabs/Requests/ProfileRequests";
 import { auth } from "../firebase";
 import { getUserData } from "../hooks/getUserData";
 import { useAuth } from "../hooks/useAuth";
 import { theme } from "../utils/theme";
-import ProfileCoverPhoto from "../components/Profile/ProfileCoverPhoto";
-import ProfileInfo from "../components/Profile/ProfileInfo";
+import ProfileCoverPhoto from "../components/Profile/ProfileInfo/ProfileCoverPhoto";
+import ProfileInfo from "../components/Profile/ProfileInfo/ProfileInfo";
 
 export const StyledTab = styled(Tab)(({ theme }) => ({
   color: "#047891",
@@ -29,12 +29,12 @@ const UserProfilePage: React.FC = () => {
   };
   const { id } = useParams();
   const { isAuth } = useAuth();
-  const navigate = useNavigate();
-  if (!isAuth) navigate("/login");
-  if (!auth.currentUser) navigate("/login");
   const matches = useMediaQuery(theme.breakpoints.up(650));
   const float = useMediaQuery(theme.breakpoints.up(410));
   const { userData } = getUserData(id);
+  const navigate = useNavigate();
+  if (!isAuth) navigate("/login");
+  if (!auth.currentUser) navigate("/login");
   if (!userData) return <></>;
 
   return (

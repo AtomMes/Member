@@ -4,24 +4,20 @@ import {
   Button,
   IconButton,
   Stack,
-  Tooltip,
   Typography,
-  Zoom,
   styled,
   useMediaQuery,
 } from "@mui/material";
 import React from "react";
-import CurrentUserAvatar from "../CurrentUserAvatar";
+import CurrentUserAvatar from "../../CurrentUserAvatar";
 import { AddAPhoto, Lock, Logout } from "@mui/icons-material";
-import UserPhotoModal from "../UserPhotoModal";
+import UserPhotoModal from "../../UserPhotoModal";
 import ProfileMutualContact from "./ProfileMutualContact";
-import { auth } from "../../firebase";
-import { theme } from "../../utils/theme";
+import { auth } from "../../../firebase";
+import { theme } from "../../../utils/theme";
 import { DocumentData } from "firebase/firestore";
-import { useConnectionType } from "../../hooks/useConnectionType";
-import { getMutualConnections } from "../../hooks/useMutualConnections";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useConnectionType } from "../../../hooks/useConnectionType";
+import { getMutualConnections } from "../../../hooks/useMutualConnections";
 import ProfileActionButtons from "./ProfileActionButtons";
 import ProfileConnectionButtons from "./ProfileConnectionButtons";
 
