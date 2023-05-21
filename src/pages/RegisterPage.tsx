@@ -6,7 +6,7 @@ import {
 } from "firebase/auth";
 import { setUser } from "../redux/userSlice/slice";
 
-import LoginAndRegister from "../components/LoginAndRegister";
+import LoginAndRegister from "../components/Shared/LoginAndRegister";
 import { useDispatch } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 

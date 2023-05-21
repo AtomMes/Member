@@ -43,7 +43,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../../firebase";
 import { uuidv4 } from "@firebase/util";
-import CurrentUserAvatar from "../CurrentUserAvatar";
+import CurrentUserAvatar from "../Shared/CurrentUserAvatar";
 import { useAppSelector } from "../../hooks/redux-hooks";
 import { getUserData } from "../../hooks/getUserData";
 import { theme } from "../../utils/theme";

@@ -15,7 +15,7 @@ import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { theme } from "../../utils/theme";
 import { Group, Home, Logout, Message } from "@mui/icons-material";
-import CurrentUserAvatar from "../CurrentUserAvatar";
+import CurrentUserAvatar from "../Shared/CurrentUserAvatar";
 import { auth } from "../../firebase";
 import { removeUser } from "../../redux/userSlice/slice";
 import { DocumentData } from "firebase/firestore";

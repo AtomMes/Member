@@ -3,7 +3,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import LoginAndRegister from "../components/LoginAndRegister";
+import LoginAndRegister from "../components/Shared/LoginAndRegister";
 import { auth } from "../firebase";
 import { useAuth } from "../hooks/useAuth";
 import { setUser } from "../redux/userSlice/slice";

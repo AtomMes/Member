@@ -6,7 +6,7 @@ import { auth } from "../../../firebase";
 import { getUserData } from "../../../hooks/getUserData";
 import { useAppSelector } from "../../../hooks/redux-hooks";
 import { Message } from "./ChatMessages";
-import CurrentUserAvatar from "../../CurrentUserAvatar";
+import CurrentUserAvatar from "../../Shared/CurrentUserAvatar";
 
 interface Props {
   message: Message;

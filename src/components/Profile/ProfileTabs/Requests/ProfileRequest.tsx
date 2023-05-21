@@ -13,7 +13,7 @@ import { getUserData } from "../../../../hooks/getUserData";
 import { getMutualConnections } from "../../../../hooks/useMutualConnections";
 import { connectBack, declineRequest } from "../../../../utils/connectionFunctions";
 import { theme } from "../../../../utils/theme";
-import CurrentUserAvatar from "../../../CurrentUserAvatar";
+import CurrentUserAvatar from "../../../Shared/CurrentUserAvatar";
 
 interface Props {
   request: string;

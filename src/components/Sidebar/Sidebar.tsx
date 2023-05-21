@@ -22,8 +22,8 @@ import { auth, db } from "../../firebase";
 import { getUserData } from "../../hooks/getUserData";
 import { useAppSelector } from "../../hooks/redux-hooks";
 import { addProfilePicture } from "../../utils/profileFunctions";
-import CurrentUserAvatar from "../CurrentUserAvatar";
-import UserPhotoModal from "../UserPhotoModal";
+import CurrentUserAvatar from "../Shared/CurrentUserAvatar";
+import UserPhotoModal from "../Shared/UserPhotoModal";
 import SidebarSkeleton from "./SidebarSkeleton";
 
 export const StyledButton = styled(Button)(({ theme }) => ({

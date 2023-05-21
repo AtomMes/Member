@@ -4,7 +4,7 @@ import React from "react";
 import { getUserData } from "../../../hooks/getUserData";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux-hooks";
 import { setChat } from "../../../redux/chatSlice/slice";
-import CurrentUserAvatar from "../../CurrentUserAvatar";
+import CurrentUserAvatar from "../../Shared/CurrentUserAvatar";
 
 interface Props {
   chat: any;

@@ -3,7 +3,7 @@ import { formatDistanceToNow } from "date-fns";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserData } from "../../hooks/getUserData";
-import CurrentUserAvatar from "../CurrentUserAvatar";
+import CurrentUserAvatar from "../Shared/CurrentUserAvatar";
 
 interface CommentProps {
   com: {

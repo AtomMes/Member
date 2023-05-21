@@ -8,7 +8,7 @@ import {
 import { Box, Skeleton, Stack, Typography } from "@mui/material";
 import React from "react";
 import { getUserData } from "../../hooks/getUserData";
-import CurrentUserAvatar from "../CurrentUserAvatar";
+import CurrentUserAvatar from "../Shared/CurrentUserAvatar";
 
 interface Props {
   onClick: (

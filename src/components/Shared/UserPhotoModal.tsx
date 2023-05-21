@@ -2,7 +2,7 @@ import { ModalDialog } from "@mui/joy";
 import { Box, Button, Modal } from "@mui/material";
 import React from "react";
 import Avatar from "react-avatar-edit";
-import { addProfilePicture } from "../utils/profileFunctions";
+import { addProfilePicture } from "../../utils/profileFunctions";
 
 interface Props {
   open: boolean;

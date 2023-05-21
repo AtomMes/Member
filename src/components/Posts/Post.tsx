@@ -51,7 +51,7 @@ import { useComments } from "../../hooks/comments";
 import { getUserData } from "../../hooks/getUserData";
 import { useAppSelector } from "../../hooks/redux-hooks";
 import Comments from "./Comments";
-import CurrentUserAvatar from "../CurrentUserAvatar";
+import CurrentUserAvatar from "../Shared/CurrentUserAvatar";
 
 const SnackbarAlert = React.forwardRef(function SnackbarAlert(
   props: any,

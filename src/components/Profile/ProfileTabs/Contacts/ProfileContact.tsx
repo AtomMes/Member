@@ -26,7 +26,7 @@ import {
   sendRequest,
 } from "../../../../utils/connectionFunctions";
 import { theme } from "../../../../utils/theme";
-import CurrentUserAvatar from "../../../CurrentUserAvatar";
+import CurrentUserAvatar from "../../../Shared/CurrentUserAvatar";
 
 interface Props {
   contact: string;

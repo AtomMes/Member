@@ -9,9 +9,9 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import React from "react";
-import CurrentUserAvatar from "../../CurrentUserAvatar";
+import CurrentUserAvatar from "../../Shared/CurrentUserAvatar";
 import { AddAPhoto, Lock, Logout } from "@mui/icons-material";
-import UserPhotoModal from "../../UserPhotoModal";
+import UserPhotoModal from "../../Shared/UserPhotoModal";
 import ProfileMutualContact from "./ProfileMutualContact";
 import { auth } from "../../../firebase";
 import { theme } from "../../../utils/theme";
