@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Box, styled } from "@mui/material";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/Navbar/Navbar";
 import { auth } from "./firebase";
 import { useAppSelector } from "./hooks/redux-hooks";
 import { useAuth } from "./hooks/useAuth";

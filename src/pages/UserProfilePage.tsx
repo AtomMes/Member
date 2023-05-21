@@ -3,7 +3,7 @@ import { Box, useMediaQuery } from "@mui/material";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { WrapperBox } from "../App";
-import { StyledTab } from "../components/Navbar";
+import { StyledTab } from "../components/Navbar/Navbar";
 import ProfileContacts from "../components/Profile/ProfileContacts";
 import ProfileLikedPosts from "../components/Profile/ProfileLikedPosts";
 import ProfilePosts from "../components/Profile/ProfilePosts";

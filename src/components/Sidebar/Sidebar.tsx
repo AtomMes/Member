@@ -24,8 +24,9 @@ import { useAppSelector } from "../../hooks/redux-hooks";
 import { addProfilePicture } from "../../utils/profileFunctions";
 import CurrentUserAvatar from "../CurrentUserAvatar";
 import UserPhotoModal from "../UserPhotoModal";
+import SidebarSkeleton from "./SidebarSkeleton";
 
-const StyledButton = styled(Button)(({ theme }) => ({
+export const StyledButton = styled(Button)(({ theme }) => ({
   display: "flex",
   justifyContent: "flex-start",
   width: "100%",
@@ -34,13 +35,13 @@ const StyledButton = styled(Button)(({ theme }) => ({
   fontSize: "17px",
 }));
 
-const WrapperBox = styled(Box)(({ theme }) => ({
+export const WrapperBox = styled(Box)(({ theme }) => ({
   backgroundColor: "#ffffff",
   border: "1px solid rgba(50, 50, 50, .2) ",
   borderRadius: "10px",
 }));
 
-const ProfileBox = styled(Box)(({ theme }) => ({
+export const ProfileBox = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -51,56 +52,10 @@ const ProfileBox = styled(Box)(({ theme }) => ({
 const Sidebar: React.FC = () => {
   const [open, setOpen] = React.useState<boolean>(false);
 
-  const { username, id } = useAppSelector((state) => state.user);
-
-  const user = auth.currentUser;
-
   const navigate = useNavigate();
   const { userData } = getUserData(auth.currentUser!.uid);
 
-  if (!userData)
-    return (
-      <div className="sticky">
-        <WrapperBox>
-          <ProfileBox>
-            <Skeleton
-              variant="circular"
-              width={72}
-              height={72}
-              animation="wave"
-              sx={{ marginBottom: "15px" }}
-            />
-            <Typography>
-              <Skeleton variant="rectangular" width="110px" height="16px" />
-            </Typography>
-            <Typography sx={{ marginTop: "10px" }}>Add a photo</Typography>
-          </ProfileBox>
-          <Box padding="15px">
-            <StyledButton>
-              {" "}
-              <People
-                sx={{
-                  fontSize: "30px",
-                  marginRight: "10px",
-                  color: "#047891",
-                }}
-              />{" "}
-              Contacts
-            </StyledButton>
-            <StyledButton>
-              <AccountCircle
-                sx={{
-                  fontSize: "30px",
-                  marginRight: "10px",
-                  color: "#047891",
-                }}
-              />
-              Profile
-            </StyledButton>
-          </Box>
-        </WrapperBox>
-      </div>
-    );
+  if (!userData) return <SidebarSkeleton />;
 
   return (
     <div className="sticky">
@@ -111,7 +66,7 @@ const Sidebar: React.FC = () => {
             mb="15px"
             username={userData.username}
             photoURL={userData.photoURL}
-            id={id!}
+            id={userData.id}
           />
           <Typography>{userData.username}</Typography>
           <Typography onClick={() => setOpen(!open)}>
