@@ -46,7 +46,7 @@ const UserProfilePage: React.FC = () => {
                 sx={{ width: !matches ? "100%" : "calc(100% - 30px)" }}
                 top="-40px"
               >
-                <ProfileInfo id={id!} userData={userData} />
+                <ProfileInfo userData={userData} id={id!} />
                 <Box>
                   <TabContext value={value}>
                     <Box

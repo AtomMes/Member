@@ -2,11 +2,6 @@ import {
   AvatarGroup,
   Box,
   Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
   IconButton,
   Stack,
   Tooltip,
@@ -21,21 +16,14 @@ import { AddAPhoto, Lock, Logout } from "@mui/icons-material";
 import UserPhotoModal from "../UserPhotoModal";
 import ProfileMutualContact from "./ProfileMutualContact";
 import { auth } from "../../firebase";
-
-import {
-  connectBack,
-  removeConnection,
-  removeRequest,
-  sendRequest,
-} from "../../utils/connectionFunctions";
 import { theme } from "../../utils/theme";
 import { DocumentData } from "firebase/firestore";
 import { useConnectionType } from "../../hooks/useConnectionType";
 import { getMutualConnections } from "../../hooks/useMutualConnections";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { removeUser } from "../../redux/userSlice/slice";
-import { setChat } from "../../redux/chatSlice/slice";
+import ProfileActionButtons from "./ProfileActionButtons";
+import ProfileConnectionButtons from "./ProfileConnectionButtons";
 
 export const StyledButton = styled(Button)(({ theme }) => ({
   marginTop: "10px",
@@ -54,35 +42,16 @@ export const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 interface Props {
-  id: string;
   userData: DocumentData;
+  id: string;
 }
 
-const ProfileInfo: React.FC<Props> = ({ id, userData }) => {
-  const [openDialog, setOpenDialog] = React.useState<boolean>(false);
+const ProfileInfo: React.FC<Props> = ({ userData, id }) => {
   const [openModal, setOpenModal] = React.useState<boolean>(false);
-  const [openTooltip, setOpenTooltip] = React.useState<boolean>(false);
   const matches = useMediaQuery(theme.breakpoints.up(650));
   const float = useMediaQuery(theme.breakpoints.up(410));
-  const { myContacts, inMyRequests, inContacts, inRequests } =
-    useConnectionType(id);
+  const { myContacts } = useConnectionType(id);
   const { mutualContacts } = getMutualConnections(id);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const handleOpenTooltip = () => {
-    setOpenTooltip(true);
-    setTimeout(() => {
-      setOpenTooltip(false);
-    }, 1000);
-  };
-
-  const logOut = () => {
-    auth.signOut();
-    localStorage.removeItem("isAuth");
-    dispatch(removeUser());
-    navigate("/login");
-  };
 
   return (
     <Stack
@@ -177,150 +146,9 @@ const ProfileInfo: React.FC<Props> = ({ id, userData }) => {
         gap="10px"
       >
         {id === auth.currentUser!.uid ? (
-          <>
-            {matches ? (
-              <IconButton
-                sx={{
-                  bgcolor: "#047891",
-                  "&:hover": { backgroundColor: "#00637a" },
-                }}
-              >
-                <Logout
-                  onClick={() => {
-                    setOpenDialog(true);
-                  }}
-                  sx={{ color: "white" }}
-                />
-              </IconButton>
-            ) : (
-              <StyledButton
-                sx={{
-                  color: "#047891",
-                  width: "100%",
-                  "&:hover": { backgroundColor: "#dcf5fa" },
-                }}
-                onClick={() => {
-                  setOpenDialog(true);
-                }}
-                startIcon={<Logout sx={{ color: "#047891" }} />}
-              >
-                Log out{" "}
-              </StyledButton>
-            )}
-            <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-              <DialogTitle id="dialog-title">Log out</DialogTitle>
-              <DialogContent sx={{ paddingBottom: "0" }}>
-                <DialogContentText id="dialog-description">
-                  Are you sure you want to log out?
-                </DialogContentText>
-                <DialogActions>
-                  <Button onClick={logOut}>Leave</Button>
-                  <Button autoFocus onClick={() => setOpenDialog(false)}>
-                    Stay
-                  </Button>
-                </DialogActions>
-              </DialogContent>
-            </Dialog>
-          </>
+          <ProfileActionButtons />
         ) : (
-          <>
-            {inRequests && (
-              <StyledButton
-                sx={{
-                  width: !matches ? "100%" : "initial",
-                  "&:hover": { backgroundColor: "#dcf5fa" },
-                }}
-                variant="outlined"
-                onClick={() => {
-                  removeRequest(id!);
-                }}
-              >
-                Pending
-              </StyledButton>
-            )}
-            {!inContacts && !inRequests && !inMyRequests && (
-              <StyledButton
-                sx={{
-                  width: !matches ? "100%" : "initial",
-                  "&:hover": { backgroundColor: "#dcf5fa" },
-                }}
-                variant="outlined"
-                onClick={() => {
-                  sendRequest(id!);
-                }}
-              >
-                Connect
-              </StyledButton>
-            )}
-            {inContacts && (
-              <StyledButton
-                sx={{
-                  width: !matches ? "100%" : "initial",
-                  "&:hover": { backgroundColor: "#dcf5fa" },
-                }}
-                variant="outlined"
-                onClick={() => {
-                  removeConnection(id!);
-                }}
-              >
-                Connected
-              </StyledButton>
-            )}
-            {inMyRequests && !inContacts && (
-              <StyledButton
-                sx={{
-                  width: !matches ? "100%" : "initial",
-                  "&:hover": { backgroundColor: "#dcf5fa" },
-                }}
-                variant="outlined"
-                onClick={() => {
-                  connectBack(id!);
-                }}
-              >
-                Connect back
-              </StyledButton>
-            )}
-            <Tooltip
-              title="You must be connected"
-              open={openTooltip}
-              onOpen={handleOpenTooltip}
-              onClick={handleOpenTooltip}
-              TransitionComponent={Zoom}
-              arrow
-              placement="top"
-              disableHoverListener={inContacts}
-            >
-              <Box
-                sx={{
-                  width: !matches ? "calc(100% + 20px)" : "initial",
-                }}
-              >
-                <StyledButton
-                  disabled={!inContacts}
-                  sx={{
-                    width: !matches ? "100%" : "initial",
-                    border: !inContacts
-                      ? "1px solid gray"
-                      : "1px solid #047891",
-                    "&:hover": { backgroundColor: "#dcf5fa" },
-                  }}
-                  onClick={() => {
-                    dispatch(
-                      setChat({
-                        displayName: userData.username,
-                        photoURL: userData.photoURL,
-                        uid: userData.id,
-                      })
-                    );
-                    navigate("/messaging");
-                  }}
-                  startIcon={!inContacts && <Lock />}
-                >
-                  Message
-                </StyledButton>
-              </Box>
-            </Tooltip>
-          </>
+          <ProfileConnectionButtons userData={userData} id={id} />
         )}
       </Stack>
     </Stack>
