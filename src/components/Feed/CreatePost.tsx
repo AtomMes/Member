@@ -16,7 +16,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Modal from "@mui/joy/Modal";
 import ModalDialog from "@mui/joy/ModalDialog";
 import Typography from "@mui/joy/Typography";
-import { WrapperBox } from "../App";
+import { WrapperBox } from "../../App";
 import {
   collection,
   addDoc,
@@ -41,14 +41,14 @@ import {
 } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { auth, db } from "../firebase";
+import { auth, db } from "../../firebase";
 import { uuidv4 } from "@firebase/util";
-import CurrentUserAvatar from "./CurrentUserAvatar";
-import { useAppSelector } from "../hooks/redux-hooks";
-import { getUserData } from "../hooks/getUserData";
-import { theme } from "../utils/theme";
-import { getFileType } from "../utils/fileType";
-import { addPost } from "../utils/postFunctions";
+import CurrentUserAvatar from "../CurrentUserAvatar";
+import { useAppSelector } from "../../hooks/redux-hooks";
+import { getUserData } from "../../hooks/getUserData";
+import { theme } from "../../utils/theme";
+import { getFileType } from "../../utils/fileType";
+import { addPost } from "../../utils/postFunctions";
 
 const CreatePostButton = styled(Button)(({ theme }) => ({
   color: "black",

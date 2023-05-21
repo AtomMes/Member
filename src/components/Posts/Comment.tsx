@@ -2,8 +2,8 @@ import { Box, Stack, Typography } from "@mui/material";
 import { formatDistanceToNow } from "date-fns";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { getUserData } from "../hooks/getUserData";
-import CurrentUserAvatar from "./CurrentUserAvatar";
+import { getUserData } from "../../hooks/getUserData";
+import CurrentUserAvatar from "../CurrentUserAvatar";
 
 interface CommentProps {
   com: {

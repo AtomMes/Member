@@ -9,11 +9,11 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import React from "react";
-import { getUserData } from "../hooks/getUserData";
-import { getMutualConnections } from "../hooks/useMutualConnections";
-import { connectBack, declineRequest } from "../utils/connectionFunctions";
-import { theme } from "../utils/theme";
-import CurrentUserAvatar from "./CurrentUserAvatar";
+import { getUserData } from "../../hooks/getUserData";
+import { getMutualConnections } from "../../hooks/useMutualConnections";
+import { connectBack, declineRequest } from "../../utils/connectionFunctions";
+import { theme } from "../../utils/theme";
+import CurrentUserAvatar from "../CurrentUserAvatar";
 
 interface Props {
   request: string;

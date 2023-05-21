@@ -1,7 +1,7 @@
 import { Box, styled } from "@mui/material";
 import React from "react";
-import ChatLeftSide from "./ChatLeftSide";
-import ChatRightSide from "./ChatRightSide";
+import ChatLeftSide from "./Left/ChatLeftSide";
+import ChatRightSide from "./Right/ChatRightSide";
 
 const WrapperBox = styled(Box)(({ theme }) => ({
   backgroundColor: "#ffffff",

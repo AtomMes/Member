@@ -1,8 +1,8 @@
 import { Stack } from "@mui/material";
 import { doc, onSnapshot } from "firebase/firestore";
 import React from "react";
-import { db } from "../firebase";
-import { useAppSelector } from "../hooks/redux-hooks";
+import { db } from "../../../firebase";
+import { useAppSelector } from "../../../hooks/redux-hooks";
 import ChatMessage from "./ChatMessage";
 
 export interface Message {

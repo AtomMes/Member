@@ -1,13 +1,13 @@
 import { Box, Stack, styled, Typography } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { WrapperBox } from "../App";
-import { auth } from "../firebase";
-import { getUserData } from "../hooks/getUserData";
-import { useAppDispatch, useAppSelector } from "../hooks/redux-hooks";
-import { setChat } from "../redux/chatSlice/slice";
-import { connectBack, declineRequest } from "../utils/connectionFunctions";
-import RightbarRequestContact from "./RightbarRequestContact";
+import { WrapperBox } from "../../App";
+import { auth } from "../../firebase";
+import { getUserData } from "../../hooks/getUserData";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
+import { setChat } from "../../redux/chatSlice/slice";
+import { connectBack, declineRequest } from "../../utils/connectionFunctions";
+import RightbarRequestContact from "./RightBarRequestContact";
 
 const StyledStack = styled(Stack)(({ theme }) => ({
   flexDirection: "row",

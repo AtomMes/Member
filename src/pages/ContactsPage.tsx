@@ -11,9 +11,9 @@ import {
 } from "@mui/material";
 import { DocumentData } from "firebase/firestore";
 import React from "react";
-import ProfileContact from "../components/ProfileContact";
-import ProfileContacts from "../components/ProfileContacts";
-import ProfileRequests from "../components/ProfileRequests";
+import ProfileContact from "../components/Profile/ProfileContact";
+import ProfileContacts from "../components/Profile/ProfileContacts";
+import ProfileRequests from "../components/Profile/ProfileRequests";
 import { auth } from "../firebase";
 import { getUserData } from "../hooks/getUserData";
 import { useConnectionType } from "../hooks/useConnectionType";
@@ -45,7 +45,6 @@ const ContactsPage: React.FC = () => {
   return (
     <Box sx={{ padding: "0 20px" }}>
       <Box>
-        {/* <Paper> */}
         <SearchUserInput
           size="small"
           placeholder="Search for a user..."
@@ -64,7 +63,6 @@ const ContactsPage: React.FC = () => {
             ),
           }}
         />
-        {/* </Paper> */}
       </Box>
       {commentText && (
         <Box marginTop="20px">

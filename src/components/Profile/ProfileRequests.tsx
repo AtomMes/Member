@@ -1,7 +1,7 @@
 import { Alert, Box, Grid } from "@mui/material";
 import React from "react";
-import { auth } from "../firebase";
-import { getUserData } from "../hooks/getUserData";
+import { auth } from "../../firebase";
+import { getUserData } from "../../hooks/getUserData";
 import ProfileRequest from "./ProfileRequest";
 
 const ProfileRequests: React.FC = () => {

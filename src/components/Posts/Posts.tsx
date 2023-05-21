@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import React from "react";
 
-import { usePosts } from "../hooks/usePosts";
+import { usePosts } from "../../hooks/usePosts";
 import Post from "./Post";
 
 const Posts: React.FC = () => {

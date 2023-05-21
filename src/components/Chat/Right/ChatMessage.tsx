@@ -2,11 +2,11 @@ import { Box, Stack, Typography } from "@mui/material";
 import { formatDistanceToNow } from "date-fns";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../firebase";
-import { getUserData } from "../hooks/getUserData";
-import { useAppSelector } from "../hooks/redux-hooks";
+import { auth } from "../../../firebase";
+import { getUserData } from "../../../hooks/getUserData";
+import { useAppSelector } from "../../../hooks/redux-hooks";
 import { Message } from "./ChatMessages";
-import CurrentUserAvatar from "./CurrentUserAvatar";
+import CurrentUserAvatar from "../../CurrentUserAvatar";
 
 interface Props {
   message: Message;

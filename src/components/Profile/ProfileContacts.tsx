@@ -1,8 +1,8 @@
 import { Alert, Box, Grid, Typography } from "@mui/material";
 import React from "react";
 import { useParams } from "react-router-dom";
-import { auth } from "../firebase";
-import { getUserData } from "../hooks/getUserData";
+import { auth } from "../../firebase";
+import { getUserData } from "../../hooks/getUserData";
 import ProfileContact from "./ProfileContact";
 
 const ProfileContacts: React.FC = () => {

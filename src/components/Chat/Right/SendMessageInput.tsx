@@ -17,8 +17,8 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import React from "react";
-import { auth, db, storage } from "../firebase";
-import { useAppSelector } from "../hooks/redux-hooks";
+import { auth, db, storage } from "../../../firebase";
+import { useAppSelector } from "../../../hooks/redux-hooks";
 
 const SendMessageInput = () => {
   const [text, setText] = React.useState<string>("");

@@ -1,7 +1,7 @@
 import React from "react";
-import Sidebar from "../components/Sidebar";
-import Feed from "../components/Feed";
-import RightBar from "../components/RightBar";
+import Sidebar from "../components/Sidebar/Sidebar";
+import Feed from "../components/Feed/Feed";
+import RightBar from "../components/RightBar/RightBar";
 import { Box, Grid, Stack, useMediaQuery } from "@mui/material";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";

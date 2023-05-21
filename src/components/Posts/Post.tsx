@@ -45,13 +45,13 @@ import {
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import { WrapperBox } from "../App";
-import { auth, db } from "../firebase";
-import { useComments } from "../hooks/comments";
-import { getUserData } from "../hooks/getUserData";
-import { useAppSelector } from "../hooks/redux-hooks";
+import { WrapperBox } from "../../App";
+import { auth, db } from "../../firebase";
+import { useComments } from "../../hooks/comments";
+import { getUserData } from "../../hooks/getUserData";
+import { useAppSelector } from "../../hooks/redux-hooks";
 import Comments from "./Comments";
-import CurrentUserAvatar from "./CurrentUserAvatar";
+import CurrentUserAvatar from "../CurrentUserAvatar";
 
 const SnackbarAlert = React.forwardRef(function SnackbarAlert(
   props: any,
@@ -152,7 +152,7 @@ const Post: React.FC<PostProps> = ({
     querySnapshot.forEach(async (doc) => (docId = doc.id));
     const postRef = doc(db, "posts", docId);
 
-    updateDoc(postRef, {  
+    updateDoc(postRef, {
       likes: isPostLiked
         ? arrayRemove(auth.currentUser!.uid)
         : arrayUnion(auth.currentUser!.uid),

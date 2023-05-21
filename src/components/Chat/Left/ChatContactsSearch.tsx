@@ -1,9 +1,9 @@
 import { Avatar, Box, Stack, Typography } from "@mui/material";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { getUserData } from "../hooks/getUserData";
-import { useAppDispatch } from "../hooks/redux-hooks";
-import { setChat } from "../redux/chatSlice/slice";
+import { getUserData } from "../../../hooks/getUserData";
+import { useAppDispatch } from "../../../hooks/redux-hooks";
+import { setChat } from "../../../redux/chatSlice/slice";
 
 interface Props {
   userId: string;

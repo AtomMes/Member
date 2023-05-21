@@ -1,6 +1,6 @@
 import { doc, onSnapshot } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { auth, db } from "../firebase";
+import { auth, db } from "../../../firebase";
 import ChatUser from "./ChatUser";
 
 const ChatUsers: React.FC = () => {

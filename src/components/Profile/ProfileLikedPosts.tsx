@@ -1,7 +1,7 @@
 import { Box, Alert } from "@mui/material";
-import { auth } from "../firebase";
-import { useLikedPosts } from "../hooks/useLikedPosts";
-import Post from "./Post";
+import { auth } from "../../firebase";
+import { useLikedPosts } from "../../hooks/useLikedPosts";
+import Post from "../Posts/Post";
 
 const ProfileLikedPosts = () => {
   const { likedPosts, isLoading } = useLikedPosts(auth.currentUser!.uid);

@@ -13,20 +13,20 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../firebase";
-import { getUserData } from "../hooks/getUserData";
-import { useAppDispatch } from "../hooks/redux-hooks";
-import { useConnectionType } from "../hooks/useConnectionType";
-import { getMutualConnections } from "../hooks/useMutualConnections";
-import { setChat } from "../redux/chatSlice/slice";
+import { auth } from "../../firebase";
+import { getUserData } from "../../hooks/getUserData";
+import { useAppDispatch } from "../../hooks/redux-hooks";
+import { useConnectionType } from "../../hooks/useConnectionType";
+import { getMutualConnections } from "../../hooks/useMutualConnections";
+import { setChat } from "../../redux/chatSlice/slice";
 import {
   connectBack,
   removeConnection,
   removeRequest,
   sendRequest,
-} from "../utils/connectionFunctions";
-import { theme } from "../utils/theme";
-import CurrentUserAvatar from "./CurrentUserAvatar";
+} from "../../utils/connectionFunctions";
+import { theme } from "../../utils/theme";
+import CurrentUserAvatar from "../CurrentUserAvatar";
 
 interface Props {
   contact: string;

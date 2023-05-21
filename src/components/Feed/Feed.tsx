@@ -1,8 +1,8 @@
 import { Stack } from "@mui/material";
 import React from "react";
-import { WrapperBox } from "../App";
+import { WrapperBox } from "../../App";
 import CreatePost from "./CreatePost";
-import Posts from "./Posts";
+import Posts from "../Posts/Posts";
 
 const Feed: React.FC = () => {
   return (

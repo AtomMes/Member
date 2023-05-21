@@ -11,9 +11,9 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import React, { useState } from "react";
-import { auth } from "../firebase";
-import { getUserData } from "../hooks/getUserData";
-import { theme } from "../utils/theme";
+import { auth } from "../../../firebase";
+import { getUserData } from "../../../hooks/getUserData";
+import { theme } from "../../../utils/theme";
 import ChatContactsSearch from "./ChatContactsSearch";
 import ChatUsers from "./ChatUsers";
 

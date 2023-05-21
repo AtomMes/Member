@@ -1,8 +1,8 @@
 import { ArrowBack } from "@mui/icons-material";
 import { Box, Stack, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
-import { useAppSelector } from "../hooks/redux-hooks";
-import { theme } from "../utils/theme";
+import { useAppSelector } from "../../../hooks/redux-hooks";
+import { theme } from "../../../utils/theme";
 import ChatMessages from "./ChatMessages";
 import SendMessageInput from "./SendMessageInput";
 

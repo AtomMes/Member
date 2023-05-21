@@ -18,12 +18,12 @@ import {
 import React from "react";
 import Avatar from "react-avatar-edit";
 import { useNavigate } from "react-router-dom";
-import { auth, db } from "../firebase";
-import { getUserData } from "../hooks/getUserData";
-import { useAppSelector } from "../hooks/redux-hooks";
-import { addProfilePicture } from "../utils/profileFunctions";
-import CurrentUserAvatar from "./CurrentUserAvatar";
-import UserPhotoModal from "./UserPhotoModal";
+import { auth, db } from "../../firebase";
+import { getUserData } from "../../hooks/getUserData";
+import { useAppSelector } from "../../hooks/redux-hooks";
+import { addProfilePicture } from "../../utils/profileFunctions";
+import CurrentUserAvatar from "../CurrentUserAvatar";
+import UserPhotoModal from "../UserPhotoModal";
 
 const StyledButton = styled(Button)(({ theme }) => ({
   display: "flex",
