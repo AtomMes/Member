@@ -1,20 +1,27 @@
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Box, useMediaQuery } from "@mui/material";
+import { Box, Tab, styled, useMediaQuery } from "@mui/material";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { WrapperBox } from "../App";
-import { StyledTab } from "../components/Navbar/Navbar";
 import ProfileContacts from "../components/Profile/ProfileContacts";
 import ProfileLikedPosts from "../components/Profile/ProfileLikedPosts";
 import ProfilePosts from "../components/Profile/ProfilePosts";
 import ProfileRequests from "../components/Profile/ProfileRequests";
-import { auth, db } from "../firebase";
+import { auth } from "../firebase";
 import { getUserData } from "../hooks/getUserData";
 import { useAuth } from "../hooks/useAuth";
 import { theme } from "../utils/theme";
 import ProfileCoverPhoto from "../components/Profile/ProfileCoverPhoto";
 import ProfileInfo from "../components/Profile/ProfileInfo";
 
+export const StyledTab = styled(Tab)(({ theme }) => ({
+  color: "#047891",
+  maxWidth: "none",
+  minWidth: "none",
+  minHeight: "none",
+  textTransform: "none",
+  padding: "0",
+}));
 const UserProfilePage: React.FC = () => {
   const [value, setValue] = React.useState("1");
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
