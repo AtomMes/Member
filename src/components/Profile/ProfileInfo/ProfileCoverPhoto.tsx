@@ -5,7 +5,7 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { uuidv4 } from "@firebase/util";
 import { getFileType } from "../../../utils/fileType";
 import { DocumentData, doc, updateDoc } from "firebase/firestore";
-import coverPhoto from "../../images/1569699848732.jpeg";
+import coverPhoto from "../../../images/1569699848732.jpeg";
 
 import { AddAPhoto } from "@mui/icons-material";
 
@@ -110,36 +110,6 @@ const ProfileCoverPhoto: React.FC<Props> = ({ id, userData }) => {
 
       {id === auth.currentUser!.uid && (
         <>
-          <Box
-            width="100%"
-            height="100%"
-            sx={{
-              opacity: "0",
-              transition: ".2s",
-              "&:hover": { opacity: "1" },
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              zIndex: "10",
-            }}
-            component="label"
-          >
-            <Typography variant="h3" color="dimgray">
-              Set a Photo
-            </Typography>
-            <input
-              type="file"
-              id="addPhotoInput"
-              hidden
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                if (e.target.files) {
-                  const file = e.target.files[0];
-                  coverPhotoUpload(file);
-                }
-              }}
-            />
-          </Box>
-
           <Button
             sx={{
               minWidth: "0",

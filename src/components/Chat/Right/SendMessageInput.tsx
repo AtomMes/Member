@@ -19,6 +19,7 @@ import {
 import React from "react";
 import { auth, db, storage } from "../../../firebase";
 import { useAppSelector } from "../../../hooks/redux-hooks";
+import { sendMessage } from "../../../utils/chatFunctions";
 
 const SendMessageInput = () => {
   const [text, setText] = React.useState<string>("");
@@ -27,77 +28,22 @@ const SendMessageInput = () => {
 
   const currentUser = auth.currentUser;
 
-  const data = useAppSelector((state) => state.chat);
-
-  const [loading, setLoading] = React.useState(false);
-
-  function getFileType() {
-    if (img!.type === "image/jpeg") {
-      return "jpg";
-    } else if (img!.type === "image/png") {
-      return "png";
-    } else {
-      return "other";
-    }
-  }
+  const data: any = useAppSelector((state) => state.chat);
 
   const handleSend = async () => {
-    if (!img && !chosenImage && !text) {
-      alert("write something");
-    } else if (img && chosenImage) {
-      setImg(null);
+    if (text || img) {
       setText("");
-      setLoading(false);
       setChosenImage("");
-      const storage = getStorage();
-      const fileRef = ref(storage, "postImages/" + uuidv4() + getFileType());
-
-      await uploadBytes(fileRef, img)
-        .then(async () => {
-          await getDownloadURL(fileRef)
-            .then(async (imageURL) => {
-              await updateDoc(doc(db, "chats", data.chatId), {
-                messages: arrayUnion({
-                  id: uuidv4(),
-                  text,
-                  senderId: currentUser!.uid,
-                  date: Date.now(),
-                  img: imageURL,
-                }),
-              });
-            })
-            .catch((e) => {});
-        })
-        .catch((e) => {})
-        .finally(() => setLoading(false));
-    } else {
-      setText("");
-      await updateDoc(doc(db, "chats", data.chatId), {
-        messages: arrayUnion({
-          id: uuidv4(),
-          text,
-          senderId: currentUser!.uid,
-          date: Date.now(),
-        }),
+      setImg(null);
+      await sendMessage({
+        currentUserId: currentUser!.uid,
+        dataUserId: data.user.uid!,
+        chatId: data.chatId,
+        img,
+        text,
       });
     }
-
-    await updateDoc(doc(db, "userChats", currentUser!.uid), {
-      [data.chatId + ".lastMessage"]: {
-        text,
-      },
-      [data.chatId + ".date"]: Date.now(),
-    });
-
-    await updateDoc(doc(db, "userChats", data.user.uid!), {
-      [data.chatId + ".lastMessage"]: {
-        text,
-      },
-      [data.chatId + ".date"]: Date.now(),
-    });
-    setLoading(false);
   };
-
   const keyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter") {
       handleSend();
