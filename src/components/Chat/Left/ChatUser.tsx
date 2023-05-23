@@ -28,6 +28,10 @@ const ChatUser: React.FC<Props> = ({ chat }) => {
     );
   };
 
+  const lastMessage = chat[1].lastMessage?.text
+  ? chat[1].lastMessage?.text.substring(0, 30)
+  : ""
+
   if (!userData)
     return (
       <Stack
@@ -106,9 +110,7 @@ const ChatUser: React.FC<Props> = ({ chat }) => {
           )}
         </Stack>
         <Typography color="gray" fontSize="14px">
-          {chat[1].lastMessage?.text
-            ? chat[1].lastMessage?.text.substring(0, 30)
-            : ""}
+          {lastMessage}
         </Typography>
       </Stack>
     </Stack>

@@ -52,6 +52,7 @@ import { useAppSelector } from "../../hooks/redux-hooks";
 import Comments from "./Comments";
 import CurrentUserAvatar from "../Shared/CurrentUserAvatar";
 import { getDate } from "../../utils/getDate";
+import { deletePost, onAddComment, onLike } from "../../utils/postFunctions";
 
 const SnackbarAlert = React.forwardRef(function SnackbarAlert(
   props: any,
@@ -133,10 +134,7 @@ const Post: React.FC<PostProps> = ({
   );
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
   const [openSnackbar, setOpenSnackbar] = React.useState<boolean>(false);
-
   const createdDate = getDate(date);
-  const { username, imageURL } = useAppSelector((state) => state.user);
-
   const { userData, loading } = getUserData(authorId);
 
   const { comments, isLoading } = useComments(id);
@@ -145,62 +143,9 @@ const Post: React.FC<PostProps> = ({
     setIsPostLiked(likes.includes(auth.currentUser!.uid));
   }, [likes]);
 
-  const onLike = async () => {
-    let docId = "";
-    const q = query(collection(db, "posts"), where("id", "==", id));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach(async (doc) => (docId = doc.id));
-    const postRef = doc(db, "posts", docId);
-
-    updateDoc(postRef, {
-      likes: isPostLiked
-        ? arrayRemove(auth.currentUser!.uid)
-        : arrayUnion(auth.currentUser!.uid),
-    }).catch((err) => alert(err.message));
-  };
-
   React.useEffect(() => {
     setDescText(close ? text.substring(0, 20) : text);
   }, [close]);
-
-  const onAddComment = async () => {
-    if (commentText) {
-      setCommentText("");
-      setLimit(limit + 1);
-      try {
-        const commentsCollectionRef = collection(db, "comments");
-        await addDoc(commentsCollectionRef, {
-          postId: id,
-          commentId: uuidv4(),
-          authorId: auth.currentUser?.uid,
-          comment: commentText,
-          date: Date.now(),
-        });
-      } catch (err: any) {
-        alert("Something went wrong");
-      }
-    } else {
-      alert("Write some comment");
-    }
-  };
-
-  const finnalyDeletePost = async (id: string) => {
-    await deleteDoc(doc(db, "comments", id));
-  };
-
-  const deletePost = async () => {
-    let docId = "";
-    const q = query(collection(db, "posts"), where("id", "==", id));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach(async (doc) => (docId = doc.id));
-    await deleteDoc(doc(db, "posts", docId));
-
-    const c = query(collection(db, "comments"), where("postId", "==", id));
-    const comsSnapshot = await getDocs(c);
-    comsSnapshot.forEach(async (doc) => {
-      finnalyDeletePost(doc.id);
-    });
-  };
 
   const navigate = useNavigate();
 
@@ -258,7 +203,7 @@ const Post: React.FC<PostProps> = ({
                 <DialogActions>
                   <Button
                     autoFocus //vor miangamic sra vra fokusy exni,
-                    onClick={deletePost}
+                    onClick={() => deletePost(id)}
                   >
                     Submit
                   </Button>
@@ -380,7 +325,7 @@ const Post: React.FC<PostProps> = ({
                 />
               )
             }
-            onClick={() => onLike()}
+            onClick={() => onLike(id, isPostLiked)}
             sx={{
               color: "#047891",
               width: "100%",
@@ -447,7 +392,14 @@ const Post: React.FC<PostProps> = ({
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <Button sx={{ minWidth: "1px" }} onClick={onAddComment}>
+                    <Button
+                      sx={{ minWidth: "1px" }}
+                      onClick={() => {
+                        setCommentText(""),
+                          setLimit(limit + 1),
+                          onAddComment(commentText, id);
+                      }}
+                    >
                       <Send sx={{ color: "#047891" }} />
                     </Button>
                   </InputAdornment>
