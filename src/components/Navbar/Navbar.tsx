@@ -5,8 +5,8 @@ import { auth } from "../../firebase";
 import { getUserData } from "../../hooks/getUserData";
 import logo from "../../images/logoM.png";
 import ErrorNavBar from "./ErrorNavBar";
-import UnSigned from "./Unsigned";
 import Signed from "./Signed";
+import UnSigned from "./UnSigned";
 
 interface Props {
   loggedIn?: boolean;
