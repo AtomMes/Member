@@ -1,9 +1,9 @@
 import { Box, Stack, Typography } from "@mui/material";
-import { formatDistanceToNow } from "date-fns";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserData } from "../../hooks/getUserData";
 import CurrentUserAvatar from "../Shared/CurrentUserAvatar";
+import { getDate } from "../../utils/getDate";
 
 interface CommentProps {
   com: {
@@ -15,6 +15,7 @@ interface CommentProps {
 
 const Comment: React.FC<CommentProps> = ({ com }) => {
   const navigate = useNavigate();
+  const createdDate = getDate(com.date);
   const { userData, loading } = getUserData(com.authorId);
   if (!userData) return <></>;
   return (
@@ -37,7 +38,7 @@ const Comment: React.FC<CommentProps> = ({ com }) => {
           <Typography>{userData!.username}</Typography>
           <Typography fontSize="14px" color="gray">
             {" "}
-            {(formatDistanceToNow(com.date) + " " + "ago").replace("about", "")}
+            {createdDate}
           </Typography>
         </Stack>
         <Typography color="#585858">{com.comment}</Typography>

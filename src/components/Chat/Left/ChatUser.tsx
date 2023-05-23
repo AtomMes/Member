@@ -1,10 +1,10 @@
 import { Box, Skeleton, Stack, Typography } from "@mui/material";
-import { formatDistanceToNow } from "date-fns";
 import React from "react";
 import { getUserData } from "../../../hooks/getUserData";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux-hooks";
 import { setChat } from "../../../redux/chatSlice/slice";
 import CurrentUserAvatar from "../../Shared/CurrentUserAvatar";
+import { getDate } from "../../../utils/getDate";
 
 interface Props {
   chat: any;
@@ -14,6 +14,7 @@ const ChatUser: React.FC<Props> = ({ chat }) => {
   const { userData, loading } = getUserData(chat[1].userInfo.uid);
 
   const user: any = useAppSelector((state) => state.chat.user);
+  const createdDate = getDate(chat[1].date);
 
   const dispatch = useAppDispatch();
 
@@ -100,10 +101,7 @@ const ChatUser: React.FC<Props> = ({ chat }) => {
           <Typography alignSelf="center">{userData!.username}</Typography>
           {chat[1].lastMessage?.text && (
             <Typography fontSize="14px" sx={{ whiteSpace: "nowrap" }}>
-              {chat[1].date &&
-                formatDistanceToNow(chat[1].date).replace("less than a", "") +
-                  " " +
-                  "ago"}
+              {createdDate}
             </Typography>
           )}
         </Stack>

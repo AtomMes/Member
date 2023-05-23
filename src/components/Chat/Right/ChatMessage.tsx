@@ -1,27 +1,28 @@
 import { Box, Stack, Typography } from "@mui/material";
-import { formatDistanceToNow } from "date-fns";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../../firebase";
 import { getUserData } from "../../../hooks/getUserData";
-import { useAppSelector } from "../../../hooks/redux-hooks";
 import { Message } from "./ChatMessages";
 import CurrentUserAvatar from "../../Shared/CurrentUserAvatar";
+import { getDate } from "../../../utils/getDate";
 
 interface Props {
   message: Message;
 }
 const ChatMessage: React.FC<Props> = ({ message }) => {
   const { userData, loading } = getUserData(message.senderId);
+  const createdDate = getDate(message.date);
   const ref = React.useRef<HTMLElement>(null);
   React.useEffect(() => {
     if (ref.current) {
       ref.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [message]);
-  const createdDate = formatDistanceToNow(message.date) + " " + "ago";
+
   const navigate = useNavigate();
   if (!userData) return <></>;
+
   return (
     <Stack
       ref={ref}
@@ -50,7 +51,7 @@ const ChatMessage: React.FC<Props> = ({ message }) => {
         <Stack flexDirection="row" justifyContent="space-between" gap="20px">
           <Typography>{userData.username}</Typography>
           <Typography fontSize="14px" color="gray">
-            {createdDate.replace("less than a", "")}
+            {createdDate}
           </Typography>
         </Stack>
         {message.img && (

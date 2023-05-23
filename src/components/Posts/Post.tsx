@@ -29,7 +29,6 @@ import {
   Alert,
   Avatar,
 } from "@mui/material";
-import { formatDistanceToNow } from "date-fns";
 import {
   addDoc,
   arrayRemove,
@@ -52,6 +51,7 @@ import { getUserData } from "../../hooks/getUserData";
 import { useAppSelector } from "../../hooks/redux-hooks";
 import Comments from "./Comments";
 import CurrentUserAvatar from "../Shared/CurrentUserAvatar";
+import { getDate } from "../../utils/getDate";
 
 const SnackbarAlert = React.forwardRef(function SnackbarAlert(
   props: any,
@@ -134,7 +134,7 @@ const Post: React.FC<PostProps> = ({
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
   const [openSnackbar, setOpenSnackbar] = React.useState<boolean>(false);
 
-  const createdDate = formatDistanceToNow(date) + " " + "ago";
+  const createdDate = getDate(date);
   const { username, imageURL } = useAppSelector((state) => state.user);
 
   const { userData, loading } = getUserData(authorId);
