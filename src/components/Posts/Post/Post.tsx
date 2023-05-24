@@ -30,9 +30,9 @@ const Post: React.FC<PostProps> = ({
   del,
 }) => {
   const [showAddComment, setShowAddComment] = React.useState<boolean>(false);
-  const { userData, loading } = getUserData(authorId);
+  const { userData } = getUserData(authorId);
   const createdDate = getDate(date);
-  const { comments, isLoading } = useComments(id);
+  const { comments } = useComments(id);
 
   if (!userData || !auth.currentUser) {
     return <></>;

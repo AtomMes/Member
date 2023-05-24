@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/redux-hooks";
 import { setChat } from "../../../redux/chatSlice/slice";
 import CurrentUserAvatar from "../../Shared/CurrentUserAvatar";
 import { getDate } from "../../../utils/getDate";
+import ChatUserSkeleton from "./ChatUserSkeleton";
 
 interface Props {
   chat: any;
@@ -34,44 +35,7 @@ const ChatUser: React.FC<Props> = ({ chat }) => {
 
   if (!userData)
     return (
-      <Stack
-        flexDirection="row"
-        padding="10px"
-        gap="5px"
-        width="100%"
-        sx={{ boxSizing: "border-box" }}
-        onClick={onUserClick}
-        height="100%"
-        alignItems="center"
-      >
-        <Box>
-          <Skeleton
-            variant="circular"
-            width={50}
-            height={50}
-            animation="wave"
-          />
-        </Box>
-        <Stack width="100%" height="100%">
-          <Stack
-            flexDirection="row"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Typography alignSelf="center">
-              <Skeleton variant="text" width="100px" animation="wave" />
-            </Typography>
-            {chat[1].lastMessage?.text && (
-              <Typography fontSize="14px" sx={{ whiteSpace: "nowrap" }}>
-                <Skeleton variant="text" width="60px" animation="wave" />
-              </Typography>
-            )}
-          </Stack>
-          <Typography color="gray" fontSize="14px">
-            <Skeleton variant="text" width="150px" animation="wave" />
-          </Typography>
-        </Stack>
-      </Stack>
+      <ChatUserSkeleton />
     );
 
   return (
