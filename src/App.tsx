@@ -12,6 +12,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import { checkLoggedInUser } from "./utils/checkAuthUser";
+import Footer from "./components/Footer/Footer";
 
 export const WrapperBox = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
@@ -37,37 +38,40 @@ const App: React.FC = () => {
 
   return (
     <Box>
-      {isAuth ? <Navbar loggedIn={true} /> : <Navbar loggedIn={false} />}
-      <Box width="100%" maxWidth="1100px" margin="0 auto">
-        {!isAuth && (
-          <>
-            <Routes>
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="*" element={<LoginPage />} />
-            </Routes>
-          </>
-        )}
-        {isAuth && isUserReady && (
-          <>
-            <Routes>
-              <Route path="/messaging" element={<ChatPage />} />
-              <Route path="/profile" element={<UserProfilePage />} />
-              <Route path="/" element={<Home />} />
-              <Route
-                path="*"
-                element={
-                  <>
-                    <Navigate to="/" /> <Home />
-                  </>
-                }
-              />
-              <Route path="/profile/:id" element={<UserProfilePage />} />
-              <Route path="/contacts" element={<ContactsPage />} />
-            </Routes>
-          </>
-        )}
+      <Box sx={{ minHeight: "100vh" }}>
+        {isAuth ? <Navbar loggedIn={true} /> : <Navbar loggedIn={false} />}
+        <Box width="100%" maxWidth="1100px" margin="0 auto">
+          {!isAuth && (
+            <>
+              <Routes>
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="*" element={<LoginPage />} />
+              </Routes>
+            </>
+          )}
+          {isAuth && isUserReady && (
+            <>
+              <Routes>
+                <Route path="/messaging" element={<ChatPage />} />
+                <Route path="/profile" element={<UserProfilePage />} />
+                <Route path="/" element={<Home />} />
+                <Route
+                  path="*"
+                  element={
+                    <>
+                      <Navigate to="/" /> <Home />
+                    </>
+                  }
+                />
+                <Route path="/profile/:id" element={<UserProfilePage />} />
+                <Route path="/contacts" element={<ContactsPage />} />
+              </Routes>
+            </>
+          )}
+        </Box>
       </Box>
+      <Footer />
     </Box>
   );
 };
