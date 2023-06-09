@@ -14,11 +14,6 @@ const ChatMessage: React.FC<Props> = ({ message }) => {
   const { userData, loading } = getUserData(message.senderId);
   const createdDate = getDate(message.date);
   const ref = React.useRef<HTMLElement>(null);
-  React.useEffect(() => {
-    if (ref.current) {
-      ref.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [message]);
 
   const navigate = useNavigate();
   if (!userData) return <></>;
@@ -43,7 +38,7 @@ const ChatMessage: React.FC<Props> = ({ message }) => {
       )}
       <Stack
         gap="8px"
-        bgcolor="#f0fafc"
+        bgcolor="white"
         padding="8px"
         borderRadius="10px"
         width="fit-content"

@@ -46,6 +46,7 @@ const ChatLeftSide: React.FC<Props> = ({ handleClick, isDrawerOpen }) => {
       padding="0"
       height="100%"
       borderRight="1px solid rgba(50, 50, 50, .2)"
+      bgcolor="#f0fafc"
       sx={{ width: sm ? 0 : 400 }}
     >
       {sm ? (
@@ -56,8 +57,22 @@ const ChatLeftSide: React.FC<Props> = ({ handleClick, isDrawerOpen }) => {
           sx={{ position: "absolute" }}
           PaperProps={{ style: { width: "100%" } }}
         >
-          <Box borderBottom="1px solid rgba(50, 50, 50, .2)" padding="10px">
-            <Typography>Messaging</Typography>
+          <Box
+            borderBottom="1px solid rgba(50, 50, 50, .2)"
+            bgcolor="#046a80"
+            padding="10px"
+          >
+            <Typography
+              sx={{
+                bgcolor: "white",
+                borderRadius: "15px",
+                color: "#046a80",
+                width: "85px",
+                padding: "0 10px",
+              }}
+            >
+              Messaging
+            </Typography>
           </Box>
           <Box padding="10px">
             <SearchUserInput
@@ -103,8 +118,25 @@ const ChatLeftSide: React.FC<Props> = ({ handleClick, isDrawerOpen }) => {
         </Drawer>
       ) : (
         <>
-          <Box borderBottom="1px solid rgba(50, 50, 50, .2)" padding="10px">
-            <Typography>Messaging</Typography>
+          <Box
+            borderBottom="1px solid rgba(50, 50, 50, .2)"
+            sx={{
+              bgcolor: "#046a80",
+              borderRadius: "8px 3px 3px ",
+            }}
+            padding="10px"
+          >
+            <Typography
+              sx={{
+                bgcolor: "white",
+                borderRadius: "15px",
+                color: "#046a80",
+                width: "85px",
+                padding: "0 10px",
+              }}
+            >
+              Messaging
+            </Typography>
           </Box>
           <Box padding="10px">
             <SearchUserInput
@@ -127,7 +159,7 @@ const ChatLeftSide: React.FC<Props> = ({ handleClick, isDrawerOpen }) => {
               }}
             />
           </Box>
-          <Box overflow="auto" width="100%">
+          <Box overflow="auto" width="100%" height="100%">
             <Stack
               gap="3px"
               divider={<Divider orientation="horizontal" flexItem />}

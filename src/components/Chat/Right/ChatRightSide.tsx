@@ -22,16 +22,30 @@ const ChatRightSide: React.FC<Props> = ({ handleClick }) => {
         padding="10px"
         display="flex"
         justifyContent="space-between"
+        sx={{ bgcolor: "#069ebf", borderRadius: "3px 8px 3px 3px" }}
       >
-        {sm && <ArrowBack onClick={handleClick} />}
-        <Typography>
-          {user.displayName ? user.displayName : "choose User"}
+        {sm && <ArrowBack onClick={handleClick} sx={{ color: "white" }} />}
+        <Typography
+          sx={{
+            bgcolor: "white",
+            color: "#047891",
+            padding: "0 10px",
+            borderRadius: "15px",
+          }}
+        >
+          {user.displayName ? user.displayName : "Choose user"}
         </Typography>
       </Box>
-      <Box overflow="auto" flex="1" padding="15px">
+      <Box
+        className="scrollContainer"
+        bgcolor="#e3f6fa"
+        overflow="auto"
+        flex="1"
+        padding="15px"
+      >
         {data.chatId && <ChatMessages />}
       </Box>
-      {data.chatId && <SendMessageInput />}
+      <Stack bgcolor="#e3f6fa" >{data.chatId && <SendMessageInput />}</Stack>
     </Stack>
   );
 };

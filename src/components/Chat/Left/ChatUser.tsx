@@ -30,13 +30,10 @@ const ChatUser: React.FC<Props> = ({ chat }) => {
   };
 
   const lastMessage = chat[1].lastMessage?.text
-  ? chat[1].lastMessage?.text.substring(0, 30)
-  : ""
+    ? chat[1].lastMessage?.text.substring(0, 30)
+    : "";
 
-  if (!userData)
-    return (
-      <ChatUserSkeleton />
-    );
+  if (!userData) return <ChatUserSkeleton />;
 
   return (
     <Stack
@@ -44,10 +41,11 @@ const ChatUser: React.FC<Props> = ({ chat }) => {
       padding="10px"
       gap="5px"
       width="100%"
+
       sx={{
         boxSizing: "border-box",
         backgroundColor:
-          chat[1].userInfo.uid === user.uid ? "#f0fafc" : "initial",
+          chat[1].userInfo.uid === user.uid ? "#046a80" : "initial",
       }}
       onClick={onUserClick}
       height="100%"
@@ -66,14 +64,33 @@ const ChatUser: React.FC<Props> = ({ chat }) => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Typography alignSelf="center">{userData!.username}</Typography>
+          <Typography
+            alignSelf="center"
+            sx={{
+              color: chat[1].userInfo.uid === user.uid ? "white" : "initial",
+            }}
+          >
+            {userData!.username}
+          </Typography>
           {chat[1].lastMessage?.text && (
-            <Typography fontSize="14px" sx={{ whiteSpace: "nowrap" }}>
+            <Typography
+              fontSize="14px"
+              sx={{
+                whiteSpace: "nowrap",
+                color: chat[1].userInfo.uid === user.uid ? "lightGray" : "gray",
+              }}
+            >
               {createdDate}
             </Typography>
           )}
         </Stack>
-        <Typography color="gray" fontSize="14px">
+        <Typography
+          color="gray"
+          fontSize="14px"
+          sx={{
+            color: chat[1].userInfo.uid === user.uid ? "white" : "gray",
+          }}
+        >
           {lastMessage}
         </Typography>
       </Stack>

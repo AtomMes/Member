@@ -7,6 +7,7 @@ const WrapperBox = styled(Box)(({ theme }) => ({
   backgroundColor: "#ffffff",
   border: "1px solid rgba(50, 50, 50, .2) ",
   borderRadius: "10px",
+  overflow: "hidden",
 }));
 
 const Chat: React.FC = () => {

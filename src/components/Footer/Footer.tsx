@@ -101,19 +101,22 @@ const Footer = () => {
             <Box
               sx={{
                 display: "flex",
-                flexDirection: { xs: "row", md: "column" },
+                flexDirection: { xs: "column", sm: "row", md: "column" },
+                justifyContent: "space-between",
                 alignItems: "center",
-                justifyContent: "center",
-                width: { md: "200px", xs: "260px" },
-                gap: { md: "15px", xs: "30px" },
+                maxWidth: "195px",
+                width: "100%",
+                gap: { md: "15px", xs: "15px" },
+                marginRight: { xs: "15px" },
               }}
             >
               {navigationButtons1.map((nav, i) => (
                 <Button
                   onClick={() => navigate(nav.to)}
                   sx={{
+                    maxWidth: "100px",
+                    width: { xs: "100%", md: "100px" },
                     textTransform: "none",
-                    width: "100px",
                     margin: "10px 0",
                     paddingX: "20px",
                     bgcolor: "white",
@@ -134,11 +137,12 @@ const Footer = () => {
             <Box
               sx={{
                 display: "flex",
-                flexDirection: { xs: "row", md: "column" },
-                justifyContent: "center",
+                flexDirection: { xs: "column", sm: "row", md: "column" },
+                justifyContent: "space-between",
                 alignItems: "center",
-                width: { md: "200px", xs: "260px" },
-                gap: { md: "15px", xs: "30px" },
+                maxWidth: "195px",
+                width: "100%",
+                gap: { md: "15px", xs: "15px" },
               }}
             >
               {navigationButtons2.map((nav, i) => (
@@ -146,7 +150,8 @@ const Footer = () => {
                   onClick={() => navigate(nav.to)}
                   sx={{
                     textTransform: "none",
-                    width: "100px",
+                    maxWidth: "100px",
+                    width: { xs: "100%", md: "100px" },
                     margin: "10px 0",
                     paddingX: "20px",
                     bgcolor: "white",
