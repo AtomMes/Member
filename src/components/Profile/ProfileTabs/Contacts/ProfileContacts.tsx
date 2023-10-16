@@ -24,8 +24,10 @@ const ProfileContacts: React.FC = () => {
             {userData.id === auth.currentUser!.uid
               ? "You don't"
               : `${userData.username} doesn't`}{" "}
-            have any contacts yet. Use the search bar above to find and add
-            contacts.
+            have any contacts yet.
+            {userData.id === auth.currentUser!.uid &&
+              `Use the search bar above to find and add
+              contacts.`}{" "}
           </Alert>
         </Box>
       )}

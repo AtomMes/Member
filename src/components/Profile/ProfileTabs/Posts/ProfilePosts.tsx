@@ -48,8 +48,10 @@ const ProfilePosts: React.FC = () => {
           {userData.id === auth.currentUser!.uid
             ? "You haven't"
             : `${userData.username} hasn't`}{" "}
-          posted anything yet. Share your thoughts or experiences by creating a
-          new post.
+          posted anything yet.
+          {userData.id === auth.currentUser!.uid &&
+            ` Share your thoughts or experiences by creating a
+            new post.`}{" "}
         </Alert>
       )}
     </Box>
